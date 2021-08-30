@@ -5,6 +5,10 @@ import SplashScreen from './SplashScreen';
 import SignIn from './SignIn';
 import ForgotPassword from './ForgotPassword';
 import VerificationCode from './VerificationCode';
+import SignUp from './SignUp';
+import HowAppWorks from './HowAppWorks';
+import Beneficiary from './Beneficiary';
+import Subscription from './Subscription';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +20,10 @@ function App() {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="VerificationCode" component={VerificationCode} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="HowAppWorks" component={HowAppWorks} />
+        <Stack.Screen name="Beneficiary" component={Beneficiary} />
+        <Stack.Screen name="Subscription" component={Subscription} />
       </Stack.Navigator>
     </NavigationContainer>
   );

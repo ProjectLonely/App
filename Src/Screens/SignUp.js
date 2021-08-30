@@ -2,20 +2,20 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   ImageBackground,
   Image,
-  ScrollView,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
+import Input from '../Common/Input';
 import Button from '../Common/Button';
+import {Checkbox} from 'react-native-paper';
 
-class SignIn extends Component {
-  state = {email: ''};
+class SignUp extends Component {
+  state = {checked: 'checked'};
   render() {
-    const {email} = this.state;
+    const {checked} = this.state;
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
@@ -35,7 +35,7 @@ class SignIn extends Component {
 
         <View
           style={{
-            height: '65%',
+            height: '58%',
             alignItems: 'center',
           }}>
           <Text
@@ -44,8 +44,13 @@ class SignIn extends Component {
               fontSize: 32,
               color: '#0F0A39',
             }}>
-            Login
+            REGISTER
           </Text>
+          <Input
+            placeholder="Name"
+            onChangeText={(text) => this.setState({name: text})}
+            secureTextEntry={false}
+          />
           <Input
             placeholder="Email"
             onChangeText={(text) => this.setState({email: text})}
@@ -57,28 +62,47 @@ class SignIn extends Component {
             secureTextEntry={true}
             iconName="eye-slash"
           />
+          <Input
+            placeholder="Confirm Password"
+            onChangeText={(text) => this.setState({confirmPassword: text})}
+            secureTextEntry={true}
+            iconName="eye-slash"
+          />
+
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ForgotPassword')}
             style={{
+              flexDirection: 'row',
               width: '100%',
-              alignItems: 'flex-end',
-              paddingHorizontal: '5%',
-            }}>
-            <Text style={[styles.normalText, {fontSize: 12}]}>
-              Forgot Password ?
+              alignItems: 'center',
+              paddingHorizontal: '3%',
+              // backgroundColor: 'orange',
+            }}
+            onPress={() => this.setState({checked: !checked})}>
+            <Checkbox
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => {
+                this.setState({checked: !checked});
+              }}
+              uncheckedColor="black"
+              color="#004ACE"
+            />
+            <Text style={[styles.normalText, {fontSize: 12, color: '#004ACE'}]}>
+              Accept terms & conditions
             </Text>
           </TouchableOpacity>
-          <Button> SIGNIN </Button>
         </View>
+        <Button onPress={() => this.props.navigation.navigate('HowAppWorks')}>
+          REGISTER
+        </Button>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('SignUp')}
+          onPress={() => this.props.navigation.navigate('SignIn')}
           style={{
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'center',
           }}>
           <Text style={styles.normalText}>Don't have an account? </Text>
-          <Text style={[styles.normalText, {color: '#004ACE'}]}>Sign Up</Text>
+          <Text style={[styles.normalText, {color: '#004ACE'}]}>Sign In</Text>
         </TouchableOpacity>
       </ImageBackground>
     );
@@ -93,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignUp;

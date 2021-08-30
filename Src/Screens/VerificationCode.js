@@ -12,7 +12,7 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from '../Common/Button';
 
 class VerificationCode extends Component {
-  state = {timer: 5};
+  state = {timer: 30};
   componentDidMount = () => {
     this.timer();
   };
@@ -68,7 +68,6 @@ class VerificationCode extends Component {
             secureTextEntry={false}
           />
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ForgotPassword')}
             style={{
               width: '100%',
               alignItems: 'flex-end',
