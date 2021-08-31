@@ -10,7 +10,7 @@ import {
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
-const Header = ({userName, notification}) => {
+const Header = ({userName, notification, leftIcon, middleText}) => {
   return (
     <ImageBackground
       source={require('../Assets/Images/headerimage.png')}
@@ -24,8 +24,22 @@ const Header = ({userName, notification}) => {
         flexDirection: 'row',
       }}>
       <View style={{paddingLeft: '5%'}}>
+        {leftIcon ? (
+          <View style={styles.notifyView}>
+            <Image
+              source={require('../Assets/Images/back.png')}
+              style={{width: 25, height: 23, resizeMode: 'contain'}}
+            />
+          </View>
+        ) : null}
+      </View>
+      <Text
+        style={{fontFamily: FontStyle.bold, fontSize: 22, color: '#12175E'}}>
+        {middleText ? middleText : null}
+      </Text>
+      <View style={{paddingLeft: '5%'}}>
         <Text
-          style={{color: '#12175E', fontSize: 28, fontFamily: FontStyle.bold}}>
+          style={{color: '#12175E', fontSize: 22, fontFamily: FontStyle.bold}}>
           {userName ? `Hi, ${userName}` : null}
         </Text>
         <Text

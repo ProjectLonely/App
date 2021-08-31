@@ -3,10 +3,18 @@ import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const Input = ({placeholder, secureTextEntry, iconName}) => {
+const Input = ({
+  placeholder,
+  secureTextEntry,
+  iconName,
+  keyboardType,
+  height,
+}) => {
   return (
     <TextInput
+      multiline={true}
       label={placeholder}
+      keyboardType={keyboardType}
       mode="outlined"
       outlineColor="#004ACE"
       maxLength={40}
@@ -20,7 +28,10 @@ const Input = ({placeholder, secureTextEntry, iconName}) => {
           background: '#fff',
         },
       }}
-      style={styles.textStyle}
+      style={[
+        styles.textStyle,
+        {height: height || 55, textAlignVertical: 'top'},
+      ]}
       right={
         <TextInput.Icon
           name={() => (
@@ -45,7 +56,6 @@ const styles = StyleSheet.create({
     fontFamily: FontStyle.bold,
     width: '90%',
     marginVertical: '2.5%',
-    height: 55,
   },
 });
 

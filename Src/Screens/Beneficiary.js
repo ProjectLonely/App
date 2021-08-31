@@ -8,7 +8,7 @@ const {height, width} = Dimensions.get('screen');
 class Beneficiary extends Component {
   render() {
     return (
-      <View style={{height: '100%', width: '100%'}}>
+      <View style={{height: '100%', width: '100%', backgroundColor: '#fff'}}>
         <SafeAreaView />
         <Header userName="Jhonny" notification={true} />
         <View

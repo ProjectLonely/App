@@ -136,7 +136,12 @@ class Subscription extends Component {
                         }}>
                         For one Beneficiary
                       </Text>
-                      <Button>SELECT</Button>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate('AddBenificiaryPage1')
+                        }>
+                        SELECT
+                      </Button>
                     </View>
                   </View>
                 </View>

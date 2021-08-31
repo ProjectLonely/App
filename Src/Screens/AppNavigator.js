@@ -9,13 +9,18 @@ import SignUp from './SignUp';
 import HowAppWorks from './HowAppWorks';
 import Beneficiary from './Beneficiary';
 import Subscription from './Subscription';
+import AddBenificiaryPage1 from './AddBenificiaryPage1';
+import AddBenificiaryPage2 from './AddBenificiaryPage2';
+import AddBenificiaryPage3 from './AddBenificiaryPage3';
 
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode={false} initialRouteName="SplashScreen">
+      <Stack.Navigator
+        headerMode={false}
+        initialRouteName="AddBenificiaryPage1">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -24,6 +29,18 @@ function App() {
         <Stack.Screen name="HowAppWorks" component={HowAppWorks} />
         <Stack.Screen name="Beneficiary" component={Beneficiary} />
         <Stack.Screen name="Subscription" component={Subscription} />
+        <Stack.Screen
+          name="AddBenificiaryPage1"
+          component={AddBenificiaryPage1}
+        />
+        <Stack.Screen
+          name="AddBenificiaryPage2"
+          component={AddBenificiaryPage2}
+        />
+        <Stack.Screen
+          name="AddBenificiaryPage3"
+          component={AddBenificiaryPage3}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
