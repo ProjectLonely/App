@@ -10,7 +10,7 @@ import {
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
-const Header = ({userName, notification, leftIcon, middleText}) => {
+const Header = ({notification, leftIcon, middleText}) => {
   return (
     <ImageBackground
       source={require('../Assets/Images/headerimage.png')}
@@ -23,7 +23,8 @@ const Header = ({userName, notification, leftIcon, middleText}) => {
         justifyContent: 'space-between',
         flexDirection: 'row',
       }}>
-      <View style={{paddingLeft: '5%'}}>
+      <View
+        style={{paddingLeft: '5%', flexDirection: 'row', alignItems: 'center'}}>
         {leftIcon ? (
           <View style={styles.notifyView}>
             <Image
@@ -32,12 +33,18 @@ const Header = ({userName, notification, leftIcon, middleText}) => {
             />
           </View>
         ) : null}
+        <Text
+          style={{
+            fontFamily: FontStyle.bold,
+            fontSize: 22,
+            color: '#12175E',
+            left: 20,
+          }}>
+          {middleText ? middleText : null}
+        </Text>
       </View>
-      <Text
-        style={{fontFamily: FontStyle.bold, fontSize: 22, color: '#12175E'}}>
-        {middleText ? middleText : null}
-      </Text>
-      <View style={{paddingLeft: '5%'}}>
+
+      {/* <View style={{paddingLeft: '5%'}}>
         <Text
           style={{color: '#12175E', fontSize: 22, fontFamily: FontStyle.bold}}>
           {userName ? `Hi, ${userName}` : null}
@@ -46,7 +53,7 @@ const Header = ({userName, notification, leftIcon, middleText}) => {
           style={{color: '#575757', fontSize: 14, fontFamily: FontStyle.bold}}>
           {userName ? `Let’s get you connected` : null}
         </Text>
-      </View>
+      </View> */}
       <View style={{paddingRight: '5%'}}>
         {notification ? (
           <View style={styles.notifyView}>

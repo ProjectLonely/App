@@ -6,14 +6,22 @@ import {
   ImageBackground,
   Dimensions,
   StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
-const Footer = ({footerValue}) => {
+const Footer = ({
+  footerValue,
+  settingPress,
+  benificiaryPress,
+  dashboardPress,
+  callLogPress,
+}) => {
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.optionContainer}>
+      <TouchableOpacity onPress={dashboardPress} style={styles.optionContainer}>
         {footerValue == 'home' ? (
           <Image
             source={require('../Assets/Images/footerimage/homeactive.png')}
@@ -25,8 +33,10 @@ const Footer = ({footerValue}) => {
             style={styles.iconStyle}
           />
         )}
-      </View>
-      <View style={styles.optionContainer}>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={benificiaryPress}
+        style={styles.optionContainer}>
         {footerValue == 'benificiary' ? (
           <Image
             source={require('../Assets/Images/footerimage/beneficiaryactive.png')}
@@ -38,7 +48,7 @@ const Footer = ({footerValue}) => {
             style={styles.iconStyle}
           />
         )}
-      </View>
+      </TouchableOpacity>
       <View style={styles.optionContainer}>
         {footerValue == 'chat' ? (
           <Image
@@ -52,7 +62,7 @@ const Footer = ({footerValue}) => {
           />
         )}
       </View>
-      <View style={styles.optionContainer}>
+      <TouchableOpacity onPress={callLogPress} style={styles.optionContainer}>
         {footerValue == 'call' ? (
           <Image
             source={require('../Assets/Images/footerimage/callactive.png')}
@@ -64,8 +74,8 @@ const Footer = ({footerValue}) => {
             style={styles.iconStyle}
           />
         )}
-      </View>
-      <View style={styles.optionContainer}>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={settingPress} style={styles.optionContainer}>
         {footerValue == 'setting' ? (
           <Image
             source={require('../Assets/Images/footerimage/settingactive.png')}
@@ -77,7 +87,7 @@ const Footer = ({footerValue}) => {
             style={styles.iconStyle}
           />
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
