@@ -233,6 +233,7 @@ class Beneficiary extends Component {
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
+          chatPress={() => this.props.navigation.navigate('Chat')}
         />
       </ImageBackground>
     );

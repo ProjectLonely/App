@@ -12,6 +12,7 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Footer from '../Common/Footer';
 import Header from '../Common/Header';
 import Button from '../Common/Button';
+import Styles from '../Common/Style';
 
 class Benificiary extends Component {
   state = {
@@ -45,9 +46,9 @@ class Benificiary extends Component {
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
         <Header
-          leftIcon={true}
-          middleText={'Account Information'}
+          middleText={'Beneficiaries'}
           notification={true}
+          notifyPress={() => this.props.navigation.navigate('Notification')}
         />
         <View style={{height: '73%'}}>
           <FlatList
@@ -56,8 +57,12 @@ class Benificiary extends Component {
             showsVerticalScrollIndicator={false}
             renderItem={({item: beneficiaryData}) => {
               return (
-                <View style={[styles.containerStyle]}>
-                  <View>
+                <View style={[Styles.smallContainer]}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('BeneficiaryDetail')
+                    }
+                    style={{width: '80%'}}>
                     <View style={styles.normalView}>
                       <Image
                         source={require('../Assets/Images/smalluser.png')}
@@ -100,7 +105,7 @@ class Benificiary extends Component {
                         {beneficiaryData.companionOperator}
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                   <TouchableOpacity>
                     <Image
                       source={require('../Assets/Images/delete.png')}
@@ -118,6 +123,7 @@ class Benificiary extends Component {
           dashboardPress={() => this.props.navigation.navigate('Dashboard')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
+          chatPress={() => this.props.navigation.navigate('Chat')}
         />
       </View>
     );
@@ -125,30 +131,6 @@ class Benificiary extends Component {
 }
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: 78,
-    maxHeight: 'auto',
-    borderLeftWidth: 4,
-    borderLeftColor: '#004ACE',
-    width: '90%',
-    backgroundColor: '#fff',
-    marginVertical: '2%',
-    padding: '2%',
-    alignSelf: 'center',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 2.65,
-
-    elevation: 2,
-  },
   normalView: {flexDirection: 'row', height: 20, alignItems: 'center'},
   normalText: {
     fontFamily: FontStyle.regular,

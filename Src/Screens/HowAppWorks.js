@@ -69,7 +69,10 @@ class HowAppWorks extends Component {
               takimata sanctus est Lorem.
             </Text>
           </View>
-          <Button onPress={() => this.props.navigation.navigate('Beneficiary')}>
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate('AddBenificiaryPage1')
+            }>
             CONTINUE
           </Button>
         </View>

@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {
   View,
   Text,
@@ -6,11 +7,13 @@ import {
   ImageBackground,
   Dimensions,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
-const Header = ({notification, leftIcon, middleText}) => {
+const Header = ({notification, leftIcon, middleText, notifyPress}) => {
+  const navigation = useNavigation();
   return (
     <ImageBackground
       source={require('../Assets/Images/headerimage.png')}
@@ -26,42 +29,34 @@ const Header = ({notification, leftIcon, middleText}) => {
       <View
         style={{paddingLeft: '5%', flexDirection: 'row', alignItems: 'center'}}>
         {leftIcon ? (
-          <View style={styles.notifyView}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.notifyView}>
             <Image
               source={require('../Assets/Images/back.png')}
               style={{width: 25, height: 23, resizeMode: 'contain'}}
             />
-          </View>
+          </TouchableOpacity>
         ) : null}
         <Text
           style={{
             fontFamily: FontStyle.bold,
             fontSize: 22,
             color: '#12175E',
-            left: 20,
+            left: leftIcon ? 20 : 0,
           }}>
           {middleText ? middleText : null}
         </Text>
       </View>
 
-      {/* <View style={{paddingLeft: '5%'}}>
-        <Text
-          style={{color: '#12175E', fontSize: 22, fontFamily: FontStyle.bold}}>
-          {userName ? `Hi, ${userName}` : null}
-        </Text>
-        <Text
-          style={{color: '#575757', fontSize: 14, fontFamily: FontStyle.bold}}>
-          {userName ? `Let’s get you connected` : null}
-        </Text>
-      </View> */}
       <View style={{paddingRight: '5%'}}>
         {notification ? (
-          <View style={styles.notifyView}>
+          <TouchableOpacity onPress={notifyPress} style={styles.notifyView}>
             <Image
               source={require('../Assets/Images/bell.png')}
               style={{width: 25, height: 23, resizeMode: 'contain'}}
             />
-          </View>
+          </TouchableOpacity>
         ) : null}
       </View>
     </ImageBackground>

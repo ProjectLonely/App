@@ -14,6 +14,7 @@ class AccountInformation extends Component {
           leftIcon={true}
           middleText={'Account Information'}
           notification={true}
+          notifyPress={() => this.props.navigation.navigate('Notification')}
         />
         <View
           style={{

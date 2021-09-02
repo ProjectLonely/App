@@ -18,6 +18,7 @@ const Footer = ({
   benificiaryPress,
   dashboardPress,
   callLogPress,
+  chatPress,
 }) => {
   return (
     <View style={styles.mainContainer}>
@@ -49,7 +50,7 @@ const Footer = ({
           />
         )}
       </TouchableOpacity>
-      <View style={styles.optionContainer}>
+      <TouchableOpacity onPress={chatPress} style={styles.optionContainer}>
         {footerValue == 'chat' ? (
           <Image
             source={require('../Assets/Images/footerimage/chatactive.png')}
@@ -61,7 +62,7 @@ const Footer = ({
             style={styles.iconStyle}
           />
         )}
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={callLogPress} style={styles.optionContainer}>
         {footerValue == 'call' ? (
           <Image

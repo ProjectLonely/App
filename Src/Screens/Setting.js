@@ -56,7 +56,12 @@ class Setting extends Component {
     return (
       <View style={{backgroundColor: '#fff'}}>
         <SafeAreaView />
-        <Header leftIcon={true} middleText={'Settings'} notification={true} />
+        <Header
+          leftIcon={true}
+          middleText={'Settings'}
+          notification={true}
+          notifyPress={() => this.props.navigation.navigate('Notification')}
+        />
         <View style={{height: '74%'}}>
           <FlatList
             data={settingArray}
@@ -91,6 +96,7 @@ class Setting extends Component {
           dashboardPress={() => this.props.navigation.navigate('Dashboard')}
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
+          chatPress={() => this.props.navigation.navigate('Chat')}
         />
       </View>
     );
