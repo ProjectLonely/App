@@ -28,7 +28,7 @@ const ThanksModal = ({thanksValue, closeModal}) => {
         <ImageBackground
           source={require('../Assets/Images/splashWhite.png')}
           style={{height: height, width: width}}
-          resizeMode="contain">
+          resizeMode="cover">
           <View
             style={{
               width: '100%',

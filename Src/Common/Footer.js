@@ -97,8 +97,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: '7%',
-
+    height: 50,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {

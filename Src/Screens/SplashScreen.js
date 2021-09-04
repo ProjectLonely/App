@@ -35,7 +35,7 @@ class SplashScreen extends Component {
       <ImageBackground
         source={require('../Assets/Images/splashScreen.png')}
         style={{height: height, width: width}}
-        resizeMode="contain">
+        resizeMode="cover">
         <Animated.View style={[styles.main_view, Fade_animation]}>
           <Image
             source={require('../Assets/Images/logo.png')}

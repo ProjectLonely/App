@@ -5,21 +5,26 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Input = ({
   placeholder,
-  secureTextEntry,
+  maxLength,
   iconName,
   keyboardType,
   height,
+  multiline,
+  secureTextEntry,
+  iconPress,
+  onChangeText,
 }) => {
   return (
     <TextInput
-      multiline={true}
+      multiline={multiline ? multiline : false}
+      onChangeText={onChangeText}
       label={placeholder}
       keyboardType={keyboardType}
       mode="outlined"
       outlineColor="#004ACE"
-      maxLength={40}
+      maxLength={maxLength || 55}
       secureTextEntry={secureTextEntry}
-      autoCompleteType={false}
+      autoCorrect={false}
       theme={{
         colors: {
           placeholder: '#707070',
@@ -30,7 +35,11 @@ const Input = ({
       }}
       style={[
         styles.textStyle,
-        {height: height || 55, textAlignVertical: 'top'},
+        {
+          height: height || 55,
+          textAlignVertical: 'top',
+          // backgroundColor: 'green',
+        },
       ]}
       right={
         <TextInput.Icon
@@ -39,9 +48,7 @@ const Input = ({
               name={iconName}
               size={24}
               color={'grey'}
-              //   onPress={() => {
-              //     alert('hi');
-              //   }}
+              onPress={iconPress}
             />
           )}
         />

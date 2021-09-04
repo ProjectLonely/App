@@ -31,7 +31,7 @@ const AlertModal = ({modalValue, closeModal, message}) => {
               fontFamily: FontStyle.medium,
               textAlign: 'center',
             }}>
-            {`Are you sure to cancel\n the subcription?`}
+            {message || `Are you sure to cancel\n the subcription?`}
           </Text>
           <View
             style={{
@@ -40,21 +40,33 @@ const AlertModal = ({modalValue, closeModal, message}) => {
               marginTop: '5%',
               width: '90%',
             }}>
-            <TouchableOpacity
-              onPress={closeModal}
-              style={[
-                styles.buttonStyle,
-                {
-                  backgroundColor: '#fff',
-                  borderColor: '#004ACE',
-                  borderWidth: 1,
-                },
-              ]}>
-              <Text style={[styles.buttonText, {color: '#004ACE'}]}>Yes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={closeModal} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>No</Text>
-            </TouchableOpacity>
+            {!message ? (
+              <View>
+                <TouchableOpacity
+                  onPress={closeModal}
+                  style={[
+                    styles.buttonStyle,
+                    {
+                      backgroundColor: '#fff',
+                      borderColor: '#004ACE',
+                      borderWidth: 1,
+                    },
+                  ]}>
+                  <Text style={[styles.buttonText, {color: '#004ACE'}]}>
+                    Yes
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={closeModal}
+                  style={styles.buttonStyle}>
+                  <Text style={styles.buttonText}>No</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity onPress={closeModal} style={styles.buttonStyle}>
+                <Text style={styles.buttonText}>ok</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>

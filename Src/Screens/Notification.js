@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Header from '../Common/Header';
 import Styles from '../Common/Style';

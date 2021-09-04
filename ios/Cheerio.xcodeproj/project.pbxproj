@@ -12,6 +12,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1F3CE72926E1FFB600AA2C3E /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
+		1F3CE72B26E2023900AA2C3E /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3CE72A26E2023900AA2C3E /* assets */; };
 		1F981E8F26D4F374007442D9 /* Karla-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */; };
 		1F981E9226D4F381007442D9 /* Karla-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */; };
 		1F981E9326D4F381007442D9 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9126D4F381007442D9 /* Karla-Regular.ttf */; };
@@ -30,7 +32,6 @@
 		6DDD970C19F649DF85700E80 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E99C3745C7C14D96B7597259 /* Ionicons.ttf */; };
 		79EC5351102ABA0E566857DA /* libPods-Cheerio-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74727E703257011C181622E8 /* libPods-Cheerio-tvOS.a */; };
 		7BF8E9307868423B9A8FE953 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97A52D5615E2495EA1C10333 /* EvilIcons.ttf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8C893759FD81401CBCA96372 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 627DA8313B2D4A7CA5BFB558 /* Foundation.ttf */; };
 		95DF5E19CE61AFC099C0E433 /* libPods-Cheerio-CheerioTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A88D9417F96F51E1AE5DFFC8 /* libPods-Cheerio-CheerioTests.a */; };
 		98C83DA50D8C4F7A9E15675B /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB9135C7B3744ECCA9E78658 /* FontAwesome5_Brands.ttf */; };
@@ -73,6 +74,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Cheerio/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Cheerio/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Cheerio/main.m; sourceTree = "<group>"; };
+		1F3CE72A26E2023900AA2C3E /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Bold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Bold.ttf"; sourceTree = "<group>"; };
 		1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-SemiBold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-SemiBold.ttf"; sourceTree = "<group>"; };
 		1F981E9126D4F381007442D9 /* Karla-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Regular.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Regular.ttf"; sourceTree = "<group>"; };
@@ -84,7 +86,6 @@
 		4CF1F87FDE1F4546811BA47C /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		627DA8313B2D4A7CA5BFB558 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		74727E703257011C181622E8 /* libPods-Cheerio-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Cheerio-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Cheerio/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97A52D5615E2495EA1C10333 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		A47CA96946E44BE99BB83317 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		A5BC89D0661262625E5A7157 /* Pods-Cheerio-CheerioTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cheerio-CheerioTests.debug.xcconfig"; path = "Target Support Files/Pods-Cheerio-CheerioTests/Pods-Cheerio-CheerioTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -170,7 +171,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = Cheerio;
@@ -214,6 +214,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1F3CE72A26E2023900AA2C3E /* assets */,
 				1F981E9426D4F5C2007442D9 /* Karla-Medium.ttf */,
 				1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */,
 				1F981E9126D4F381007442D9 /* Karla-Regular.ttf */,
@@ -408,11 +409,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F3CE72B26E2023900AA2C3E /* assets in Resources */,
+				1F3CE72926E1FFB600AA2C3E /* main.jsbundle in Resources */,
 				1F981E8F26D4F374007442D9 /* Karla-Bold.ttf in Resources */,
 				1F981E9526D4F5C2007442D9 /* Karla-Medium.ttf in Resources */,
 				1F981E9226D4F381007442D9 /* Karla-SemiBold.ttf in Resources */,
 				1F981E9326D4F381007442D9 /* Karla-Regular.ttf in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				F1265268D95B4591924B4EFC /* AntDesign.ttf in Resources */,
 				646ABA445EED4F3FAB2DFBC2 /* Entypo.ttf in Resources */,
@@ -463,7 +465,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=/opt/homebrew/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -477,7 +479,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		54514002EA89F35E8F1CC55C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -790,11 +792,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F4994CACJJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -814,10 +817,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F4994CACJJ;
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

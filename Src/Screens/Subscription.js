@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
@@ -52,7 +54,10 @@ class Subscription extends Component {
   render() {
     const {subscriptionArray} = this.state;
     return (
-      <View style={{height: '100%', width: '100%'}}>
+      <ImageBackground
+        source={require('../Assets/Images/splashWhite.png')}
+        style={{height: '100%', width: '100%'}}
+        resizeMode="cover">
         <SafeAreaView />
 
         <View style={{height: '90%', alignItems: 'center'}}>
@@ -86,7 +91,7 @@ class Subscription extends Component {
                               alignItems: 'center',
                             }}>
                             <Image
-                              source={require('../Assets/Images/footerimage/homeactive.png')}
+                              source={require('../Assets/Images/right.png')}
                               style={{
                                 height: 20,
                                 width: 20,
@@ -137,6 +142,8 @@ class Subscription extends Component {
                         For one Beneficiary
                       </Text>
                       <Button
+                        btnheight={40}
+                        btnwidth={'70%'}
                         onPress={() =>
                           this.props.navigation.navigate('AddBenificiaryPage1')
                         }>
@@ -148,7 +155,9 @@ class Subscription extends Component {
               );
             }}
           />
-          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Dashboard')}
+            style={{flexDirection: 'row'}}>
             <Text
               style={{
                 fontFamily: FontStyle.regular,
@@ -163,19 +172,18 @@ class Subscription extends Component {
                 fontsize: 16,
                 color: '#004ACE',
               }}>
-              {' '}
               Cancel
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
   productView: {
-    height: height / 3.6,
+    height: 220,
     width: width / 1.1,
     backgroundColor: '#fff',
     borderRadius: 10,

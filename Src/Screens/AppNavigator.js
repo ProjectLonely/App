@@ -7,22 +7,25 @@ import ForgotPassword from './ForgotPassword';
 import VerificationCode from './VerificationCode';
 import SignUp from './SignUp';
 import HowAppWorks from './HowAppWorks';
-import Dashboard from './Dashboard';
+import Dashboard from './FooterPage/Dashboard';
+
 import Subscription from './Subscription';
-import AddBenificiaryPage1 from './AddBenificiaryPage1';
-import AddBenificiaryPage2 from './AddBenificiaryPage2';
-import AddBenificiaryPage3 from './AddBenificiaryPage3';
-import AddBenificiaryPage4 from './AddBenificiaryPage4';
-import Setting from './Setting';
-import AccountInformation from './AccountInformation';
-import AboutApp from './AboutApp';
-import Billing from './Billing';
-import Support from './Support';
-import Benificiary from './Benificiary';
-import CallLogs from './CallLogs';
+import AddBenificiaryPage1 from './BeneficiaryPage/AddBenificiaryPage1';
+import AddBenificiaryPage2 from './BeneficiaryPage/AddBenificiaryPage2';
+import AddBenificiaryPage3 from './BeneficiaryPage/AddBenificiaryPage3';
+import AddBenificiaryPage4 from './BeneficiaryPage/AddBenificiaryPage4';
+
+import Setting from './FooterPage/Setting';
+import AccountInformation from './SettingPage/AccountInformation';
+import AboutApp from './SettingPage/AboutApp';
+import Billing from './SettingPage/Billing';
+import Support from './SettingPage/Support';
+
+import Benificiary from './FooterPage/Benificiary';
+import CallLogs from './FooterPage/CallLogs';
 import BeneficiaryDetail from './BeneficiaryDetail';
 import Notification from './Notification';
-import Chat from './Chat';
+import Chat from './FooterPage/Chat';
 
 const Stack = createStackNavigator();
 
