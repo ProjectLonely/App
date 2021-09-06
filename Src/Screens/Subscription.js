@@ -13,46 +13,26 @@ import {
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 import Button from '../Common/Button';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {SubscriptionPlan, addBenificiary} from '../store/actions/index';
 class Subscription extends Component {
   state = {
-    subscriptionArray: [
-      {
-        id: '1',
-        name: 'Tier 1',
-        descriptionArray: [
-          {id: '1', description: 'up to one call a week'},
-          {id: '2', description: '*limited outbound calls'},
-        ],
-        price: '60',
-        duration: 'month',
-        image: require('../Assets/Images/callcenter.png'),
-      },
-      {
-        id: '2',
-        name: 'Tier 2',
-        descriptionArray: [
-          {id: '3', description: 'up to 3 scheduled calls per week'},
-          {id: '4', description: 'Plus limited on-demand calls'},
-        ],
-        price: '150',
-        duration: 'month',
-        image: require('../Assets/Images/callcenter.png'),
-      },
-      {
-        id: '3',
-        name: 'Tier 3',
-        descriptionArray: [
-          {id: '5', description: 'up to 7 scheduled calls per week'},
-          {id: '6', description: 'Plus limited on-demand calls'},
-        ],
-        price: '300',
-        duration: 'month',
-        image: require('../Assets/Images/callcenter.png'),
-      },
-    ],
+    subscriptionArray: [],
   };
+
+  componentDidMount = () => {
+    this.props.SubscriptionPlan();
+  };
+
+  addBenificiary = (planId) => {
+    this.props.addBenificiary({planId});
+    this.props.navigation.navigate('AddBenificiaryPage1');
+  };
+
   render() {
-    const {subscriptionArray} = this.state;
+    const {subscriptionList} = this.props;
+
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
@@ -62,7 +42,7 @@ class Subscription extends Component {
 
         <View style={{height: '90%', alignItems: 'center'}}>
           <FlatList
-            data={subscriptionArray}
+            data={subscriptionList}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
@@ -144,9 +124,7 @@ class Subscription extends Component {
                       <Button
                         btnheight={40}
                         btnwidth={'70%'}
-                        onPress={() =>
-                          this.props.navigation.navigate('AddBenificiaryPage1')
-                        }>
+                        onPress={() => this.addBenificiary(item.id)}>
                         SELECT
                       </Button>
                     </View>
@@ -205,4 +183,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Subscription;
+function mapStateToProps(state) {
+  return {
+    subscriptionList: state.SubscriptionPlan,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({SubscriptionPlan, addBenificiary}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Subscription);

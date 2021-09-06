@@ -126,13 +126,13 @@ class Billing extends Component {
                 justifyContent: 'space-around',
                 marginTop: '5%',
               }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   this.setState({modalValue: !this.state.modalValue})
                 }
                 style={styles.buttonStyle}>
                 <Text style={styles.buttonText}>CANCEL PLAN</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 style={[
                   styles.buttonStyle,

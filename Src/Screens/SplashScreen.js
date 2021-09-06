@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   View,
@@ -7,8 +8,6 @@ import {
   Animated,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
 class SplashScreen extends Component {
@@ -20,12 +19,21 @@ class SplashScreen extends Component {
     this.fade_animation();
   };
 
-  fade_animation = () => {
+  fade_animation = async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    console.log(token);
     Animated.timing(this.state.opacity_animation, {
       toValue: 1,
       duration: 5000,
       useNativeDriver: true,
-    }).start(() => this.props.navigation.navigate('SignIn'));
+    }).start(() => {
+      if (token) {
+        this.props.navigation.navigate('Dashboard');
+      } else {
+        this.props.navigation.navigate('SignIn');
+      }
+    });
   };
   render() {
     const Fade_animation = {

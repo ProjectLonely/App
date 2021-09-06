@@ -7,6 +7,9 @@ import Button from '../../Common/Button';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {addBenificiary} from '../../store/actions/index';
 
 class AddBenificiaryPage1 extends Component {
   state = {
@@ -38,6 +41,19 @@ class AddBenificiaryPage1 extends Component {
       },
     ],
   };
+
+  next = () => {
+    const {relationShipId, name, age, genderId, phoneNumber} = this.state;
+    this.props.addBenificiary({
+      relationShipId,
+      name,
+      age,
+      genderId,
+      phoneNumber,
+    });
+    // this.props.navigation.navigate('AddBenificiaryPage2')
+  };
+
   render() {
     const {
       relationShipArray,
@@ -47,7 +63,7 @@ class AddBenificiaryPage1 extends Component {
       relationOption,
       relationShipId,
     } = this.state;
-
+    console.log(relationShipId);
     return (
       <View
         style={{
@@ -123,7 +139,7 @@ class AddBenificiaryPage1 extends Component {
           />
           <Input
             placeholder="Enter Age"
-            onChangeText={(text) => this.setState({name: text})}
+            onChangeText={(text) => this.setState({age: text})}
             keyboardType={'number-pad'}
           />
           <ModalDropdown
@@ -182,20 +198,16 @@ class AddBenificiaryPage1 extends Component {
 
           <Input
             placeholder="TimeZone"
-            onChangeText={(text) => this.setState({name: text})}
+            onChangeText={(text) => this.setState({timeZone: text})}
             iconName="chevron-down"
           />
           <Input
             placeholder="Phone Number"
-            onChangeText={(text) => this.setState({name: text})}
+            keyboardType={'number-pad'}
+            onChangeText={(text) => this.setState({phoneNumber: text})}
           />
           <View style={{width: '100%', top: '12%'}}>
-            <Button
-              onPress={() =>
-                this.props.navigation.navigate('AddBenificiaryPage2')
-              }>
-              NEXT
-            </Button>
+            <Button onPress={() => this.next()}>NEXT</Button>
           </View>
         </KeyboardAwareScrollView>
       </View>
@@ -203,4 +215,15 @@ class AddBenificiaryPage1 extends Component {
   }
 }
 
-export default AddBenificiaryPage1;
+function mapStateToProps(state) {
+  console.log(state, 'console');
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({addBenificiary}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddBenificiaryPage1);

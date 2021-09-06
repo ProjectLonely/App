@@ -12,6 +12,7 @@ import {
 import Header from '../../Common/Header';
 import Footer from '../../Common/Footer';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width} = Dimensions.get('screen');
 
 class Setting extends Component {
@@ -45,12 +46,16 @@ class Setting extends Component {
         id: '4',
         settingName: 'Sign Out',
         image: require('../../Assets/Images/settingImage/signout.png'),
-        pageName: 'SignIn',
+        pageName: 'SignOut',
       },
     ],
   };
 
-  selectOption = (pageName) => {
+  selectOption = async (pageName) => {
+    if (pageName == 'SignOut') {
+      AsyncStorage.clear();
+      this.props.navigation.navigate('SignIn');
+    }
     this.props.navigation.navigate(pageName);
   };
   render() {

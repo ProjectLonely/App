@@ -4,7 +4,6 @@ import {
   Text,
   ImageBackground,
   Image,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -37,7 +36,9 @@ class SignIn extends Component {
     } else if (password == '') {
       this.setState({passwordError: true});
     } else {
-      this.setState({signinLoader: true});
+      // this.setState({signinLoader: true});
+      // this.props.SignInReducer(email, password);
+
       axios({
         method: 'post',
         url: `${baseurl}login/`,
@@ -47,7 +48,6 @@ class SignIn extends Component {
         },
       })
         .then(async (response) => {
-          console.log(response);
           this.setState({signinLoader: false});
           if (response.data.is_active == false) {
             await AsyncStorage.setItem('temp_token', response.data.temp_token);
@@ -87,6 +87,7 @@ class SignIn extends Component {
       modalValue,
       signinLoader,
     } = this.state;
+
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
