@@ -43,15 +43,7 @@ class AddBenificiaryPage1 extends Component {
   };
 
   next = () => {
-    const {relationShipId, name, age, genderId, phoneNumber} = this.state;
-    this.props.addBenificiary({
-      relationShipId,
-      name,
-      age,
-      genderId,
-      phoneNumber,
-    });
-    // this.props.navigation.navigate('AddBenificiaryPage2')
+    this.props.navigation.navigate('AddBenificiaryPage2');
   };
 
   render() {
@@ -63,7 +55,7 @@ class AddBenificiaryPage1 extends Component {
       relationOption,
       relationShipId,
     } = this.state;
-    console.log(relationShipId);
+
     return (
       <View
         style={{
@@ -80,7 +72,10 @@ class AddBenificiaryPage1 extends Component {
           style={{height: '100%', width: '100%'}}
           contentContainerStyle={{alignItems: 'center', paddingBottom: '20%'}}>
           <ModalDropdown
-            onSelect={(item) => this.setState({relationShipId: item})}
+            options={relationOption}
+            onSelect={(relationShipId) =>
+              this.props.addBenificiary({relationShipId})
+            }
             isFullWidth={true}
             showsVerticalScrollIndicator={false}
             dropdownStyle={{
@@ -111,8 +106,7 @@ class AddBenificiaryPage1 extends Component {
               borderWidth: 1,
               borderColor: '#004ACE',
               borderRadius: 5,
-            }}
-            options={relationOption}>
+            }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -127,7 +121,7 @@ class AddBenificiaryPage1 extends Component {
                   fontFamily: FontStyle.bold,
                   color: '#707070',
                 }}>
-                {relationOption[relationShipId]}
+                {relationOption[this.props.beneficiaryData.relationShipId]}
               </Text>
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
@@ -135,15 +129,17 @@ class AddBenificiaryPage1 extends Component {
 
           <Input
             placeholder="Enter Name"
-            onChangeText={(text) => this.setState({name: text})}
+            onChangeText={(name) => this.props.addBenificiary({name})}
+            value={this.props.beneficiaryData.name}
           />
           <Input
             placeholder="Enter Age"
-            onChangeText={(text) => this.setState({age: text})}
+            onChangeText={(age) => this.props.addBenificiary({age: age})}
             keyboardType={'number-pad'}
+            value={this.props.beneficiaryData.age}
           />
           <ModalDropdown
-            onSelect={(item) => this.setState({genderId: item})}
+            onSelect={(genderId) => this.props.addBenificiary({genderId})}
             isFullWidth={true}
             showsVerticalScrollIndicator={false}
             dropdownStyle={{
@@ -190,7 +186,7 @@ class AddBenificiaryPage1 extends Component {
                   fontFamily: FontStyle.bold,
                   color: '#707070',
                 }}>
-                {genderOption[genderId]}
+                {genderOption[this.props.beneficiaryData.genderId]}
               </Text>
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
@@ -198,13 +194,17 @@ class AddBenificiaryPage1 extends Component {
 
           <Input
             placeholder="TimeZone"
-            onChangeText={(text) => this.setState({timeZone: text})}
-            iconName="chevron-down"
+            onChangeText={(timeZone) => this.props.addBenificiary({timeZone})}
+            value={this.props.beneficiaryData.timeZone}
+            // iconName="chevron-down"
           />
           <Input
             placeholder="Phone Number"
             keyboardType={'number-pad'}
-            onChangeText={(text) => this.setState({phoneNumber: text})}
+            onChangeText={(phoneNumber) =>
+              this.props.addBenificiary({phoneNumber})
+            }
+            value={this.props.beneficiaryData.phoneNumber}
           />
           <View style={{width: '100%', top: '12%'}}>
             <Button onPress={() => this.next()}>NEXT</Button>
@@ -216,7 +216,9 @@ class AddBenificiaryPage1 extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'console');
+  return {
+    beneficiaryData: state.AddBeneficiaryReducer,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

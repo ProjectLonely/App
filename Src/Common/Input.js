@@ -13,11 +13,13 @@ const Input = ({
   secureTextEntry,
   iconPress,
   onChangeText,
+  value,
 }) => {
   return (
     <TextInput
       multiline={multiline ? multiline : false}
       onChangeText={onChangeText}
+      value={value}
       label={placeholder}
       keyboardType={keyboardType}
       mode="outlined"

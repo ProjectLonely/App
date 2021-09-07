@@ -36,8 +36,7 @@ class SignIn extends Component {
     } else if (password == '') {
       this.setState({passwordError: true});
     } else {
-      // this.setState({signinLoader: true});
-      // this.props.SignInReducer(email, password);
+      this.setState({signinLoader: true});
 
       axios({
         method: 'post',
@@ -58,12 +57,11 @@ class SignIn extends Component {
           }
         })
         .catch((err) => {
-          console.log(err.response, 'erororoeor');
-
           this.setState({
             signinLoader: false,
             modalValue: true,
-            message: err.response.data.__all__.toString(),
+            message: 'email or password is incorrect',
+            // message: err.response.data.__all__.toString(),
           });
         });
     }
@@ -135,6 +133,7 @@ class SignIn extends Component {
               onChangeText={(text) =>
                 this.setState({email: text, emailError: false})
               }
+              value={this.state.email}
               maxLength={30}
               secureTextEntry={false}
             />

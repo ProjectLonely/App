@@ -15,6 +15,12 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
 import Button from '../../Common/Button';
 import Slider from '@react-native-community/slider';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {addBenificiary, completeBeneficiary} from '../../store/actions/index';
+import axios from 'axios';
+import {baseurl} from '../../Common/Baseurl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AddBenificiaryPage3 extends Component {
   state = {
@@ -40,6 +46,51 @@ class AddBenificiaryPage3 extends Component {
     sliderValue: '0',
   };
 
+  next = async () => {
+    const {beneficiaryData} = this.props;
+    const token = await AsyncStorage.getItem('token');
+    // const {newArray} = this.state;
+    // this.props.addBenificiary({newArray});
+    // this.props.completeBeneficiary();
+    // this.props.navigation.navigate('AddBenificiaryPage4');
+    console.log({
+      headers: {Authorization: 'Token ' + token},
+      relation: beneficiaryData.relationShipId,
+      name: beneficiaryData.name,
+      age: beneficiaryData.age,
+      gender: beneficiaryData.genderId,
+      timezone: beneficiaryData.timeZone,
+      phone_no: beneficiaryData.phoneNumber,
+      about: beneficiaryData.aboutPerson,
+      care: '',
+      companion: '',
+      comment: beneficiaryData.comment,
+    });
+    axios({
+      method: 'post',
+      url: `${baseurl}/beneficiary/create/`,
+      headers: {Authorization: 'Token ' + token},
+      data: {
+        relation: beneficiaryData.relationShipId,
+        name: beneficiaryData.name,
+        age: beneficiaryData.age,
+        gender: beneficiaryData.genderId,
+        timezone: beneficiaryData.timeZone,
+        phone_no: beneficiaryData.phoneNumber,
+        about: beneficiaryData.aboutPerson,
+        care: '',
+        companion: '',
+        comment: beneficiaryData.comment,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   expandOption = (dayId) => {
     if (dayId == this.state.dayId) {
       this.setState({dayId: ''});
@@ -51,7 +102,7 @@ class AddBenificiaryPage3 extends Component {
   };
 
   addDayTimer = (dayName) => {
-    const newArray = this.state.newArray;
+    const newArray = this.props.beneficiaryData.newArray;
     if (newArray.some((data) => data.dayName == dayName)) {
       const index = newArray.findIndex((obj) => obj.dayName == dayName);
       newArray[index] = {
@@ -66,7 +117,7 @@ class AddBenificiaryPage3 extends Component {
         timeOption: this.state.timeOption[this.state.sliderValue].time,
       });
     }
-    this.setState({newArray: newArray});
+    this.props.addBenificiary({newArray: newArray});
   };
 
   render() {
@@ -93,7 +144,7 @@ class AddBenificiaryPage3 extends Component {
                     {
                       height: dayId == dayOption.id ? 200 : 50,
                       overflow: 'hidden',
-                      backgroundColor: newArray.some(
+                      backgroundColor: this.props.beneficiaryData.newArray.some(
                         (newArray) => newArray.dayName == dayOption.day,
                       )
                         ? '#004ACE'
@@ -111,7 +162,7 @@ class AddBenificiaryPage3 extends Component {
                       style={[
                         styles.normalText,
                         {
-                          color: newArray.some(
+                          color: this.props.beneficiaryData.newArray.some(
                             (newArray) => newArray.dayName == dayOption.day,
                           )
                             ? '#FFF'
@@ -121,7 +172,7 @@ class AddBenificiaryPage3 extends Component {
                       {dayOption.day}
                     </Text>
                     {dayOption.id == dayId ? (
-                      newArray.some(
+                      this.props.beneficiaryData.newArray.some(
                         (newArray) => newArray.dayName == dayOption.day,
                       ) ? (
                         <Image
@@ -134,7 +185,7 @@ class AddBenificiaryPage3 extends Component {
                           style={{height: 24, width: 24, resizeMode: 'contain'}}
                         />
                       )
-                    ) : newArray.some(
+                    ) : this.props.beneficiaryData.newArray.some(
                         (newArray) => newArray.dayName == dayOption.day,
                       ) ? (
                       <Image
@@ -150,7 +201,7 @@ class AddBenificiaryPage3 extends Component {
                   </TouchableOpacity>
                   {dayOption.id == dayId ? (
                     <FlatList
-                      data={newArray}
+                      data={this.props.beneficiaryData.newArray}
                       renderItem={({item: newArray}) => {
                         return newArray.dayName == dayOption.day ? (
                           <View
@@ -181,7 +232,7 @@ class AddBenificiaryPage3 extends Component {
                   {dayOption.id == dayId ? (
                     <Slider
                       thumbTintColor={
-                        newArray.some(
+                        this.props.beneficiaryData.newArray.some(
                           (newArray) => newArray.dayName == dayOption.day,
                         )
                           ? '#fff'
@@ -218,12 +269,13 @@ class AddBenificiaryPage3 extends Component {
                                 style={{
                                   fontFamily: FontStyle.medium,
                                   fontSize: 10,
-                                  color: newArray.some(
-                                    (newArray) =>
-                                      newArray.dayName == dayOption.day,
-                                  )
-                                    ? '#fff'
-                                    : '#000',
+                                  color:
+                                    this.props.beneficiaryData.newArray.some(
+                                      (newArray) =>
+                                        newArray.dayName == dayOption.day,
+                                    )
+                                      ? '#fff'
+                                      : '#000',
                                 }}>
                                 {time.time}
                               </Text>
@@ -238,11 +290,12 @@ class AddBenificiaryPage3 extends Component {
                       style={{
                         height: 26,
                         width: 62,
-                        backgroundColor: newArray.some(
-                          (newArray) => newArray.dayName == dayOption.day,
-                        )
-                          ? '#FFF'
-                          : '#004ACE',
+                        backgroundColor:
+                          this.props.beneficiaryData.newArray.some(
+                            (newArray) => newArray.dayName == dayOption.day,
+                          )
+                            ? '#FFF'
+                            : '#004ACE',
                         borderRadius: 5,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -253,7 +306,7 @@ class AddBenificiaryPage3 extends Component {
                         style={{
                           fontFamily: FontStyle.bold,
                           fontSize: 13,
-                          color: newArray.some(
+                          color: this.props.beneficiaryData.newArray.some(
                             (newArray) => newArray.dayName == dayOption.day,
                           )
                             ? '#004ACE'
@@ -269,10 +322,7 @@ class AddBenificiaryPage3 extends Component {
           />
         </View>
 
-        <Button
-          onPress={() => this.props.navigation.navigate('AddBenificiaryPage4')}>
-          NEXT
-        </Button>
+        <Button onPress={() => this.next()}>NEXT</Button>
       </View>
     );
   }
@@ -295,4 +345,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddBenificiaryPage3;
+function mapStateToProps(state) {
+  console.log(state);
+  return {
+    beneficiaryData: state.AddBeneficiaryReducer,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({addBenificiary, completeBeneficiary}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddBenificiaryPage3);

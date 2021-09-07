@@ -16,6 +16,8 @@ import axios from 'axios';
 import {HelperText} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {baseurl} from '../Common/Baseurl';
+import AlertModal from '../Common/AlertModal';
+import Spinner from '../Common/Spinner';
 
 class SignUp extends Component {
   state = {
@@ -27,6 +29,9 @@ class SignUp extends Component {
     password: '',
     confirmPassword: '',
     emailError: false,
+    modalValue: false.name,
+    message: '',
+    registerLoader: false,
   };
 
   Register = () => {
@@ -39,9 +44,12 @@ class SignUp extends Component {
       this.setState({passwordError: true});
     } else if (confirmPassword == '') {
       this.setState({confirmPasswordError: true});
+    } else if (confirmPassword != password) {
+      alert('password & confirm password not matched');
     } else if (checked == false) {
-      alert('accept terms & condition');
+      this.setState({modalValue: true, message: 'accept terms & condition'});
     } else {
+      this.setState({registerLoader: true});
       axios({
         method: 'POST',
         url: `${baseurl}register/`,
@@ -54,8 +62,12 @@ class SignUp extends Component {
         },
       })
         .then(async (response) => {
+          this.setState({registerLoader: false});
           if (response.data.exist == true) {
-            alert('already exist');
+            this.setState({
+              modalValue: true,
+              message: 'this email id alredy exist',
+            });
           } else {
             AsyncStorage.setItem('temp_token', response.data.temp_token);
             this.props.navigation.navigate('VerificationCode');
@@ -63,7 +75,25 @@ class SignUp extends Component {
         })
         .catch((err) => {
           console.log(err.response, 'aer');
+          this.setState({
+            modalValue: true,
+            message: 'Some thing went wrong',
+            registerLoader: false,
+          });
         });
+    }
+  };
+
+  renderButton = () => {
+    if (this.state.registerLoader) {
+      return (
+        <View
+          style={{width: '100%', alignItems: 'center', marginVertical: 18.5}}>
+          <Spinner spinnercolor="#fff" />
+        </View>
+      );
+    } else {
+      return <Button onPress={this.Register}>REGISTER</Button>;
     }
   };
 
@@ -80,6 +110,8 @@ class SignUp extends Component {
       emailError,
       passwordError,
       confirmPasswordError,
+      modalValue,
+      message,
     } = this.state;
 
     return (
@@ -91,6 +123,11 @@ class SignUp extends Component {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           style={{height: '100%', width: '100%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
+          />
           <View
             style={{
               height: '20%',
@@ -217,7 +254,7 @@ class SignUp extends Component {
               </Text>
             </View>
           </View>
-          <Button onPress={this.Register}>REGISTER</Button>
+          {this.renderButton()}
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('SignIn')}
             style={{

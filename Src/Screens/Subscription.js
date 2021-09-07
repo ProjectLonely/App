@@ -16,13 +16,15 @@ import Button from '../Common/Button';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {SubscriptionPlan, addBenificiary} from '../store/actions/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 class Subscription extends Component {
   state = {
     subscriptionArray: [],
   };
 
-  componentDidMount = () => {
-    this.props.SubscriptionPlan();
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.props.SubscriptionPlan(token);
   };
 
   addBenificiary = (planId) => {
@@ -48,7 +50,10 @@ class Subscription extends Component {
               return (
                 <View style={styles.productView}>
                   <View style={{flexDirection: 'row', height: '100%'}}>
-                    <Image source={item.image} style={styles.imageStyle} />
+                    <Image
+                      source={{uri: item.image}}
+                      style={styles.imageStyle}
+                    />
                     <View
                       style={{
                         width: '80%',
@@ -63,7 +68,7 @@ class Subscription extends Component {
                         }}>
                         {item.name}
                       </Text>
-                      {item.descriptionArray.map((description) => {
+                      {item.descriptions.map((description) => {
                         return (
                           <View
                             style={{

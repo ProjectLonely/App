@@ -5,19 +5,42 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
 import Button from '../../Common/Button';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {addBenificiary} from '../../store/actions/index';
 
 class AddBenificiaryPage2 extends Component {
   state = {
     checkbox: false,
-    select_checkbox: [],
+    selectedSeekOption: [],
     checked: 'checked',
     seekingOption: [
       {id: '0', option: 'Companionship'},
       {id: '1', option: 'Health and wellness checks'},
     ],
   };
+
+  next = () => {
+    // const {aboutPerson, selectedSeekOption, comment} = this.state;
+    // this.props.addBenificiary({aboutPerson, selectedSeekOption, comment});
+    this.props.navigation.navigate('AddBenificiaryPage3');
+  };
+
+  selectedSeeking = (option) => {
+    const seekingOption = this.state.selectedSeekOption;
+    if (seekingOption.some((data) => data == option)) {
+      const index = seekingOption.findIndex((data) => data == option);
+      seekingOption.splice(index, 1);
+      this.props.addBenificiary({seekingOption});
+    } else {
+      seekingOption.push(option);
+      this.props.addBenificiary({seekingOption});
+    }
+  };
+
   render() {
-    const {seekingOption, checkbox} = this.state;
+    const {seekingOption, checkbox, select_checkbox} = this.state;
+
     return (
       <View
         style={{
@@ -34,6 +57,7 @@ class AddBenificiaryPage2 extends Component {
           <View style={{width: '100%', alignItems: 'center'}}>
             <TextInput
               placeholder="Tell us something about the person"
+              value={this.props.beneficiaryData.aboutPerson}
               maxLength={300}
               placeholderTextColor="#707070"
               style={{
@@ -46,6 +70,9 @@ class AddBenificiaryPage2 extends Component {
               }}
               multiline={true}
               textAlignVertical="top"
+              onChangeText={(aboutPerson) =>
+                this.props.addBenificiary({aboutPerson})
+              }
             />
             <View style={{width: '100%', paddingHorizontal: '5%'}}>
               <Text
@@ -73,14 +100,11 @@ class AddBenificiaryPage2 extends Component {
                     }}>
                     <CheckBox
                       tintColors={({true: '#F79535'}, {false: '#FFF'})}
-                      value={this.state.select_checkbox.some(
-                        (value) => (value.UserId = item.post.id),
-                      )}
                       style={{height: 20, width: 20}}
                       onCheckColor="#fff"
                       boxType="square"
                       onFillColor="#004ACE"
-                      onValueChange={() => this.setState({checkbox: !checkbox})}
+                      onValueChange={() => this.selectedSeeking(item.option)}
                     />
                     <Text
                       style={{
@@ -120,15 +144,12 @@ class AddBenificiaryPage2 extends Component {
                 }}
                 multiline={true}
                 textAlignVertical="top"
+                value={this.props.beneficiaryData.comment}
+                onChangeText={(comment) => this.props.addBenificiary({comment})}
               />
             </View>
             <View style={{width: '100%'}}>
-              <Button
-                onPress={() =>
-                  this.props.navigation.navigate('AddBenificiaryPage3')
-                }>
-                NEXT
-              </Button>
+              <Button onPress={() => this.next()}>NEXT</Button>
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -137,4 +158,18 @@ class AddBenificiaryPage2 extends Component {
   }
 }
 
-export default AddBenificiaryPage2;
+function mapStateToProps(state) {
+  // console.log(state, 'console');
+  return {
+    beneficiaryData: state.AddBeneficiaryReducer,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({addBenificiary}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddBenificiaryPage2);

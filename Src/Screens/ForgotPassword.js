@@ -4,18 +4,65 @@ import {
   Text,
   ImageBackground,
   Image,
-  SafeAreaView,
+  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from '../Common/Button';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import {baseurl} from '../Common/Baseurl';
+import Spinner from '../Common/Spinner';
+import {HelperText} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AlertModal from '../Common/AlertModal';
 
 class ForgotPassword extends Component {
-  state = {email: ''};
+  state = {email: '', token: '', sendLoader: false, emailError: false};
+
+  send = () => {
+    if (this.state.email == '') {
+      this.setState({emailError: true});
+    } else {
+      this.setState({sendLoader: true});
+      axios({
+        method: 'post',
+        url: `${baseurl}password-forgot/`,
+        data: {
+          email: this.state.email,
+        },
+      })
+        .then(async (response) => {
+          this.setState({sendLoader: false});
+          await AsyncStorage.setItem('temp_token', response.data.token);
+          this.props.navigation.navigate('VerificationCode');
+        })
+        .catch((err) => {
+          this.setState({sendLoader: false});
+          alert('Enter a valid email address');
+          this.setState({
+            modalValue: true,
+            message: 'Enter a valid email address',
+          });
+        });
+    }
+  };
+
+  renderButton = () => {
+    if (this.state.sendLoader) {
+      return (
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Spinner spinnercolor="#fff" marginTop={17.5} />
+        </View>
+      );
+    } else {
+      return <Button onPress={this.send}>SEND</Button>;
+    }
+  };
+
   render() {
-    const {email} = this.state;
+    const {email, emailError, message, modalValue} = this.state;
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
@@ -26,6 +73,11 @@ class ForgotPassword extends Component {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{height: '100%', width: '100%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
+          />
           <View
             style={{
               height: '20%',
@@ -69,18 +121,31 @@ class ForgotPassword extends Component {
 
             <Input
               placeholder="Email"
-              onChangeText={(text) => this.setState({email: text})}
+              onChangeText={(text) =>
+                this.setState({email: text, emailError: false})
+              }
               secureTextEntry={false}
             />
+            {emailError == true ? (
+              <HelperText style={styles.helperText} type="error">
+                Enter your email
+              </HelperText>
+            ) : null}
           </View>
-          <Button
-            onPress={() => this.props.navigation.navigate('VerificationCode')}>
-            SEND
-          </Button>
+          {this.renderButton()}
         </KeyboardAwareScrollView>
       </ImageBackground>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  helperText: {
+    fontFamily: FontStyle.regular,
+    alignSelf: 'flex-start',
+    paddingLeft: '6%',
+    top: -10,
+  },
+});
 
 export default ForgotPassword;
