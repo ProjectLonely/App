@@ -48,7 +48,13 @@ class Subscription extends Component {
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
-                <View style={styles.productView}>
+                <View
+                  style={[
+                    styles.productView,
+                    item.id == this.props.beneficiaryData.planId
+                      ? {backgroundColor: 'lightgrey'}
+                      : null,
+                  ]}>
                   <View style={{flexDirection: 'row', height: '100%'}}>
                     <Image
                       source={{uri: item.image}}
@@ -191,6 +197,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     subscriptionList: state.SubscriptionPlan,
+    beneficiaryData: state.AddBeneficiaryReducer,
   };
 }
 

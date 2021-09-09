@@ -8,38 +8,64 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addBenificiary} from '../../store/actions/index';
+import AlertModal from '../../Common/AlertModal';
+import axios from 'axios';
+import {baseurl} from '../../Common/Baseurl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AddBenificiaryPage2 extends Component {
   state = {
     checkbox: false,
     selectedSeekOption: [],
     checked: 'checked',
-    seekingOption: [
-      {id: '0', option: 'Companionship'},
-      {id: '1', option: 'Health and wellness checks'},
-    ],
+    seekingOption: [],
+  };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    axios({
+      method: 'get',
+      url: `${baseurl}beneficiary/seekings/`,
+      headers: {Authorization: `Token ${token}`},
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          this.setState({seekingOption: response.data});
+        }
+      })
+      .catch((err) => {
+        this.setState({modalValue: false, message: 'Something went wrong'});
+      });
   };
 
   next = () => {
-    // const {aboutPerson, selectedSeekOption, comment} = this.state;
-    // this.props.addBenificiary({aboutPerson, selectedSeekOption, comment});
-    this.props.navigation.navigate('AddBenificiaryPage3');
+    const {beneficiaryData} = this.props;
+
+    if (beneficiaryData.aboutPerson == '') {
+      this.setState({
+        modalValue: true,
+        message: 'About person field should not be blank',
+      });
+    } else {
+      this.props.navigation.navigate('AddBenificiaryPage3');
+    }
   };
 
   selectedSeeking = (option) => {
     const seekingOption = this.state.selectedSeekOption;
     if (seekingOption.some((data) => data == option)) {
-      const index = seekingOption.findIndex((data) => data == option);
+      const index = seekingOption.findIndex((data) => data.id == option);
       seekingOption.splice(index, 1);
       this.props.addBenificiary({seekingOption});
     } else {
-      seekingOption.push(option);
+      seekingOption.push({id: option});
       this.props.addBenificiary({seekingOption});
     }
   };
 
   render() {
-    const {seekingOption, checkbox, select_checkbox} = this.state;
+    const {seekingOption, checkbox, select_checkbox, message, modalValue} =
+      this.state;
 
     return (
       <View
@@ -53,6 +79,11 @@ class AddBenificiaryPage2 extends Component {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           style={{height: '100%', width: '100%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
+          />
           <Header leftIcon={true} middleText={'Add Beneficiary'} />
           <View style={{width: '100%', alignItems: 'center'}}>
             <TextInput
@@ -104,7 +135,7 @@ class AddBenificiaryPage2 extends Component {
                       onCheckColor="#fff"
                       boxType="square"
                       onFillColor="#004ACE"
-                      onValueChange={() => this.selectedSeeking(item.option)}
+                      onValueChange={() => this.selectedSeeking(item.name)}
                     />
                     <Text
                       style={{
@@ -113,7 +144,7 @@ class AddBenificiaryPage2 extends Component {
                         color: '#2E426E',
                         paddingLeft: '5%',
                       }}>
-                      {item.option}
+                      {item.name}
                     </Text>
                   </View>
                 );

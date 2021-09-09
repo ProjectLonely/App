@@ -10,7 +10,19 @@ import {
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Button from '../../Common/Button';
 const {height, width} = Dimensions.get('window');
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {completeBeneficiary} from '../../store/actions/index';
 class AddBenificiaryPage4 extends Component {
+  continue = (value) => {
+    this.props.completeBeneficiary();
+    if (value == 'addNew') {
+      this.props.navigation.navigate('Subscription');
+    } else {
+      this.props.navigation.navigate('Dashboard');
+    }
+  };
+
   render() {
     return (
       <ImageBackground
@@ -39,11 +51,8 @@ class AddBenificiaryPage4 extends Component {
             }}>
             {`Beneficiary\n Added Sucessfully`}
           </Text>
-          <Button onPress={() => this.props.navigation.navigate('Dashboard')}>
-            CONTINUE
-          </Button>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Subscription')}>
+          <Button onPress={() => this.continue()}>CONTINUE</Button>
+          <TouchableOpacity onPress={() => this.continue('addNew')}>
             <Text
               style={{
                 fontFamily: FontStyle.regular,
@@ -59,4 +68,17 @@ class AddBenificiaryPage4 extends Component {
   }
 }
 
-export default AddBenificiaryPage4;
+function mapStateToProps(state) {
+  return {
+    beneficiaryData: state.AddBeneficiaryReducer,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({completeBeneficiary}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddBenificiaryPage4);

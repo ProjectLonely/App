@@ -14,10 +14,15 @@ import {
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Header from '../Common/Header';
 import Slider from '@react-native-community/slider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {baseurl} from '../Common/Baseurl';
+import AlertModal from '../Common/AlertModal';
 const {height, width} = Dimensions.get('screen');
 
 class BeneficiaryDetail extends Component {
   state = {
+    schedule: [],
     dayId: '',
     expandValue: false,
     sliderValue: '0',
@@ -35,35 +40,32 @@ class BeneficiaryDetail extends Component {
       {id: '3', time: '4pm - 7pm'},
       {id: '4', time: '7pm - 10pm'},
     ],
-    beneficiaryData: {
-      id: '',
-      relationship: 'Father',
-      age: '51',
-      phoneNumber: '7878787878',
-      status:
-        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.',
-      companionshipArray: [
-        {id: '0', day: 'Monday', timeScheduleId: '2'},
-        {id: '1', day: 'Thursday', timeScheduleId: '5'},
-        {id: '2', day: 'Sunday', timeScheduleId: '3'},
-      ],
-      callLogsArray: [
-        {
-          id: '0',
-          callDateTime: 'Aug 03, 2021 | 10:00 am',
-          companionName: 'Operator 1',
-          status: `he is feeling well,\n Next week there is a doctor appointment. `,
-          callStatus: 'Call Received',
-        },
-        {
-          id: '1',
-          callDateTime: 'Aug 03, 2021 | 10:00 am',
-          companionName: 'Operator 2',
-          status: `He is not picking the phone,\n may be in a sleep after lunch.`,
-          callStatus: 'Call Missed',
-        },
-      ],
-    },
+    beneficiaryData: {},
+  };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const beneficiaryId = await AsyncStorage.getItem('beneficiaryId');
+    this.setState({beneficiaryId, token});
+    this.getBeneficiaryDetail();
+  };
+
+  getBeneficiaryDetail = () => {
+    const {beneficiaryId, token} = this.state;
+    axios({
+      method: 'get',
+      url: `${baseurl}beneficiary/${beneficiaryId}/`,
+      headers: {Authorization: `Token ${token}`},
+    })
+      .then((response) => {
+        this.setState({
+          beneficiaryData: response.data,
+          schedule: response.data.schedule,
+        });
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   expandOption = (dayId) => {
@@ -76,19 +78,70 @@ class BeneficiaryDetail extends Component {
     }
   };
 
+  updateProfile = (beneficiaryId) => {
+    axios({
+      method: 'patch',
+      url: `${baseurl}beneficiary/${beneficiaryId}/`,
+      headers: {Authorization: `Token ${this.state.token}`},
+      data: {
+        schedule: this.state.schedule,
+      },
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          this.setState({
+            modalValue: true,
+            message: 'Profile updated successfully',
+          });
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          modalValue: true,
+          message: 'Something went wrong',
+        });
+      });
+  };
+
+  newSliderValue = (dayName, value) => {
+    var beneficiaryData = this.state.beneficiaryData.schedule;
+
+    const index = beneficiaryData.findIndex((data) => data.dayName == dayName);
+    beneficiaryData[index] = {
+      dayName: dayName,
+      timeOption: this.state.timeOption[value].time,
+      sliderValue: value,
+    };
+    this.setState({schedule: beneficiaryData});
+  };
+
   render() {
-    const {beneficiaryData, timeOption, newArray, dayId} = this.state;
+    const {
+      beneficiaryData,
+      timeOption,
+      newArray,
+      dayId,
+      schedule,
+      modalValue,
+      message,
+    } = this.state;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
         <Header
           leftIcon={true}
-          middleText={'Martin Bravo'}
+          middleText={beneficiaryData.name}
           notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
         />
 
         <View style={{alignItems: 'center', width: '100%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
+          />
           <ScrollView
             contentContainerStyle={{
               alignItems: 'center',
@@ -102,14 +155,14 @@ class BeneficiaryDetail extends Component {
                   fontSize: 14,
                   textAlign: 'justify',
                 }}>
-                {beneficiaryData.status}
+                {beneficiaryData.about}
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={styles.smallContainer}>
                   <Text
                     style={
                       styles.normalText
-                    }>{`Relation : ${beneficiaryData.relationship}`}</Text>
+                    }>{`Relation : ${beneficiaryData.relation}`}</Text>
                 </View>
                 <View style={styles.smallContainer}>
                   <Text
@@ -123,22 +176,22 @@ class BeneficiaryDetail extends Component {
                     style={{height: 17, width: 17, resizeMode: 'contain'}}
                   />
                   <Text style={[styles.normalText, {left: 5}]}>
-                    {beneficiaryData.phoneNumber}
+                    {beneficiaryData.phone_no}
                   </Text>
                 </View>
               </View>
             </View>
             <View style={{width: '100%'}}>
               <FlatList
-                data={beneficiaryData.companionshipArray}
+                data={schedule}
                 showsVerticalScrollIndicator={false}
-                renderItem={({item: companion}) => {
+                renderItem={({item: schedule}) => {
                   return (
                     <View
                       style={[
                         styles.expandview,
                         {
-                          height: dayId == companion.id ? 200 : 50,
+                          height: dayId == schedule.dayName ? 200 : 50,
                           overflow: 'hidden',
                         },
                       ]}>
@@ -148,13 +201,13 @@ class BeneficiaryDetail extends Component {
                           width: '100%',
                           justifyContent: 'space-between',
                         }}
-                        onPress={() => this.expandOption(companion.id)}>
+                        onPress={() => this.expandOption(schedule.dayName)}>
                         <Text style={[styles.normalText2]}>
-                          {companion.day}
+                          {schedule.dayName}
                         </Text>
 
                         <>
-                          {dayId == companion.id ? (
+                          {dayId == schedule.dayName ? (
                             <Image
                               source={require('../Assets/Images/crosswhite.png')}
                               style={{
@@ -176,35 +229,27 @@ class BeneficiaryDetail extends Component {
                         </>
                       </TouchableOpacity>
                       {
-                        <FlatList
-                          data={newArray}
-                          scrollEnabled={false}
-                          renderItem={({item: newArray}) => {
-                            return (
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  marginTop: '5%',
-                                  marginBottom: '2.5%',
-                                }}>
-                                <View
-                                  style={{
-                                    width: 84,
-                                    height: 28,
-                                    borderWidth: 1,
-                                    borderColor: '#004ACE',
-                                    borderRadius: 10,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: '#fff',
-                                    marginHorizontal: '5%',
-                                  }}>
-                                  <Text>{newArray.timeOption}</Text>
-                                </View>
-                              </View>
-                            );
-                          }}
-                        />
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: '5%',
+                            marginBottom: '2.5%',
+                          }}>
+                          <View
+                            style={{
+                              width: 84,
+                              height: 28,
+                              borderWidth: 1,
+                              borderColor: '#004ACE',
+                              borderRadius: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              backgroundColor: '#fff',
+                              marginHorizontal: '5%',
+                            }}>
+                            <Text>{schedule.timeOption}</Text>
+                          </View>
+                        </View>
                       }
                       {
                         <Slider
@@ -213,11 +258,15 @@ class BeneficiaryDetail extends Component {
                             width: '100%',
                             height: 40,
                           }}
+                          value={schedule.sliderValue}
                           minimumValue={0}
                           maximumValue={4}
                           step={1}
                           minimumTrackTintColor="#FFFFFF"
                           maximumTrackTintColor="#FFFFFF"
+                          onValueChange={(value) =>
+                            this.newSliderValue(schedule.dayName, value)
+                          }
                         />
                       }
                       <View style={{flexDirection: 'row'}}>
@@ -244,7 +293,10 @@ class BeneficiaryDetail extends Component {
                       </View>
 
                       <TouchableOpacity
-                        //   onPress={() => this.addDayTimer(dayOption.day)}
+                        onPress={() =>
+                          // this.addDayTimer(dayOption.day)
+                          this.updateProfile(beneficiaryData.id)
+                        }
                         style={{
                           height: 26,
                           width: 62,
@@ -381,7 +433,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '20%',
+    minHeight: height / 6,
     maxHeight: 'auto',
     borderLeftWidth: 4,
     borderLeftColor: '#004ACE',

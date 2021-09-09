@@ -10,6 +10,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addBenificiary} from '../../store/actions/index';
+import AlertModal from '../../Common/AlertModal';
 
 class AddBenificiaryPage1 extends Component {
   state = {
@@ -43,7 +44,30 @@ class AddBenificiaryPage1 extends Component {
   };
 
   next = () => {
-    this.props.navigation.navigate('AddBenificiaryPage2');
+    const {beneficiaryData} = this.props;
+    if (beneficiaryData.name == '') {
+      this.setState({
+        modalValue: true,
+        message: 'Name field should not be blank',
+      });
+    } else if (beneficiaryData.age == '') {
+      this.setState({
+        modalValue: true,
+        message: 'Age field should not be blank',
+      });
+    } else if (beneficiaryData.timeZone == '') {
+      this.setState({
+        modalValue: true,
+        message: 'timezone field should not be blank',
+      });
+    } else if (beneficiaryData.phoneNumber == '') {
+      this.setState({
+        modalValue: true,
+        message: 'phone number field should not be blank',
+      });
+    } else {
+      this.props.navigation.navigate('AddBenificiaryPage2');
+    }
   };
 
   render() {
@@ -54,6 +78,8 @@ class AddBenificiaryPage1 extends Component {
       genderId,
       relationOption,
       relationShipId,
+      modalValue,
+      message,
     } = this.state;
 
     return (
@@ -71,10 +97,17 @@ class AddBenificiaryPage1 extends Component {
           showsVerticalScrollIndicator={false}
           style={{height: '100%', width: '100%'}}
           contentContainerStyle={{alignItems: 'center', paddingBottom: '20%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
+          />
           <ModalDropdown
             options={relationOption}
             onSelect={(relationShipId) =>
-              this.props.addBenificiary({relationShipId})
+              this.props.addBenificiary({
+                relationShipId: relationOption[relationShipId],
+              })
             }
             isFullWidth={true}
             showsVerticalScrollIndicator={false}
@@ -121,7 +154,7 @@ class AddBenificiaryPage1 extends Component {
                   fontFamily: FontStyle.bold,
                   color: '#707070',
                 }}>
-                {relationOption[this.props.beneficiaryData.relationShipId]}
+                {this.props.beneficiaryData.relationShipId}
               </Text>
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
@@ -139,7 +172,9 @@ class AddBenificiaryPage1 extends Component {
             value={this.props.beneficiaryData.age}
           />
           <ModalDropdown
-            onSelect={(genderId) => this.props.addBenificiary({genderId})}
+            onSelect={(genderId) =>
+              this.props.addBenificiary({genderId: genderOption[genderId]})
+            }
             isFullWidth={true}
             showsVerticalScrollIndicator={false}
             dropdownStyle={{
@@ -186,7 +221,7 @@ class AddBenificiaryPage1 extends Component {
                   fontFamily: FontStyle.bold,
                   color: '#707070',
                 }}>
-                {genderOption[this.props.beneficiaryData.genderId]}
+                {this.props.beneficiaryData.genderId}
               </Text>
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
@@ -216,6 +251,7 @@ class AddBenificiaryPage1 extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

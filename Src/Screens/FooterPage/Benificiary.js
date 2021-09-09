@@ -14,36 +14,52 @@ import Footer from '../../Common/Footer';
 import Header from '../../Common/Header';
 import Button from '../../Common/Button';
 import Styles from '../../Common/Style';
-const {height, width} = Dimensions.get('screen');
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {getAllBeneficiary} from '../../store/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
+import axios from 'axios';
+
+import {baseurl} from '../../Common/Baseurl';
+import AlertModal from '../../Common/AlertModal';
 
 class Benificiary extends Component {
   state = {
-    beneficiaryArray: [
-      {
-        id: '0',
-        benificiaryName: 'Martin Bravo',
-        relationship: 'Father',
-        callDate: 'Aug 04, 2021',
-        companionOperator: 'Operator 1',
-      },
-      {
-        id: '1',
-        benificiaryName: 'Jhonny Bravo',
-        relationship: 'Self',
-        callDate: 'Aug 05, 2021',
-        companionOperator: 'Operator 2',
-      },
-      {
-        id: '2',
-        benificiaryName: 'Martin Bravo',
-        relationship: 'Mother',
-        callDate: 'Aug 06, 2021',
-        companionOperator: 'Operator 3',
-      },
-    ],
+    beneficiaryArray: [],
   };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.setState({token});
+    this.props.getAllBeneficiary(token);
+  };
+
+  deleteBeneficiary = (beneficiaryId) => {
+    axios({
+      method: 'delete',
+      url: `${baseurl}beneficiary/${beneficiaryId}/`,
+      headers: {Authorization: `Token ${this.state.token}`},
+    })
+      .then((response) => {
+        if (response.status == 204) {
+          this.props.getAllBeneficiary(this.state.token);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        this.setState({modalValue: true, message: 'Something went wrong'});
+      });
+  };
+
+  getBeneficiaryDetail = async (beneficiaryId) => {
+    await AsyncStorage.setItem('beneficiaryId', beneficiaryId.toString());
+    this.props.navigation.navigate('BeneficiaryDetail');
+  };
+
   render() {
-    const {beneficiaryArray} = this.state;
+    const {beneficiaryArray, modalValue, message} = this.props;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -52,6 +68,11 @@ class Benificiary extends Component {
             middleText={'Beneficiaries'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
+          />
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.setState({modalValue: false})}
+            message={message}
           />
 
           <FlatList
@@ -63,7 +84,7 @@ class Benificiary extends Component {
                 <View style={[Styles.smallContainer]}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('BeneficiaryDetail')
+                      this.getBeneficiaryDetail(beneficiaryData.id)
                     }
                     style={{width: '80%'}}>
                     <View style={styles.normalView}>
@@ -78,7 +99,7 @@ class Benificiary extends Component {
                           color: '#10275A',
                           left: 5,
                         }}>
-                        {beneficiaryData.benificiaryName}
+                        {beneficiaryData.name}
                       </Text>
                     </View>
                     <View style={styles.normalView}>
@@ -87,7 +108,7 @@ class Benificiary extends Component {
                         style={styles.imageStyle}
                       />
                       <Text style={styles.normalText}>
-                        {beneficiaryData.relationship}
+                        {beneficiaryData.relation}
                       </Text>
                     </View>
                     <View style={styles.normalView}>
@@ -96,7 +117,10 @@ class Benificiary extends Component {
                         style={styles.imageStyle}
                       />
                       <Text style={styles.normalText}>
-                        {beneficiaryData.callDate}
+                        {/* {beneficiaryData.created_at} */}
+                        {moment(beneficiaryData.created_at).format(
+                          'MMM,DD YYYY ',
+                        )}
                       </Text>
                     </View>
                     <View style={styles.normalView}>
@@ -105,11 +129,14 @@ class Benificiary extends Component {
                         style={styles.imageStyle}
                       />
                       <Text style={styles.normalText}>
-                        {beneficiaryData.companionOperator}
+                        {/* {beneficiaryData.companionOperator}
+                         */}
+                        companionOperator: Operator 1
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => this.deleteBeneficiary(beneficiaryData.id)}>
                     <Image
                       source={require('../../Assets/Images/delete.png')}
                       style={{height: 50, width: 50, resizeMode: 'contain'}}
@@ -152,4 +179,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Benificiary;
+function mapStateToProps(state) {
+  return {
+    beneficiaryArray: state.GetBeneficiary,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getAllBeneficiary}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Benificiary);

@@ -21,9 +21,11 @@ import {addBenificiary, completeBeneficiary} from '../../store/actions/index';
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AlertModal from '../../Common/AlertModal';
 
 class AddBenificiaryPage3 extends Component {
   state = {
+    modalValue: false,
     dayId: '',
     expandValue: false,
     newArray: [],
@@ -48,27 +50,12 @@ class AddBenificiaryPage3 extends Component {
 
   next = async () => {
     const {beneficiaryData} = this.props;
+    this.setState({submitLoader: true});
     const token = await AsyncStorage.getItem('token');
-    // const {newArray} = this.state;
-    // this.props.addBenificiary({newArray});
-    // this.props.completeBeneficiary();
-    // this.props.navigation.navigate('AddBenificiaryPage4');
-    console.log({
-      headers: {Authorization: 'Token ' + token},
-      relation: beneficiaryData.relationShipId,
-      name: beneficiaryData.name,
-      age: beneficiaryData.age,
-      gender: beneficiaryData.genderId,
-      timezone: beneficiaryData.timeZone,
-      phone_no: beneficiaryData.phoneNumber,
-      about: beneficiaryData.aboutPerson,
-      care: '',
-      companion: '',
-      comment: beneficiaryData.comment,
-    });
+    this.props.completeBeneficiary();
     axios({
       method: 'post',
-      url: `${baseurl}/beneficiary/create/`,
+      url: `${baseurl}beneficiary/create/`,
       headers: {Authorization: 'Token ' + token},
       data: {
         relation: beneficiaryData.relationShipId,
@@ -78,16 +65,26 @@ class AddBenificiaryPage3 extends Component {
         timezone: beneficiaryData.timeZone,
         phone_no: beneficiaryData.phoneNumber,
         about: beneficiaryData.aboutPerson,
-        care: '',
-        companion: '',
         comment: beneficiaryData.comment,
+        seekings: beneficiaryData.seekingOption,
+        schedule: beneficiaryData.newArray,
       },
     })
       .then((response) => {
-        console.log(response);
+        this.setState({submitLoader: false});
+        if (response.status == 201) {
+          this.setState({
+            modalValue: true,
+            message: 'Beneficiary added successfully',
+          });
+        }
       })
       .catch((err) => {
-        console.log(err.response);
+        this.setState({
+          modalValue: true,
+          message: 'Something went wrong',
+          submitLoader: false,
+        });
       });
   };
 
@@ -120,8 +117,14 @@ class AddBenificiaryPage3 extends Component {
     this.props.addBenificiary({newArray: newArray});
   };
 
+  closeModal = () => {
+    this.setState({modalValue: false});
+    this.props.navigation.navigate('AddBenificiaryPage4');
+  };
+
   render() {
-    const {dayOption, dayId, timeOption, newArray} = this.state;
+    const {dayOption, dayId, timeOption, newArray, modalValue, message} =
+      this.state;
 
     return (
       <View
@@ -133,6 +136,11 @@ class AddBenificiaryPage3 extends Component {
         <SafeAreaView />
         <Header leftIcon={true} middleText={'Set up a call schedule'} />
         <View style={{height: '65%'}}>
+          <AlertModal
+            modalValue={modalValue}
+            closeModal={() => this.closeModal()}
+            message={message}
+          />
           <FlatList
             data={dayOption}
             showsVerticalScrollIndicator={false}
@@ -346,7 +354,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

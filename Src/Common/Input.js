@@ -14,6 +14,7 @@ const Input = ({
   iconPress,
   onChangeText,
   value,
+  editable,
 }) => {
   return (
     <TextInput
@@ -27,6 +28,7 @@ const Input = ({
       maxLength={maxLength || 55}
       secureTextEntry={secureTextEntry}
       autoCorrect={false}
+      editable={editable}
       theme={{
         colors: {
           placeholder: '#707070',

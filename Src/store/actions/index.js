@@ -9,8 +9,6 @@ export function SubscriptionPlan(token) {
   })
     .then((response) => response.data)
     .catch((err) => err.response.data);
-
-  console.log(request, 'request');
   return {
     type: 'SubscriptionPlan',
     payload: request,
@@ -26,6 +24,19 @@ export function addBenificiary(data) {
 export function completeBeneficiary() {
   return {
     type: 'completeBeneficiary',
-    payload: '',
+  };
+}
+
+export function getAllBeneficiary(token) {
+  const request = axios({
+    method: 'get',
+    url: `${baseurl}beneficiary/all/`,
+    headers: {Authorization: 'Token ' + token},
+  })
+    .then((response) => response.data.reverse())
+    .catch((err) => err.response.data);
+  return {
+    type: 'GetBeneficiary',
+    payload: request,
   };
 }

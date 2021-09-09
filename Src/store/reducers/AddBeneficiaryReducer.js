@@ -1,10 +1,10 @@
 const initialState = {
   planId: '',
-  relationShipId: '0',
+  relationShipId: 'Self',
   name: '',
   timeZone: '',
   age: '',
-  genderId: '0',
+  genderId: 'Men',
   phoneNumber: '',
   aboutPerson: '',
   selectedSeekOption: [],
