@@ -1,20 +1,79 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  TextInput,
+  Dimensions,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
 import Button from '../../Common/Button';
 import ThanksModal from '../../Common/ThanksModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import {baseurl} from '../../Common/Baseurl';
+import Spinner from '../../Common/Spinner';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const {height} = Dimensions.get('screen');
 class Support extends Component {
-  state = {thanksValue: false};
+  state = {thanksValue: false, submitLoader: false, email: ''};
   closeModal = () => {
     this.setState({thanksValue: false});
     this.props.navigation.navigate('Setting');
   };
+
+  componentDidMount = async () => {
+    this.setState({
+      email: await AsyncStorage.getItem('email'),
+      token: await AsyncStorage.getItem('token'),
+    });
+  };
+
+  submitButton = () => {
+    const {token, query} = this.state;
+    this.setState({submitLoader: true});
+    axios({
+      method: 'post',
+      url: `${baseurl}query/`,
+      headers: {Authorization: `Token ${token}`},
+      data: {
+        query: query,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        this.setState({submitLoader: false});
+        if (response.status == 201) {
+          this.setState({thanksValue: true});
+        }
+      })
+      .catch((err) => {
+        this.setState({submitLoader: false});
+        console.log(err);
+      });
+  };
+
+  renderButton = () => {
+    if (this.state.submitLoader) {
+      return (
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Spinner spinnercolor="#fff" marginTop={20} />
+        </View>
+      );
+    } else {
+      return <Button onPress={this.submitButton}>Submit</Button>;
+    }
+  };
+
   render() {
-    const {thanksValue} = this.state;
+    const {thanksValue, email, submitLoader} = this.state;
     return (
-      <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
+      <View
+        style={{backgroundColor: '#fff', height: '100%', width: '100%'}}
+        pointerEvents={submitLoader ? 'none' : 'auto'}>
         <SafeAreaView />
         <Header
           leftIcon={true}
@@ -26,11 +85,15 @@ class Support extends Component {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           style={{height: '100%', width: '100%'}}>
-          <ThanksModal thanksValue={thanksValue} closeModal={this.closeModal} />
+          <ThanksModal
+            email={email}
+            thanksValue={thanksValue}
+            closeModal={this.closeModal}
+          />
 
           <View
             style={{
-              height: '80%',
+              height: height / 2.4,
               backgroundColor: '#D5FAFB',
               width: '90%',
               alignSelf: 'center',
@@ -84,13 +147,12 @@ class Support extends Component {
                 }}
                 multiline={true}
                 textAlignVertical="top"
+                onChangeText={(text) => this.setState({query: text})}
               />
             </View>
           </View>
 
-          <Button onPress={() => this.setState({thanksValue: true})}>
-            Submit
-          </Button>
+          {this.renderButton()}
         </KeyboardAwareScrollView>
       </View>
     );

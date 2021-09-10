@@ -28,6 +28,7 @@ class AccountInformation extends Component {
           firstName: response.data.first_name,
           email: response.data.email,
         });
+        AsyncStorage.setItem('email', response.data.email);
       })
       .catch((err) => {
         console.log(err);

@@ -61,7 +61,6 @@ class SignIn extends Component {
             signinLoader: false,
             modalValue: true,
             message: 'email or password is incorrect',
-            // message: err.response.data.__all__.toString(),
           });
         });
     }
@@ -94,7 +93,8 @@ class SignIn extends Component {
         <KeyboardAwareScrollView
           contentContainerStyle={{height: '100%'}}
           keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          pointerEvents={signinLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.setState({modalValue: false})}

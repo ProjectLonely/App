@@ -62,7 +62,7 @@ class ForgotPassword extends Component {
   };
 
   render() {
-    const {email, emailError, message, modalValue} = this.state;
+    const {email, emailError, message, modalValue, sendLoader} = this.state;
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
@@ -72,7 +72,8 @@ class ForgotPassword extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{height: '100%', width: '100%'}}>
+          contentContainerStyle={{height: '100%', width: '100%'}}
+          pointerEvents={sendLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.setState({modalValue: false})}

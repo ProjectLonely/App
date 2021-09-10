@@ -13,7 +13,7 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from '../Common/Button';
 const {height, width} = Dimensions.get('window');
 
-const ThanksModal = ({thanksValue, closeModal}) => {
+const ThanksModal = ({thanksValue, closeModal, email}) => {
   return (
     <View>
       <Modal
@@ -59,7 +59,7 @@ const ThanksModal = ({thanksValue, closeModal}) => {
                 textAlign: 'center',
                 marginBottom: '5%',
               }}>
-              {`We have received your query.\nYou will get response shortly on your registered email xx@gmail.com`}
+              {`We have received your query.\nYou will get response shortly on your registered email ${email}`}
             </Text>
             <Button onPress={closeModal}>CLOSE</Button>
           </View>

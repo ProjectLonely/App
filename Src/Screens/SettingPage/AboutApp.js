@@ -1,11 +1,37 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, {Component} from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {baseurl} from '../../Common/Baseurl';
 
 import Header from '../../Common/Header';
 
 class AboutApp extends Component {
+  state = {aboutData: ''};
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.getAboutData(token);
+  };
+
+  getAboutData = (token) => {
+    axios({
+      method: 'get',
+      url: `${baseurl}settings/about/`,
+      headers: {Authorization: `Token ${token}`},
+    })
+      .then((response) => {
+        if (response.status == 200) {
+          this.setState({aboutData: response.data});
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   render() {
+    const {aboutData} = this.state;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -40,20 +66,7 @@ class AboutApp extends Component {
                 paddingVertical: '5%',
                 textAlign: 'justify',
               }}>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et justo duo
-              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
-              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-              invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-              dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-              elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-              magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-              justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-              takimata sanctus est Lorem.
+              {aboutData}
             </Text>
           </View>
         </View>

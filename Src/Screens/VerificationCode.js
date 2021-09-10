@@ -111,8 +111,7 @@ class VerificationCode extends Component {
   };
 
   render() {
-    const {timer, temp_token, code, modalValue, message, resendLoader} =
-      this.state;
+    const {timer, modalValue, message, resendLoader, verifyLoader} = this.state;
 
     return (
       <ImageBackground
@@ -122,7 +121,8 @@ class VerificationCode extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{height: '100%', width: '100%'}}>
+          contentContainerStyle={{height: '100%', width: '100%'}}
+          pointerEvents={verifyLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.setState({modalValue: false})}

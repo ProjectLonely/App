@@ -102,16 +102,14 @@ class SignUp extends Component {
       checked,
       passwordSecure,
       confirmPasswordSecure,
-      name,
-      email,
-      password,
-      confirmPassword,
+
       nameError,
       emailError,
       passwordError,
       confirmPasswordError,
       modalValue,
       message,
+      registerLoader,
     } = this.state;
 
     return (
@@ -122,7 +120,8 @@ class SignUp extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          style={{height: '100%', width: '100%'}}>
+          style={{height: '100%', width: '100%'}}
+          pointerEvents={registerLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.setState({modalValue: false})}

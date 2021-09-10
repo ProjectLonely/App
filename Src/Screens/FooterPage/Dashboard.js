@@ -49,6 +49,7 @@ class Beneficiary extends Component {
       },
     ],
   };
+
   render() {
     const {callingData, calendarValue} = this.state;
     return (
