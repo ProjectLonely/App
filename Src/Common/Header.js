@@ -44,6 +44,7 @@ const Header = ({notification, leftIcon, middleText, notifyPress}) => {
             fontSize: 22,
             color: '#12175E',
             left: leftIcon ? 20 : 0,
+            width: '70%',
           }}>
           {middleText ? middleText : null}
         </Text>

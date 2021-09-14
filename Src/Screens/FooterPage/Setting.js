@@ -13,6 +13,8 @@ import Header from '../../Common/Header';
 import Footer from '../../Common/Footer';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {baseurl} from '../../Common/Baseurl';
 const {width} = Dimensions.get('screen');
 
 class Setting extends Component {
@@ -52,11 +54,24 @@ class Setting extends Component {
   };
 
   selectOption = async (pageName) => {
+    const token = await AsyncStorage.getItem('token');
     if (pageName == 'SignOut') {
-      AsyncStorage.clear();
-      this.props.navigation.navigate('SignIn');
+      axios({
+        method: 'get',
+        url: `${baseurl}logout/`,
+        headers: {Authorization: `Token ${token}`},
+      })
+        .then((response) => {
+          AsyncStorage.clear();
+          this.props.navigation.navigate('SignIn');
+        })
+        .catch((err) => {
+          AsyncStorage.clear();
+          this.props.navigation.navigate('SignIn');
+        });
+    } else {
+      this.props.navigation.navigate(pageName);
     }
-    this.props.navigation.navigate(pageName);
   };
   render() {
     const {settingArray} = this.state;

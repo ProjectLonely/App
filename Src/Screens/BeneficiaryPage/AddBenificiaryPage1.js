@@ -164,11 +164,13 @@ class AddBenificiaryPage1 extends Component {
             placeholder="Enter Name"
             onChangeText={(name) => this.props.addBenificiary({name})}
             value={this.props.beneficiaryData.name}
+            maxLength={40}
           />
           <Input
             placeholder="Enter Age"
             onChangeText={(age) => this.props.addBenificiary({age: age})}
             keyboardType={'number-pad'}
+            maxLength={3}
             value={this.props.beneficiaryData.age}
           />
           <ModalDropdown
@@ -236,6 +238,7 @@ class AddBenificiaryPage1 extends Component {
           <Input
             placeholder="Phone Number"
             keyboardType={'number-pad'}
+            maxLength={10}
             onChangeText={(phoneNumber) =>
               this.props.addBenificiary({phoneNumber})
             }

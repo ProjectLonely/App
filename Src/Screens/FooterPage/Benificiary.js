@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state.GetBeneficiary);
   return {
     beneficiaryArray: state.GetBeneficiary,
   };

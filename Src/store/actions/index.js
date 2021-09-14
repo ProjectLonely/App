@@ -40,3 +40,17 @@ export function getAllBeneficiary(token) {
     payload: request,
   };
 }
+
+export function getCallLogs(token) {
+  const request = axios({
+    method: 'get',
+    url: `${baseurl}beneficiary/activity/`,
+    headers: {Authorization: `Token ${token}`},
+  })
+    .then((response) => response.data)
+    .catch((err) => console.log(err));
+  return {
+    type: 'GetCallLogs',
+    payload: request,
+  };
+}

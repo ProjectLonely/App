@@ -162,7 +162,7 @@ class AddBenificiaryPage2 extends Component {
               </Text>
               <TextInput
                 placeholder="Write here"
-                maxLength={300}
+                maxLength={240}
                 placeholderTextColor="#707070"
                 style={{
                   width: '100%',

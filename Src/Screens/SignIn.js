@@ -57,6 +57,7 @@ class SignIn extends Component {
           }
         })
         .catch((err) => {
+          console.log(err);
           this.setState({
             signinLoader: false,
             modalValue: true,

@@ -45,7 +45,10 @@ class SignUp extends Component {
     } else if (confirmPassword == '') {
       this.setState({confirmPasswordError: true});
     } else if (confirmPassword != password) {
-      alert('password & confirm password not matched');
+      this.setState({
+        message: 'password & confirm password not matched',
+        modalValue: true,
+      });
     } else if (checked == false) {
       this.setState({modalValue: true, message: 'accept terms & condition'});
     } else {
@@ -77,7 +80,7 @@ class SignUp extends Component {
           console.log(err.response, 'aer');
           this.setState({
             modalValue: true,
-            message: 'Some thing went wrong',
+            message: err.response.data.email,
             registerLoader: false,
           });
         });

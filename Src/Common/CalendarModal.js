@@ -15,7 +15,13 @@ import moment from 'moment';
 import Styles from './Style';
 const {height, width} = Dimensions.get('window');
 
-const CalendarModal = ({calendarValue, closeModal}) => {
+const CalendarModal = ({
+  calendarValue,
+  closeModal,
+  lastWeek,
+  lastMonth,
+  lastYear,
+}) => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
@@ -54,7 +60,6 @@ const CalendarModal = ({calendarValue, closeModal}) => {
               height: '100%',
               alignItems: 'center',
               padding: '2.5%',
-              // justifyContent: 'center',
             }}>
             <View
               style={{
@@ -84,13 +89,13 @@ const CalendarModal = ({calendarValue, closeModal}) => {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.tabView}>
+            <TouchableOpacity onPress={lastWeek} style={styles.tabView}>
               <Text style={styles.tabText}>Last Week</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.tabView}>
+            <TouchableOpacity onPress={lastMonth} style={styles.tabView}>
               <Text style={styles.tabText}>Last Month</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.tabView}>
+            <TouchableOpacity onPress={lastYear} style={styles.tabView}>
               <Text style={styles.tabText}>Last Year</Text>
             </TouchableOpacity>
 

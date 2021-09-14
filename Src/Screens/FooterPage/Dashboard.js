@@ -14,44 +14,45 @@ import Footer from '../../Common/Footer';
 import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import CalendarModal from '../../Common/CalendarModal';
+import {getCallLogs} from '../../store/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import moment from 'moment';
 const {height, width} = Dimensions.get('screen');
 
 class Beneficiary extends Component {
   state = {
     calendarValue: false,
-    callingData: [
-      {
-        id: '0',
-        callDateTime: 'Aug 03, 2021 | 10:00 am',
-        beneficiaryName: 'Martin Bravo',
-        relationship: 'Mother',
-        companionName: 'Operator 1',
-        status: `he is feeling well,\n Next week there is a doctor appointment. `,
-        callStatus: 'Call Received',
-      },
-      {
-        id: '0',
-        callDateTime: 'Aug 03, 2021 | 02:00 pm',
-        beneficiaryName: 'Martin Bravo',
-        relationship: 'Mother',
-        companionName: 'Operator 1',
-        status: `He is not picking the phone,\n may be in a sleep after lunch.`,
-        callStatus: 'Call Missed',
-      },
-      {
-        id: '0',
-        callDateTime: 'Aug 03, 2021 | 07:00 pm',
-        beneficiaryName: 'Martin Bravo',
-        relationship: 'Mother',
-        companionName: 'Operator 1',
-        status: `he is feeling well,\n Next week there is a doctor appointment. `,
-        callStatus: 'Call Received',
-      },
-    ],
+  };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.props.getCallLogs(token);
+  };
+
+  selectDuration = (duration) => {
+    var to_date = moment();
+
+    if (duration == 'week') {
+      const from_date = moment().subtract(6, 'd').format('MMM DD YYYY');
+      this.setState({startDate: from_date});
+      // var postDate = moment('Sep 08 2021');
+      // var diff = postDate.diff(from_date, 'days');
+      // alert(diff);
+    } else if (duration == 'month') {
+      const from_date = moment().subtract(30, 'd').format('MMM DD YYYY');
+      alert(from_date);
+    } else if (duration == 'year') {
+      const from_date = moment().subtract(364, 'd').format('MMM DD YYYY');
+      alert(from_date);
+    }
   };
 
   render() {
-    const {callingData, calendarValue} = this.state;
+    const {calendarValue, startDate} = this.state;
+    const {callingData} = this.props;
+    console.log(callingData);
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}
@@ -61,6 +62,9 @@ class Beneficiary extends Component {
           <CalendarModal
             calendarValue={calendarValue}
             closeModal={() => this.setState({calendarValue: false})}
+            lastWeek={() => this.selectDuration('week')}
+            lastMonth={() => this.selectDuration('month')}
+            lastYear={() => this.selectDuration('year')}
           />
           <SafeAreaView />
           <View
@@ -174,7 +178,7 @@ class Beneficiary extends Component {
                         styles.containerStyle,
                         {
                           backgroundColor:
-                            callingData.callStatus == 'Call Received'
+                            callingData.callStatus == 'call_received'
                               ? '#D5FAFB'
                               : '#FF7A7A',
                         },
@@ -186,7 +190,7 @@ class Beneficiary extends Component {
                             color: '#3A3A3A',
                             fontSize: 12,
                           }}>
-                          {callingData.callDateTime}
+                          {callingData.callDate}
                         </Text>
                         <Text
                           style={{
@@ -194,7 +198,7 @@ class Beneficiary extends Component {
                             color: '#223E6D',
                             fontSize: 15,
                             marginVertical: 5,
-                          }}>{`${callingData.beneficiaryName}  (${callingData.relationship})`}</Text>
+                          }}>{`${callingData.name}  (${callingData.relationship})`}</Text>
 
                         <Text
                           style={{
@@ -221,7 +225,7 @@ class Beneficiary extends Component {
                           justifyContent: 'center',
                           borderRadius: 5,
                           borderColor:
-                            callingData.callStatus == 'Call Received'
+                            callingData.callStatus == 'call_received'
                               ? '#1F9F00'
                               : '#E40000',
                         }}>
@@ -231,11 +235,13 @@ class Beneficiary extends Component {
                             fontSize: 8,
 
                             color:
-                              callingData.callStatus == 'Call Received'
+                              callingData.callStatus == 'call_received'
                                 ? '#1F9F00'
                                 : '#EA3232',
                           }}>
-                          {callingData.callStatus}
+                          {callingData.callStatus == 'call_received'
+                            ? 'Call Received'
+                            : 'Call Missed'}
                         </Text>
                       </View>
                     </View>
@@ -304,4 +310,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Beneficiary;
+function mapStateToProps(state) {
+  return {
+    callingData: state.GetCallLogs,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getCallLogs}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Beneficiary);

@@ -18,6 +18,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {baseurl} from '../Common/Baseurl';
 import AlertModal from '../Common/AlertModal';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {getCallLogs} from '../store/actions/index';
+
 const {height, width} = Dimensions.get('screen');
 
 class BeneficiaryDetail extends Component {
@@ -58,6 +62,7 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response);
         this.setState({
           beneficiaryData: response.data,
           schedule: response.data.schedule,
@@ -116,6 +121,7 @@ class BeneficiaryDetail extends Component {
   };
 
   render() {
+    console.log(this.props.callingData, 'calling Data');
     const {
       beneficiaryData,
       timeOption,
@@ -124,6 +130,7 @@ class BeneficiaryDetail extends Component {
       schedule,
       modalValue,
       message,
+      beneficiaryId,
     } = this.state;
 
     return (
@@ -348,18 +355,18 @@ class BeneficiaryDetail extends Component {
                 </View>
               </View>
               <FlatList
-                data={beneficiaryData.callLogsArray}
+                data={this.props.callingData}
                 style={{alignSelf: 'center'}}
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: callingData}) => {
-                  return (
+                  return callingData.beneficiary_id == beneficiaryId ? (
                     <View
                       style={[
                         styles.containerStyle,
                         {
                           backgroundColor:
-                            callingData.callStatus == 'Call Received'
+                            callingData.callStatus == 'call_received'
                               ? '#D5FAFB'
                               : '#FF7A7A',
                         },
@@ -399,7 +406,7 @@ class BeneficiaryDetail extends Component {
                           justifyContent: 'center',
                           borderRadius: 5,
                           borderColor:
-                            callingData.callStatus == 'Call Received'
+                            callingData.callStatus == 'call_received'
                               ? '#1F9F00'
                               : '#E40000',
                         }}>
@@ -409,15 +416,17 @@ class BeneficiaryDetail extends Component {
                             fontSize: 8,
 
                             color:
-                              callingData.callStatus == 'Call Received'
+                              callingData.callStatus == 'call_received'
                                 ? '#1F9F00'
                                 : '#EA3232',
                           }}>
-                          {callingData.callStatus}
+                          {callingData.callStatus == 'call_received'
+                            ? 'Call Received'
+                            : 'Call Missed'}
                         </Text>
                       </View>
                     </View>
-                  );
+                  ) : null;
                 }}
               />
             </View>
@@ -509,4 +518,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BeneficiaryDetail;
+function mapStateToProps(state) {
+  console.log(state, 'get call ');
+  return {
+    callingData: state.GetCallLogs,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getCallLogs}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BeneficiaryDetail);
+
+// export default BeneficiaryDetail;
