@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import Header from '../../Common/Header';
 import Input from '../../Common/Input';
 import FontStyle from '../../Assets/Fonts/FontStyle';
@@ -11,6 +18,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addBenificiary} from '../../store/actions/index';
 import AlertModal from '../../Common/AlertModal';
+import ImageModal from '../../Common/ImageModal';
+import ImagePicker from 'react-native-image-crop-picker';
 
 class AddBenificiaryPage1 extends Component {
   state = {
@@ -19,6 +28,16 @@ class AddBenificiaryPage1 extends Component {
     genderOption: ['Men', 'Women', 'Other'],
     genderId: 0,
     selectedItems: '',
+    imageModal: false,
+    sourceURL: '',
+    timeZoneOption: [
+      'Central Daylight Time Chicago (GMT-5)',
+      'Mountain Daylight Time Denver (GMT-6)',
+      'Mountain Standard Time Phoenix (GMT-7)',
+      'Pacific Daylight Time Los Angeles (GMT-7)',
+      'Alaska Daylight Time Anchorage (GMT-8)',
+      'Hawaii-Aleutian Standard Time Honolulu (GMT-10)',
+    ],
     relationShipArray: [
       {
         id: 1,
@@ -70,6 +89,37 @@ class AddBenificiaryPage1 extends Component {
     }
   };
 
+  selectImageFromGallery() {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    }).then((image) => {
+      console.log(image, 'image');
+      this.setState({
+        sourceURL: image.sourceURL,
+        imageModal: false,
+      });
+    });
+  }
+  selectImageFromCamera() {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    }).then((image) => {
+      this.setState({
+        sourceURL: image.sourceURL,
+        imageModal: false,
+      });
+    });
+  }
+  openModal = () => {
+    this.setState({imageModal: true});
+  };
+
   render() {
     const {
       relationShipArray,
@@ -80,8 +130,11 @@ class AddBenificiaryPage1 extends Component {
       relationShipId,
       modalValue,
       message,
+      imageModal,
+      sourceURL,
+      timeZoneOption,
     } = this.state;
-
+    console.log(this.props.beneficiaryData);
     return (
       <View
         style={{
@@ -139,6 +192,7 @@ class AddBenificiaryPage1 extends Component {
               borderWidth: 1,
               borderColor: '#004ACE',
               borderRadius: 5,
+              marginBottom: '2.5%',
             }}>
             <View
               style={{
@@ -207,6 +261,7 @@ class AddBenificiaryPage1 extends Component {
               borderWidth: 1,
               borderColor: '#004ACE',
               borderRadius: 5,
+              marginTop: '5%',
             }}
             options={genderOption}>
             <View
@@ -228,23 +283,102 @@ class AddBenificiaryPage1 extends Component {
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
           </ModalDropdown>
+          <ModalDropdown
+            onSelect={(timeZoneId) =>
+              this.props.addBenificiary({timeZone: timeZoneOption[timeZoneId]})
+            }
+            isFullWidth={true}
+            showsVerticalScrollIndicator={false}
+            dropdownStyle={{
+              backgroundColor: '#fff',
+              paddingHorizontal: '1%',
+              borderColor: '#004ACE',
+              borderWidth: 1,
 
-          <Input
-            placeholder="TimeZone"
-            onChangeText={(timeZone) => this.props.addBenificiary({timeZone})}
-            value={this.props.beneficiaryData.timeZone}
-            // iconName="chevron-down"
-          />
+              height: 180,
+              width: '88%',
+              marginHorizontal: '1%',
+            }}
+            dropdownTextStyle={{
+              fontSize: 18,
+              fontFamily: FontStyle.regular,
+              color: '#707070',
+              paddingHorizontal: '5%',
+            }}
+            textStyle={{
+              fontSize: 20,
+              fontFamily: FontStyle.bold,
+              color: '#707070',
+              paddingHorizontal: '5%',
+            }}
+            style={{
+              width: '90%',
+              height: 55,
+              justifyContent: 'flex-end',
+              borderWidth: 1,
+              borderColor: '#004ACE',
+              borderRadius: 5,
+              marginTop: '7.5%',
+            }}
+            options={timeZoneOption}>
+            <View
+              style={{
+                flexDirection: 'row',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: '2.5%',
+              }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: FontStyle.bold,
+                  color: '#707070',
+                }}>
+                {this.props.beneficiaryData.timeZone}
+              </Text>
+              <Icon name="chevron-down" size={24} color={'grey'} />
+            </View>
+          </ModalDropdown>
+
           <Input
             placeholder="Phone Number"
             keyboardType={'number-pad'}
             maxLength={10}
+            marginTop="7.5%"
             onChangeText={(phoneNumber) =>
               this.props.addBenificiary({phoneNumber})
             }
             value={this.props.beneficiaryData.phoneNumber}
           />
-          <View style={{width: '100%', top: '12%'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '95%',
+            }}>
+            <Text style={styles.headingText}>Add Beneficiary Picture</Text>
+            <TouchableOpacity onPress={this.openModal} style={styles.imageView}>
+              {sourceURL == '' ? (
+                <Image
+                  source={require('../../Assets/Images/group.png')}
+                  style={{height: 100, width: 100, borderRadius: 50}}
+                />
+              ) : (
+                <Image
+                  source={{uri: sourceURL}}
+                  style={{height: 100, width: 100, borderRadius: 50}}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+          <ImageModal
+            imageModal={imageModal}
+            closeModal={() => this.setState({imageModal: false})}
+            galleryPress={() => this.selectImageFromGallery()}
+            cameraPress={() => this.selectImageFromCamera()}
+          />
+          <View style={{width: '100%'}}>
             <Button onPress={() => this.next()}>NEXT</Button>
           </View>
         </KeyboardAwareScrollView>
@@ -253,8 +387,34 @@ class AddBenificiaryPage1 extends Component {
   }
 }
 
+const styles = StyleSheet.create({
+  headingText: {
+    fontFamily: FontStyle.bold,
+    fontSize: 20,
+    color: '#12175E',
+    alignSelf: 'flex-start',
+    paddingHorizontal: '5%',
+    marginVertical: '5%',
+  },
+  imageView: {
+    backgroundColor: '#fff',
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 11,
+  },
+});
+
 function mapStateToProps(state) {
-  console.log(state);
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

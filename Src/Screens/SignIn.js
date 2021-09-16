@@ -47,6 +47,7 @@ class SignIn extends Component {
         },
       })
         .then(async (response) => {
+          console.log(response, 'response');
           this.setState({signinLoader: false});
           if (response.data.is_active == false) {
             await AsyncStorage.setItem('temp_token', response.data.temp_token);

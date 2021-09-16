@@ -11,46 +11,39 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
 import Header from '../../Common/Header';
 import Styles from '../../Common/Style';
+import {getCallLogs} from '../../store/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import moment from 'moment';
 
 class CallLogs extends Component {
   state = {
     logsData: [
       {
-        id: '0',
-        beneficiaryName: 'Martin Bravo',
-        relationship: 'Father',
-        callLogs: [
-          {
-            id: '0',
-            dateTime: 'Aug 07, 2021 | 10:00 am',
-            description: `He is feeling well,\nNext week there is a doctor appointment.`,
-            callStatus: 'Call Received',
-          },
-          {
-            id: '0',
-            dateTime: 'Aug 07, 2021 | 10:00 am',
-            description: `He is not picking the phone,\nmay be in a sleep after lunch.`,
-            callStatus: 'Call Missed',
-          },
-        ],
-      },
-      {
-        id: '1',
-        beneficiaryName: 'Marry Bravo',
-        relationship: 'Mother',
-        callLogs: [
-          {
-            id: '0',
-            dateTime: 'Aug 06, 2021 | 10:00 am',
-            description: `He is feeling well,\nNext week there is a doctor appointment.`,
-            callStatus: 'Call Received',
-          },
-        ],
+        // id: '0',
+        // beneficiaryName: 'Martin Bravo',
+        // relationship: 'Father',
+        // callLogs: [
+        //   {
+        //     id: '0',
+        //     dateTime: 'Aug 07, 2021 | 10:00 am',
+        //     description: `He is feeling well,\nNext week there is a doctor appointment.`,
+        //     callStatus: 'Call Received',
+        //   },
+        // ],
       },
     ],
   };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.props.getCallLogs(token);
+  };
+
   render() {
-    const {logsData} = this.state;
+    const {callingData, mainData} = this.props;
+    console.log(mainData, 'mainData');
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -104,8 +97,8 @@ class CallLogs extends Component {
               }}
             />
             <FlatList
-              data={logsData}
-              renderItem={({item: logsData}) => {
+              data={mainData}
+              renderItem={({item: mainData}) => {
                 return (
                   <View>
                     <View
@@ -126,7 +119,7 @@ class CallLogs extends Component {
                           fontSize: 18,
                           left: 5,
                         }}>
-                        {logsData.beneficiaryName}
+                        {mainData.name}
                       </Text>
                       <Text
                         style={{
@@ -135,13 +128,13 @@ class CallLogs extends Component {
                           fontSize: 18,
                           left: 5,
                         }}>
-                        {` (${logsData.relationship})`}
+                        {` (${mainData.relationship})`}
                       </Text>
                     </View>
                     <FlatList
-                      data={logsData.callLogs}
+                      data={callingData}
                       renderItem={({item: callLogs}) => {
-                        return (
+                        return mainData.name == callLogs.name ? (
                           <View style={Styles.smallContainer}>
                             <View style={{width: '72%'}}>
                               <Text
@@ -150,7 +143,7 @@ class CallLogs extends Component {
                                   color: '#3A3A3A',
                                   fontSize: 12,
                                 }}>
-                                {callLogs.dateTime}
+                                {callLogs.callDate}
                               </Text>
                               <Text
                                 style={{
@@ -158,7 +151,9 @@ class CallLogs extends Component {
                                   color: '#223E6D',
                                   fontSize: 15,
                                 }}>
-                                {callLogs.description}
+                                {/* {callLogs.description} */}
+                                asdflkasd alsdfjasjalskfjaslkf asdfasdj
+                                fkasdfkal fjalsfjalsdf
                               </Text>
                             </View>
                             <View
@@ -178,7 +173,7 @@ class CallLogs extends Component {
                               </Text>
                             </View>
                           </View>
-                        );
+                        ) : null;
                       }}
                     />
                   </View>
@@ -222,4 +217,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CallLogs;
+function mapStateToProps(state) {
+  return {
+    mainData: state.GetCallLogs.filter(
+      (v, i, a) => a.findIndex((t) => t.name === v.name) === i,
+    ),
+    callingData: state.GetCallLogs,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getCallLogs}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CallLogs);
+// export default CallLogs;

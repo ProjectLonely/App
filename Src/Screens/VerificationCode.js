@@ -19,7 +19,7 @@ import Spinner from '../Common/Spinner';
 
 class VerificationCode extends Component {
   state = {
-    timer: 5,
+    timer: 30,
     temp_token: '',
     otp: '',
     message: '',
@@ -47,7 +47,7 @@ class VerificationCode extends Component {
         this.setState({verifyLoader: false});
         if (response.status == 201) {
           AsyncStorage.setItem('token', response.data.token);
-          this.props.navigation.navigate('Dashboard');
+          this.props.navigation.navigate('AccountInformation');
         }
       })
       .catch((err) => {

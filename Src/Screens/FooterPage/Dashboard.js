@@ -24,6 +24,9 @@ const {height, width} = Dimensions.get('screen');
 class Beneficiary extends Component {
   state = {
     calendarValue: false,
+    startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
+    date: moment('Sep 01 2021'),
+    endDate: moment().format('MMM DD YYYY'),
   };
 
   componentDidMount = async () => {
@@ -32,27 +35,51 @@ class Beneficiary extends Component {
   };
 
   selectDuration = (duration) => {
-    var to_date = moment();
-
     if (duration == 'week') {
       const from_date = moment().subtract(6, 'd').format('MMM DD YYYY');
-      this.setState({startDate: from_date});
-      // var postDate = moment('Sep 08 2021');
-      // var diff = postDate.diff(from_date, 'days');
-      // alert(diff);
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'week',
+        endDate: moment().format('MMM DD YYYY'),
+      });
     } else if (duration == 'month') {
       const from_date = moment().subtract(30, 'd').format('MMM DD YYYY');
-      alert(from_date);
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'month',
+        endDate: moment().format('MMM DD YYYY'),
+      });
     } else if (duration == 'year') {
       const from_date = moment().subtract(364, 'd').format('MMM DD YYYY');
-      alert(from_date);
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'year',
+        endDate: moment().format('MMM DD YYYY'),
+      });
     }
   };
 
+  startCallBack = (childData) => {
+    this.setState({
+      startDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
+  endCallBack = (childData) => {
+    this.setState({
+      endDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
   render() {
-    const {calendarValue, startDate} = this.state;
+    const {calendarValue, startDate, endDate, durationStatus} = this.state;
     const {callingData} = this.props;
-    console.log(callingData);
+    console.log(startDate, endDate);
+    // var date = new Date('Sep 01  2021');
+    // var range = moment(date).isBetween(startDate, endDate);
+    // console.log(range, 'range');
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}
@@ -65,6 +92,9 @@ class Beneficiary extends Component {
             lastWeek={() => this.selectDuration('week')}
             lastMonth={() => this.selectDuration('month')}
             lastYear={() => this.selectDuration('year')}
+            startDateFromParent={this.startCallBack}
+            endDateFromParent={this.endCallBack}
+            durationStatus={durationStatus}
           />
           <SafeAreaView />
           <View
@@ -160,7 +190,7 @@ class Beneficiary extends Component {
                       fontSize: 12,
                       color: '#525F77',
                     }}>
-                    August 2021
+                    {startDate} - {endDate}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -172,7 +202,14 @@ class Beneficiary extends Component {
                 }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: callingData}) => {
-                  return (
+                  const callDate = moment(callingData.callDate);
+
+                  return moment(callDate).isBetween(
+                    startDate,
+                    endDate,
+                    null,
+                    [],
+                  ) ? (
                     <View
                       style={[
                         styles.containerStyle,
@@ -245,7 +282,7 @@ class Beneficiary extends Component {
                         </Text>
                       </View>
                     </View>
-                  );
+                  ) : null;
                 }}
               />
             </View>
@@ -286,7 +323,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 22,
-    width: 98,
+    minWidth: 98,
+    width: 'auto',
+    paddingHorizontal: 5,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: {

@@ -21,6 +21,9 @@ const CalendarModal = ({
   lastWeek,
   lastMonth,
   lastYear,
+  startDateFromParent,
+  endDateFromParent,
+  durationStatus,
 }) => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -28,11 +31,13 @@ const CalendarModal = ({
   const onDateChange = (date, type) => {
     if (type === 'END_DATE') {
       setSelectedEndDate(date);
+      endDateFromParent(date);
     } else {
+      startDateFromParent(date);
       setSelectedStartDate(date), setSelectedEndDate(null);
     }
   };
-  // console.log(selectedStartDate.toString(), 'rohit');
+
   return (
     <View>
       <Modal
@@ -67,21 +72,8 @@ const CalendarModal = ({
                 width: '100%',
                 justifyContent: 'space-between',
               }}>
-              <View style={{flexDirection: 'row'}}>
-                <Image
-                  source={require('../Assets/Images/calendar.png')}
-                  style={{height: 15, width: 15, resizeMode: 'contain'}}
-                />
-                <Text
-                  style={{
-                    fontFamily: FontStyle.regular,
-                    fontSize: 12,
-                    color: '#525F77',
-                    left: 5,
-                  }}>
-                  August 2021
-                </Text>
-              </View>
+              <View />
+
               <TouchableOpacity onPress={closeModal}>
                 <Image
                   source={require('../Assets/Images/cross.png')}
@@ -89,14 +81,47 @@ const CalendarModal = ({
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={lastWeek} style={styles.tabView}>
-              <Text style={styles.tabText}>Last Week</Text>
+            <TouchableOpacity
+              onPress={lastWeek}
+              style={[
+                styles.tabView,
+                durationStatus == 'week' ? {backgroundColor: '#004ACE'} : null,
+              ]}>
+              <Text
+                style={[
+                  styles.tabText,
+                  durationStatus == 'week' ? {color: '#FFF'} : null,
+                ]}>
+                Last Week
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={lastMonth} style={styles.tabView}>
-              <Text style={styles.tabText}>Last Month</Text>
+            <TouchableOpacity
+              onPress={lastMonth}
+              style={[
+                styles.tabView,
+                durationStatus == 'month' ? {backgroundColor: '#004ACE'} : null,
+              ]}>
+              <Text
+                style={[
+                  styles.tabText,
+                  durationStatus == 'month' ? {color: '#FFF'} : null,
+                ]}>
+                Last Month
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={lastYear} style={styles.tabView}>
-              <Text style={styles.tabText}>Last Year</Text>
+            <TouchableOpacity
+              onPress={lastYear}
+              style={[
+                styles.tabView,
+                durationStatus == 'year' ? {backgroundColor: '#004ACE'} : null,
+              ]}>
+              <Text
+                style={[
+                  styles.tabText,
+                  durationStatus == 'year' ? {color: '#FFF'} : null,
+                ]}>
+                Last Year
+              </Text>
             </TouchableOpacity>
 
             <View style={styles.calendarContainer}>

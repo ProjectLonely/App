@@ -19,7 +19,9 @@ const AlertModal = ({modalValue, closeModal, message}) => {
           style={{
             backgroundColor: '#fff',
             width: '70%',
-            height: '20%',
+            minHeight: '20%',
+            maxHeight: 'auto',
+            paddingVertical: '2%',
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',

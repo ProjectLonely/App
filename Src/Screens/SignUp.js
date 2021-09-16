@@ -35,7 +35,11 @@ class SignUp extends Component {
   };
 
   Register = () => {
+    const strongPassword =
+      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
     const {name, email, password, confirmPassword, checked} = this.state;
+
     if (name == '') {
       this.setState({nameError: true});
     } else if (email == '') {
@@ -44,9 +48,15 @@ class SignUp extends Component {
       this.setState({passwordError: true});
     } else if (confirmPassword == '') {
       this.setState({confirmPasswordError: true});
+    } else if (!strongPassword.test(password)) {
+      this.setState({
+        message:
+          'Password must be 8 characters long and contain one uppercase, one lowercase, one numeric & one special character.  ',
+        modalValue: true,
+      });
     } else if (confirmPassword != password) {
       this.setState({
-        message: 'password & confirm password not matched',
+        message: 'Password & confirm password not matched',
         modalValue: true,
       });
     } else if (checked == false) {
@@ -77,7 +87,6 @@ class SignUp extends Component {
           }
         })
         .catch((err) => {
-          console.log(err.response, 'aer');
           this.setState({
             modalValue: true,
             message: err.response.data.email,
@@ -105,7 +114,6 @@ class SignUp extends Component {
       checked,
       passwordSecure,
       confirmPasswordSecure,
-
       nameError,
       emailError,
       passwordError,
@@ -169,6 +177,7 @@ class SignUp extends Component {
               }}>
               REGISTER
             </Text>
+
             <Input
               placeholder="Name"
               onChangeText={(text) =>

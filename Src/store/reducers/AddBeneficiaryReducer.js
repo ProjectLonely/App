@@ -2,7 +2,7 @@ const initialState = {
   planId: '',
   relationShipId: 'Self',
   name: '',
-  timeZone: '',
+  timeZone: 'Central Daylight Time Chicago (GMT-5)',
   age: '',
   genderId: 'Men',
   phoneNumber: '',

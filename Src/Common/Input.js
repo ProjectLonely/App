@@ -15,6 +15,7 @@ const Input = ({
   onChangeText,
   value,
   editable,
+  marginTop,
 }) => {
   return (
     <TextInput
@@ -42,7 +43,7 @@ const Input = ({
         {
           height: height || 55,
           textAlignVertical: 'top',
-          // backgroundColor: 'green',
+          marginTop: marginTop,
         },
       ]}
       right={

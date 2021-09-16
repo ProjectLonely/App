@@ -20,6 +20,10 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Cheerio want's to access your library</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Cheerio want's to access your camera</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
