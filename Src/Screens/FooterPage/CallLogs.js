@@ -188,7 +188,7 @@ class CallLogs extends Component {
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          chatPress={() => this.props.navigation.navigate('Chat')}
+          chatPress={() => this.props.navigation.navigate('ChatList')}
         />
       </View>
     );

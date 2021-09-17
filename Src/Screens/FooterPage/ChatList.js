@@ -4,68 +4,51 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  TouchableOpacity,
   StyleSheet,
   Image,
-  TouchableOpacity,
-  Dimensions,
 } from 'react-native';
-import FontStyle from '../../Assets/Fonts/FontStyle';
-import Footer from '../../Common/Footer';
 import Header from '../../Common/Header';
-import Button from '../../Common/Button';
-import Styles from '../../Common/Style';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {getAllBeneficiary} from '../../store/actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
-import axios from 'axios';
-
-import {baseurl} from '../../Common/Baseurl';
 import AlertModal from '../../Common/AlertModal';
+import axios from 'axios';
+import {baseurl} from '../../Common/Baseurl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Styles from '../../Common/Style';
+import FontStyle from '../../Assets/Fonts/FontStyle';
+import moment from 'moment';
+import Footer from '../../Common/Footer';
 
-class Benificiary extends Component {
-  state = {
-    beneficiaryArray: [],
-  };
+class ChatList extends Component {
+  state = {modalValue: false, operatorArray: []};
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
-    this.setState({token});
-    this.props.getAllBeneficiary(token);
-  };
-
-  deleteBeneficiary = (beneficiaryId) => {
     axios({
-      method: 'delete',
-      url: `${baseurl}beneficiary/${beneficiaryId}/`,
-      headers: {Authorization: `Token ${this.state.token}`},
+      method: 'get',
+      url: `${baseurl}chat/api/all-rooms/`,
+      headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        if (response.status == 204) {
-          this.props.getAllBeneficiary(this.state.token);
-        }
+        console.log(response);
+        this.setState({operatorArray: response.data});
       })
       .catch((err) => {
-        console.log(err.response);
-        this.setState({modalValue: true, message: 'Something went wrong'});
+        console.log(err);
       });
   };
 
-  getBeneficiaryDetail = async (beneficiaryId) => {
-    await AsyncStorage.setItem('beneficiaryId', beneficiaryId.toString());
-    this.props.navigation.navigate('BeneficiaryDetail');
+  selectChat = (operatorId, operatorName) => {
+    this.props.navigation.navigate('Chat', {operatorId, operatorName});
   };
 
   render() {
-    const {beneficiaryArray, modalValue, message} = this.props;
-
+    const {modalValue, message, operatorArray} = this.state;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
         <View style={{height: '86%', backgroundColor: '#fff'}}>
           <Header
-            middleText={'Beneficiaries'}
+            middleText={'Chat List'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
           />
@@ -76,15 +59,15 @@ class Benificiary extends Component {
           />
 
           <FlatList
-            data={beneficiaryArray}
+            data={operatorArray}
             contentContainerStyle={{width: '100%'}}
             showsVerticalScrollIndicator={false}
-            renderItem={({item: beneficiaryData}) => {
+            renderItem={({item: operatorData}) => {
               return (
                 <View style={[Styles.smallContainer]}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.getBeneficiaryDetail(beneficiaryData.id)
+                      this.selectChat(operatorData.id, operatorData.name)
                     }
                     style={{width: '80%'}}>
                     <View style={styles.normalView}>
@@ -99,7 +82,7 @@ class Benificiary extends Component {
                           color: '#10275A',
                           left: 5,
                         }}>
-                        {beneficiaryData.name}
+                        {operatorData.name}
                       </Text>
                     </View>
                     <View style={styles.normalView}>
@@ -107,9 +90,10 @@ class Benificiary extends Component {
                         source={require('../../Assets/Images/smallgroup.png')}
                         style={styles.imageStyle}
                       />
-                      <Text style={styles.normalText}>
-                        {beneficiaryData.relation}
-                      </Text>
+
+                      {operatorData.beneficiary.map((data) => (
+                        <Text style={styles.normalText}>{data.name}, </Text>
+                      ))}
                     </View>
                     <View style={styles.normalView}>
                       <Image
@@ -117,10 +101,7 @@ class Benificiary extends Component {
                         style={styles.imageStyle}
                       />
                       <Text style={styles.normalText}>
-                        {/* {beneficiaryData.created_at} */}
-                        {moment(beneficiaryData.created_at).format(
-                          'MMM,DD YYYY ',
-                        )}
+                        {moment(operatorData.created_at).format('MMM,DD YYYY ')}
                       </Text>
                     </View>
                     <View style={styles.normalView}>
@@ -135,25 +116,13 @@ class Benificiary extends Component {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => this.deleteBeneficiary(beneficiaryData.id)}>
-                    <Image
-                      source={require('../../Assets/Images/delete.png')}
-                      style={{height: 50, width: 50, resizeMode: 'contain'}}
-                    />
-                  </TouchableOpacity>
                 </View>
               );
             }}
           />
-          <Button
-            onPress={() => this.props.navigation.navigate('Subscription')}>
-            ADD NEW BENEFICIARY
-          </Button>
         </View>
-
         <Footer
-          footerValue={'benificiary'}
+          footerValue={'chat'}
           dashboardPress={() => this.props.navigation.navigate('Dashboard')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
@@ -163,7 +132,6 @@ class Benificiary extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   normalView: {flexDirection: 'row', height: 20, alignItems: 'center'},
   normalText: {
@@ -179,15 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  console.log(state.GetBeneficiary);
-  return {
-    beneficiaryArray: state.GetBeneficiary,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getAllBeneficiary}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Benificiary);
+export default ChatList;

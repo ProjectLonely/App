@@ -26,6 +26,7 @@ import CallLogs from './FooterPage/CallLogs';
 import BeneficiaryDetail from './BeneficiaryDetail';
 import Notification from './Notification';
 import Chat from './FooterPage/Chat';
+import ChatList from './FooterPage/ChatList';
 
 const Stack = createStackNavigator();
 
@@ -141,6 +142,11 @@ function App() {
         <Stack.Screen
           name="Chat"
           component={Chat}
+          options={{gestureEnabled: false}}
+        />
+        <Stack.Screen
+          name="ChatList"
+          component={ChatList}
           options={{gestureEnabled: false}}
         />
       </Stack.Navigator>

@@ -120,7 +120,7 @@ class Setting extends Component {
           dashboardPress={() => this.props.navigation.navigate('Dashboard')}
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          chatPress={() => this.props.navigation.navigate('Chat')}
+          chatPress={() => this.props.navigation.navigate('ChatList')}
         />
       </View>
     );
