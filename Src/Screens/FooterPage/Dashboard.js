@@ -19,10 +19,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import LoadingView from '../../Common/LoadingView';
+
 const {height, width} = Dimensions.get('screen');
 
 class Beneficiary extends Component {
   state = {
+    loadingValue: false,
     calendarValue: false,
     startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
     date: moment('Sep 01 2021'),
@@ -74,12 +77,10 @@ class Beneficiary extends Component {
   };
 
   render() {
-    const {calendarValue, startDate, endDate, durationStatus} = this.state;
+    const {calendarValue, startDate, endDate, durationStatus, loadingValue} =
+      this.state;
     const {callingData} = this.props;
-    console.log(startDate, endDate);
-    // var date = new Date('Sep 01  2021');
-    // var range = moment(date).isBetween(startDate, endDate);
-    // console.log(range, 'range');
+
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}
@@ -130,7 +131,9 @@ class Beneficiary extends Component {
               />
             </TouchableOpacity>
           </View>
-          {callingData.length < 1 ? (
+          {this.props.loading ? (
+            <LoadingView heightValue={1.2} />
+          ) : callingData.length < 1 ? (
             <View
               style={{
                 height: '80%',
@@ -350,8 +353,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'state');
   return {
-    callingData: state.GetCallLogs,
+    callingData: state.GetCallLogs.data,
+    loading: state.GetCallLogs.loading,
   };
 }
 

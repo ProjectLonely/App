@@ -5,10 +5,11 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import reducers from './Src/store/reducers';
 import promiseMiddleware from 'redux-promise';
+import thunk from 'redux-thunk';
 
 class App extends Component {
   render() {
-    const store = createStore(reducers, {}, applyMiddleware(promiseMiddleware));
+    const store = createStore(reducers, {}, applyMiddleware(thunk));
     return (
       <Provider store={store}>
         <View style={{flex: 1}}>

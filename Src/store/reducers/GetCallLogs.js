@@ -1,7 +1,9 @@
-export default function (state = [], action) {
+export default function (state = {loading: true, data: []}, action) {
   switch (action.type) {
     case 'GetCallLogs':
-      return action.payload;
+      return {...state, data: action.payload};
+    case 'TOGGLE_LOAD':
+      return {...state, loading: !state.loading};
     default:
       return state;
   }

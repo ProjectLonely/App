@@ -11,58 +11,74 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Dimensions,
+  Keyboard,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {baseurl} from '../../Common/Baseurl';
 import Header from '../../Common/Header';
-import WS from 'react-native-websocket';
+const {height, width} = Dimensions.get('window');
 
 class Chat extends Component {
   state = {
     message: '',
-    chatData: [
-      // {
-      //   id: '0',
-      //   message:
-      //     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed.',
-      //   operator: true,
-      // },
-      // {
-      //   id: '1',
-      //   message:
-      //     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed.',
-      //   operator: false,
-      // },
-      // {
-      //   id: '2',
-      //   message:
-      //     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed.',
-      //   operator: true,
-      // },
-      // {
-      //   id: '3',
-      //   message:
-      //     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed.',
-      //   operator: false,
-      // },
-    ],
+    isShowKeyboard: false,
+    chatData: [],
   };
+  _keyboardDidShow = () => {
+    this.setState({isShowKeyboard: true});
+  };
+  _keyboardDidHide = () => {
+    this.setState({isShowKeyboard: false});
+  };
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
 
   componentDidMount = async () => {
     const {operatorId, operatorName} = this.props.route.params;
     const token = await AsyncStorage.getItem('token');
-    this.setState({token, operatorId});
+    this.setState({token, operatorId, operatorName});
+    this.roomCreation(operatorId);
+    this.chatHistory(token);
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide,
+    );
+  };
 
+  roomCreation = (operatorId) => {
+    axios({
+      method: 'post',
+      url: `${baseurl}chat/api/room/${operatorId}/`,
+      headers: {Authorization: `Token ${this.state.token}`},
+    })
+      .then(async (response) => {
+        const roomId = await response.data.room_id;
+        this.setState({roomId: roomId});
+        this.socket(roomId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  chatHistory = () => {
     axios({
       method: 'get',
-      url: `${baseurl}chat/api/room/${operatorId}/`,
-      headers: {Authorization: `Token ${token}`},
+      url: `${baseurl}chat/api/room/${this.state.operatorId}/`,
+      headers: {Authorization: `Token ${this.state.token}`},
     })
-      .then((response) => {
-        const roomId = response.data.room_id;
-        this.socket(roomId);
-        this.setState({roomId, chatData: response.data.chats});
+      .then(async (response) => {
+        this.setState({chatData: response.data.chats});
       })
       .catch((err) => {
         console.log(err);
@@ -70,118 +86,142 @@ class Chat extends Component {
   };
 
   socket = (roomId) => {
-    console.log(`ws://digimonk.co:1612/ws/chat/${'44'}/${this.state.token}/`);
     this.ws = new WebSocket(
-      `ws://digimonk.co:1612/ws/chat/${'44'}/${this.state.token}/`,
+      `ws://digimonk.co:1612/ws/chat/${roomId}/${this.state.token}/`,
     );
-    console.log(this.ws, 'ws');
 
-    this.ws.onopen = (open) => {
-      console.log(open, 'open');
-    };
+    this.ws.onopen = (open) => {};
     this.ws.onmessage = (res) => {
-      console.log(res.data, 'reesdf');
       const chatHistory = this.state.chatData;
-      chatHistory.push({user_id: res.data.user, chat: res.data.message});
+      chatHistory.push({
+        chat: JSON.parse(res.data).message,
+        user_id: JSON.parse(res.data).user,
+      });
       this.setState({chatData: chatHistory});
     };
   };
 
   sendMessage = () => {
-    this.ws.send(JSON.stringify({message: this.state.message}));
-    const chatHistory = this.state.chatData;
-    chatHistory.push({user_id: '7', chat: this.state.message});
-    this.setState({chatData: chatHistory});
+    if (this.state.message == '') {
+    } else {
+      this.ws.send(JSON.stringify({message: this.state.message}));
+      this.setState({message: ''});
+    }
+
+    // const chatHistory = this.state.chatData;
+    // chatHistory.push({chat: this.state.message});
+    // this.setState({chatData: chatHistory});
   };
 
   render() {
-    const {chatData, operatorId} = this.state;
+    const {chatData, operatorId, isShowKeyboard, operatorName} = this.state;
+
     return (
-      <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
+      <View
+        style={{
+          height: height,
+          width: '100%',
+        }}>
         <SafeAreaView />
         <Header
           leftIcon={true}
-          middleText={'Messages'}
+          middleText={operatorName}
           notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
         />
-        <KeyboardAwareScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          extraScrollHeight={100}
-          contentContainerStyle={{height: '98%'}}>
-          <FlatList
-            data={chatData}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item: chat}) => {
-              return (
-                <View
-                  style={[
-                    styles.messageView,
-                    chat.user_id == operatorId
-                      ? {
-                          alignSelf: 'flex-start',
-                          backgroundColor: '#EAECF2',
-                          borderBottomRightRadius: 10,
-                          borderBottomLeftRadius: 0,
-                        }
-                      : {
-                          alignSelf: 'flex-end',
-                          backgroundColor: '#004ACE',
-                          borderBottomRightRadius: 0,
-                          borderBottomLeftRadius: 10,
-                        },
-                  ]}>
-                  <Text
-                    style={{
-                      fontFamily: FontStyle.regular,
-                      fontSize: 12,
-                      color: chat.user_id == operatorId ? '#63697B' : '#FFFFFF',
-                    }}>
-                    {chat.chat}
-                  </Text>
-                </View>
-              );
-            }}
-          />
-
-          <View style={{height: '10%'}}>
+        <KeyboardAvoidingView behavior="padding">
+          <View
+            style={{
+              height: isShowKeyboard ? height / 2.2 : height / 1.2,
+            }}>
+            <FlatList
+              data={chatData}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={[
+                isShowKeyboard ? {paddingBottom: '20%'} : null,
+              ]}
+              ref={(ref) => (this.flatList = ref)}
+              onContentSizeChange={() =>
+                this.flatList.scrollToEnd({animated: false})
+              }
+              renderItem={({item: chat}) => {
+                return (
+                  <View
+                    style={[
+                      styles.messageView,
+                      chat.user_id == operatorId
+                        ? {
+                            alignSelf: 'flex-start',
+                            backgroundColor: '#EAECF2',
+                            borderBottomRightRadius: 10,
+                            borderBottomLeftRadius: 0,
+                          }
+                        : {
+                            alignSelf: 'flex-end',
+                            backgroundColor: '#004ACE',
+                            borderBottomRightRadius: 0,
+                            borderBottomLeftRadius: 10,
+                          },
+                    ]}>
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.regular,
+                        fontSize: 12,
+                        color:
+                          chat.user_id == operatorId ? '#63697B' : '#FFFFFF',
+                      }}>
+                      {chat.chat}
+                    </Text>
+                  </View>
+                );
+              }}
+            />
             <View
               style={{
-                flexDirection: 'row',
-                height: '80%',
-                width: '90%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                alignSelf: 'center',
-                backgroundColor: '#F4F7FF',
-                borderRadius: 20,
-                paddingHorizontal: '5%',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.27,
-                shadowRadius: 2.65,
-
-                elevation: 2,
+                minHeight: 60,
+                maxHeight: 120,
+                marginBottom: 20,
+                paddingVertical: '1%',
               }}>
-              <TextInput
-                multiline={true}
-                style={{width: '90%'}}
-                placeholder="Type a message"
-                onChangeText={(text) => this.setState({message: text})}
-              />
-              <TouchableOpacity onPress={() => this.sendMessage()}>
-                <Image
-                  source={require('../../Assets/Images/sendicon.png')}
-                  style={{height: 17, width: 17, resizeMode: 'contain'}}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  minHeight: 60,
+                  maxHeight: 120,
+                  paddingVertical: '1%',
+                  width: '90%',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  alignSelf: 'center',
+                  backgroundColor: '#F4F7FF',
+                  borderRadius: 20,
+                  paddingHorizontal: '5%',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.27,
+                  shadowRadius: 2.65,
+                  elevation: 2,
+                }}>
+                <TextInput
+                  multiline={true}
+                  style={{width: '90%'}}
+                  placeholder="Type a message"
+                  onChangeText={(text) => this.setState({message: text})}
+                  value={this.state.message}
                 />
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.sendMessage()}>
+                  <Image
+                    source={require('../../Assets/Images/sendicon.png')}
+                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }

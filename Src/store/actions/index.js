@@ -1,4 +1,5 @@
 import axios from 'axios';
+import promise from 'redux-promise';
 import {baseurl} from '../../Common/Baseurl';
 
 export function SubscriptionPlan(token) {
@@ -41,16 +42,42 @@ export function getAllBeneficiary(token) {
   };
 }
 
-export function getCallLogs(token) {
-  const request = axios({
-    method: 'get',
-    url: `${baseurl}beneficiary/activity/`,
-    headers: {Authorization: `Token ${token}`},
-  })
-    .then((response) => response.data)
-    .catch((err) => console.log(err));
-  return {
-    type: 'GetCallLogs',
-    payload: request,
+// export const StaticAction = (pay,) => {
+//   return {
+//     type: 'GetBeneficiary',
+//     payload: request,
+//   };
+// };
+
+// export const getCallLogs = (token) => {
+//   const request = axios({
+//     method: 'get',
+//     url: `${baseurl}beneficiary/activity/`,
+//     headers: {Authorization: `Token ${token}`},
+//   })
+//     .then((response) => response.data)
+//     .catch((err) => console.log(err));
+//   console.log(request, 'request');
+//   return {
+//     type: 'GetCallLogs',
+//     payload: request,
+//   };
+// };
+
+export const getCallLogs = (token) => {
+  return (dispatch) => {
+    axios({
+      method: 'get',
+      url: `${baseurl}beneficiary/activity/`,
+      headers: {Authorization: `Token ${token}`},
+    })
+      .then((response) => {
+        dispatch({type: 'GetCallLogs', payload: response.data});
+        dispatch({type: 'TOGGLE_LOAD'});
+      })
+      .catch((error) => {
+        dispatch({type: 'FETCH_ERROR'});
+        dispatch({type: 'TOGGLE_LOAD'});
+      });
   };
-}
+};
