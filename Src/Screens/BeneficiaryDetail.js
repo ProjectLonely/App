@@ -21,11 +21,18 @@ import AlertModal from '../Common/AlertModal';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getCallLogs} from '../store/actions/index';
+import CalendarModal from '../Common/CalendarModal';
+import moment from 'moment';
+import Styles from '../Common/Style';
 
 const {height, width} = Dimensions.get('screen');
 
 class BeneficiaryDetail extends Component {
   state = {
+    calendarValue: false,
+    startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
+    date: moment('Sep 01 2021'),
+    endDate: moment().format('MMM DD YYYY'),
     schedule: [],
     dayId: '',
     expandValue: false,
@@ -62,7 +69,7 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response);
+        console.log(response, 'beneficiasldf');
         this.setState({
           beneficiaryData: response.data,
           schedule: response.data.schedule,
@@ -84,6 +91,12 @@ class BeneficiaryDetail extends Component {
   };
 
   updateProfile = (beneficiaryId) => {
+    console.log({
+      headers: {Authorization: `Token ${this.state.token}`},
+      data: {
+        schedule: this.state.schedule,
+      },
+    });
     axios({
       method: 'patch',
       url: `${baseurl}beneficiary/${beneficiaryId}/`,
@@ -93,6 +106,7 @@ class BeneficiaryDetail extends Component {
       },
     })
       .then((response) => {
+        console.log(response);
         if (response.status == 200) {
           this.setState({
             modalValue: true,
@@ -101,6 +115,7 @@ class BeneficiaryDetail extends Component {
         }
       })
       .catch((err) => {
+        console.log(err.response, 'err');
         this.setState({
           modalValue: true,
           message: 'Something went wrong',
@@ -120,8 +135,46 @@ class BeneficiaryDetail extends Component {
     this.setState({schedule: beneficiaryData});
   };
 
+  selectDuration = (duration) => {
+    if (duration == 'week') {
+      const from_date = moment().subtract(6, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'week',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    } else if (duration == 'month') {
+      const from_date = moment().subtract(30, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'month',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    } else if (duration == 'year') {
+      const from_date = moment().subtract(364, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'year',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    }
+  };
+
+  startCallBack = (childData) => {
+    this.setState({
+      startDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
+  endCallBack = (childData) => {
+    this.setState({
+      endDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
   render() {
-    console.log(this.props.callingData, 'calling Data');
     const {
       beneficiaryData,
       timeOption,
@@ -131,6 +184,10 @@ class BeneficiaryDetail extends Component {
       modalValue,
       message,
       beneficiaryId,
+      calendarValue,
+      startDate,
+      endDate,
+      durationStatus,
     } = this.state;
 
     return (
@@ -144,6 +201,16 @@ class BeneficiaryDetail extends Component {
         />
 
         <View style={{alignItems: 'center', width: '100%'}}>
+          <CalendarModal
+            calendarValue={calendarValue}
+            closeModal={() => this.setState({calendarValue: false})}
+            lastWeek={() => this.selectDuration('week')}
+            lastMonth={() => this.selectDuration('month')}
+            lastYear={() => this.selectDuration('year')}
+            startDateFromParent={this.startCallBack}
+            endDateFromParent={this.endCallBack}
+            durationStatus={durationStatus}
+          />
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.setState({modalValue: false})}
@@ -300,10 +367,7 @@ class BeneficiaryDetail extends Component {
                       </View>
 
                       <TouchableOpacity
-                        onPress={() =>
-                          // this.addDayTimer(dayOption.day)
-                          this.updateProfile(beneficiaryData.id)
-                        }
+                        onPress={() => this.updateProfile(beneficiaryData.id)}
                         style={{
                           height: 26,
                           width: 62,
@@ -334,7 +398,9 @@ class BeneficiaryDetail extends Component {
                   }}>
                   Call Logs
                 </Text>
-                <View style={styles.calendarView}>
+                <TouchableOpacity
+                  onPress={() => this.setState({calendarValue: !calendarValue})}
+                  style={Styles.calendarView}>
                   <Image
                     source={require('../Assets/Images/calendar.png')}
                     style={{
@@ -350,9 +416,9 @@ class BeneficiaryDetail extends Component {
                       fontSize: 12,
                       color: '#525F77',
                     }}>
-                    August 2021
+                    {startDate} - {endDate}
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
               <FlatList
                 data={this.props.callingData}
@@ -360,72 +426,82 @@ class BeneficiaryDetail extends Component {
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: callingData}) => {
-                  return callingData.beneficiary_id == beneficiaryId ? (
-                    <View
-                      style={[
-                        styles.containerStyle,
-                        {
-                          backgroundColor:
-                            callingData.callStatus == 'call_received'
-                              ? '#D5FAFB'
-                              : '#FF7A7A',
-                        },
-                      ]}>
-                      <View style={{width: '80%'}}>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.medium,
-                            color: '#3A3A3A',
-                            fontSize: 12,
-                          }}>
-                          {callingData.callDateTime}
-                        </Text>
-
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.bold,
-                            fontSize: 13,
-                            color: '#004ACE',
-                          }}>{`Companion Name: ${callingData.companionName}`}</Text>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.regular,
-                            color: '#3A3A3A',
-                            fontSize: 15,
-                            top: 5,
-                          }}>
-                          {callingData.status}
-                        </Text>
-                      </View>
+                  console.log(callingData, 'callingdata');
+                  const callDate = moment(callingData.callDate);
+                  return moment(callDate).isBetween(
+                    startDate,
+                    endDate,
+                    null,
+                    [],
+                  ) ? (
+                    callingData.beneficiary_id == beneficiaryId ? (
                       <View
-                        style={{
-                          height: 21,
-                          width: '20%',
-                          borderWidth: 1,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderRadius: 5,
-                          borderColor:
-                            callingData.callStatus == 'call_received'
-                              ? '#1F9F00'
-                              : '#E40000',
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.regular,
-                            fontSize: 8,
+                        style={[
+                          styles.containerStyle,
+                          {
+                            backgroundColor:
+                              callingData.callStatus == 'call_received'
+                                ? '#D5FAFB'
+                                : '#FF7A7A',
+                          },
+                        ]}>
+                        <View style={{width: '80%'}}>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.medium,
+                              color: '#3A3A3A',
+                              fontSize: 12,
+                            }}>
+                            {callingData.callDateTime}
+                          </Text>
 
-                            color:
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.bold,
+                              fontSize: 13,
+                              color: '#004ACE',
+                            }}>{`Companion Name: ${callingData.companionName}`}</Text>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.regular,
+                              color: '#3A3A3A',
+                              fontSize: 15,
+                              top: 5,
+                            }}>
+                            {callingData.status}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            height: 21,
+                            width: '20%',
+                            borderWidth: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: 5,
+                            borderColor:
                               callingData.callStatus == 'call_received'
                                 ? '#1F9F00'
-                                : '#EA3232',
+                                : '#E40000',
                           }}>
-                          {callingData.callStatus == 'call_received'
-                            ? 'Call Received'
-                            : 'Call Missed'}
-                        </Text>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.regular,
+                              fontSize: 8,
+
+                              color:
+                                callingData.callStatus == 'call_received'
+                                  ? '#1F9F00'
+                                  : '#EA3232',
+                            }}>
+                            {callingData.callStatus == 'call_received'
+                              ? 'Call Received'
+                              : 'Call Missed'}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
+                    ) : null
                   ) : null;
                 }}
               />
@@ -497,31 +573,11 @@ const styles = StyleSheet.create({
     padding: '5%',
     flexDirection: 'row',
   },
-  calendarView: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 22,
-    width: 98,
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 11,
-  },
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'get call ');
   return {
-    callingData: state.GetCallLogs,
+    callingData: state.GetCallLogs.data,
   };
 }
 

@@ -18,6 +18,7 @@ import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import AlertModal from '../../Common/AlertModal';
+import Spinner from '../../Common/Spinner';
 
 class AccountInformation extends Component {
   state = {
@@ -26,6 +27,8 @@ class AccountInformation extends Component {
     confirmPassword: '',
     sourceURL: '',
     imageModal: false,
+    updateLoader: false,
+    success: false,
   };
 
   componentDidMount = async () => {
@@ -67,6 +70,7 @@ class AccountInformation extends Component {
           'Password must be 8 characters long and contain one uppercase, one lowercase, one numeric & one special character.  ',
       });
     } else {
+      this.setState({updateLoader: true});
       axios({
         method: 'post',
         url: `${baseurl}profile/`,
@@ -79,9 +83,20 @@ class AccountInformation extends Component {
       })
         .then((response) => {
           console.log(response);
+          this.setState({
+            modalValue: true,
+            message: 'Profile is updated successfully',
+            updateLoader: false,
+            success: true,
+          });
         })
         .catch((err) => {
           console.log(err.response);
+          this.setState({
+            modalValue: true,
+            message: 'Something went wrong',
+            updateLoader: false,
+          });
         });
     }
   };
@@ -93,7 +108,6 @@ class AccountInformation extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      console.log(image, 'image');
       this.setState({
         sourceURL: image.sourceURL,
         imageModal: false,
@@ -117,22 +131,33 @@ class AccountInformation extends Component {
     this.setState({imageModal: true});
   };
 
+  renderButton = () => {
+    if (this.state.updateLoader) {
+      return <Spinner spinnercolor="#fff" marginTop={18} />;
+    } else {
+      return <Button onPress={this.updateProfileData}>UPDATE</Button>;
+    }
+  };
+
+  closeModal = () => {
+    if (this.state.success == true) {
+      this.setState({modalValue: false}, () => {
+        this.props.navigation.navigate('Dashboard');
+      });
+    } else {
+      this.setState({modalValue: false});
+    }
+  };
+
   render() {
-    const {
-      password,
-      confirmPassword,
-      sourceURL,
-      imageModal,
-      modalValue,
-      message,
-    } = this.state;
+    const {sourceURL, imageModal, modalValue, message} = this.state;
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
         <AlertModal
           modalValue={modalValue}
-          closeModal={() => this.setState({modalValue: false})}
+          closeModal={() => this.closeModal()}
           message={message}
         />
         <Header
@@ -210,8 +235,8 @@ class AccountInformation extends Component {
             galleryPress={() => this.selectImageFromGallery()}
             cameraPress={() => this.selectImageFromCamera()}
           />
-          <View style={{paddingTop: '20%'}}>
-            <Button onPress={this.updateProfileData}>UPDATE</Button>
+          <View style={{paddingTop: '20%', alignItems: 'center'}}>
+            {this.renderButton()}
           </View>
         </KeyboardAwareScrollView>
       </View>

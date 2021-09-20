@@ -25,6 +25,26 @@ const Styles = StyleSheet.create({
 
     elevation: 2,
   },
+  calendarView: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 22,
+    width: 'auto',
+    paddingHorizontal: 5,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 11,
+  },
 });
 
 export default Styles;

@@ -134,7 +134,7 @@ class AddBenificiaryPage1 extends Component {
       sourceURL,
       timeZoneOption,
     } = this.state;
-    console.log(this.props.beneficiaryData);
+
     return (
       <View
         style={{

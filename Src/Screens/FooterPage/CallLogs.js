@@ -18,32 +18,14 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 
 class CallLogs extends Component {
-  state = {
-    logsData: [
-      {
-        // id: '0',
-        // beneficiaryName: 'Martin Bravo',
-        // relationship: 'Father',
-        // callLogs: [
-        //   {
-        //     id: '0',
-        //     dateTime: 'Aug 07, 2021 | 10:00 am',
-        //     description: `He is feeling well,\nNext week there is a doctor appointment.`,
-        //     callStatus: 'Call Received',
-        //   },
-        // ],
-      },
-    ],
-  };
-
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.props.getCallLogs(token);
   };
 
   render() {
-    const {callingData, mainData} = this.props;
-    console.log(mainData, 'mainData');
+    const {callingData, operatorData} = this.props;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -53,7 +35,7 @@ class CallLogs extends Component {
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
           />
-          <View style={{height: '76%', backgroundColor: '#fff'}}>
+          <View style={{height: '84%', backgroundColor: '#fff'}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -97,8 +79,9 @@ class CallLogs extends Component {
               }}
             />
             <FlatList
-              data={mainData}
-              renderItem={({item: mainData}) => {
+              data={operatorData}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item: operatorData}) => {
                 return (
                   <View>
                     <View
@@ -119,7 +102,7 @@ class CallLogs extends Component {
                           fontSize: 18,
                           left: 5,
                         }}>
-                        {mainData.name}
+                        {operatorData.name}
                       </Text>
                       <Text
                         style={{
@@ -128,13 +111,14 @@ class CallLogs extends Component {
                           fontSize: 18,
                           left: 5,
                         }}>
-                        {` (${mainData.relationship})`}
+                        {` (${operatorData.relationship})`}
                       </Text>
                     </View>
                     <FlatList
                       data={callingData}
                       renderItem={({item: callLogs}) => {
-                        return mainData.name == callLogs.name ? (
+                        console.log(callLogs, 'calllogs');
+                        return operatorData.name == callLogs.name ? (
                           <View style={Styles.smallContainer}>
                             <View style={{width: '72%'}}>
                               <Text
@@ -165,7 +149,7 @@ class CallLogs extends Component {
                                   fontFamily: FontStyle.medium,
                                   fontSize: 12,
                                   color:
-                                    callLogs.callStatus == 'Call Received'
+                                    callLogs.callStatus == 'call_received'
                                       ? '#1F9F00'
                                       : '#EA3232',
                                 }}>
@@ -202,7 +186,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 22,
-    width: 98,
+    minWidth: 98,
+    width: 'auto',
+    paddingHorizontal: 5,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -219,10 +205,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    mainData: state.GetCallLogs.filter(
+    operatorData: state.GetCallLogs.data.filter(
       (v, i, a) => a.findIndex((t) => t.name === v.name) === i,
     ),
-    callingData: state.GetCallLogs,
+    callingData: state.GetCallLogs.data,
   };
 }
 

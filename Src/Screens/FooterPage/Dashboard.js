@@ -20,6 +20,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import LoadingView from '../../Common/LoadingView';
+import Styles from '../../Common/Style';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -177,7 +178,7 @@ class Beneficiary extends Component {
                 </Text>
                 <TouchableOpacity
                   onPress={() => this.setState({calendarValue: !calendarValue})}
-                  style={styles.calendarView}>
+                  style={Styles.calendarView}>
                   <Image
                     source={require('../../Assets/Images/calendar.png')}
                     style={{
@@ -320,27 +321,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 11,
   },
-  calendarView: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 22,
-    minWidth: 98,
-    width: 'auto',
-    paddingHorizontal: 5,
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 11,
-  },
+
   containerStyle: {
     minHeight: height / 5,
     maxHeight: 'auto',
@@ -353,7 +334,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'state');
   return {
     callingData: state.GetCallLogs.data,
     loading: state.GetCallLogs.loading,

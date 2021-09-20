@@ -3,7 +3,7 @@ export default function (state = {loading: true, data: []}, action) {
     case 'GetCallLogs':
       return {...state, data: action.payload};
     case 'TOGGLE_LOAD':
-      return {...state, loading: !state.loading};
+      return {...state, loading: false};
     default:
       return state;
   }
