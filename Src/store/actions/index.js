@@ -1,20 +1,6 @@
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 
-// export function SubscriptionPlan(token) {
-//   const request = axios({
-//     method: 'get',
-//     headers: {Authorization: 'Token ' + token},
-//     url: `${baseurl}plans/`,
-//   })
-//     .then((response) => response.data)
-//     .catch((err) => err.response.data);
-//   return {
-//     type: 'SubscriptionPlan',
-//     payload: request,
-//   };
-// }
-
 export const SubscriptionPlan = (token) => {
   return (dispatch) => {
     axios({

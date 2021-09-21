@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   Keyboard,
+  RefreshControl,
 } from 'react-native';
 
 import FontStyle from '../../Assets/Fonts/FontStyle';
@@ -26,6 +27,8 @@ class Chat extends Component {
     message: '',
     isShowKeyboard: false,
     chatData: [],
+    lastChatTime: '',
+    rohit: true,
   };
   _keyboardDidShow = () => {
     this.setState({isShowKeyboard: true});
@@ -78,7 +81,10 @@ class Chat extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then(async (response) => {
-        this.setState({chatData: response.data.chats});
+        this.setState({
+          chatData: response.data.chats,
+          lastChatTime: response.data.chats[0].created_at,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -107,10 +113,29 @@ class Chat extends Component {
       this.ws.send(JSON.stringify({message: this.state.message}));
       this.setState({message: ''});
     }
+  };
 
-    // const chatHistory = this.state.chatData;
-    // chatHistory.push({chat: this.state.message});
-    // this.setState({chatData: chatHistory});
+  onContentOffsetChanged = () => {
+    this.setState({rohit: false});
+    axios({
+      method: 'get',
+      url: `${baseurl}chat/api/room/${this.state.operatorId}/?last_chat=${this.state.lastChatTime}`,
+      headers: {Authorization: `Token ${this.state.token}`},
+    })
+      .then(async (response) => {
+        const chatHistory = this.state.chatData;
+        if (response.data.chats.length > 0) {
+          const reverseData = response.data.chats.reverse();
+          reverseData.map((data) => chatHistory.splice(0, 0, data));
+          this.setState({
+            lastChatTime: response.data.chats.pop().created_at,
+            chatData: chatHistory,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -141,8 +166,17 @@ class Chat extends Component {
                 isShowKeyboard ? {paddingBottom: '20%'} : null,
               ]}
               ref={(ref) => (this.flatList = ref)}
+              refreshControl={
+                <RefreshControl
+                  tintColor="#004ACE"
+                  refreshing={false}
+                  onRefresh={this.onContentOffsetChanged}
+                />
+              }
               onContentSizeChange={() =>
-                this.flatList.scrollToEnd({animated: false})
+                this.state.rohit
+                  ? this.flatList.scrollToEnd({animated: true})
+                  : null
               }
               renderItem={({item: chat}) => {
                 return (
