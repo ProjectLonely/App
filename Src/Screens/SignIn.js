@@ -47,13 +47,15 @@ class SignIn extends Component {
         },
       })
         .then(async (response) => {
-          console.log(response, 'response');
           this.setState({signinLoader: false});
           if (response.data.is_active == false) {
             await AsyncStorage.setItem('temp_token', response.data.temp_token);
+
             this.props.navigation.navigate('VerificationCode');
           } else if (response.data.is_active == true) {
+            console.log(response.data.name);
             await AsyncStorage.setItem('token', response.data.token);
+            await AsyncStorage.setItem('name', response.data.name);
             this.props.navigation.navigate('Dashboard');
           }
         })

@@ -27,6 +27,7 @@ class AddBenificiaryPage3 extends Component {
   state = {
     modalValue: false,
     dayId: '',
+    completeValue: false,
     expandValue: false,
     newArray: [],
     dayOption: [
@@ -52,7 +53,26 @@ class AddBenificiaryPage3 extends Component {
     const {beneficiaryData} = this.props;
     this.setState({submitLoader: true});
     const token = await AsyncStorage.getItem('token');
-    this.props.completeBeneficiary();
+    if (beneficiaryData.newArray.length < 1) {
+      this.setState({
+        modalValue: true,
+        message: 'Call schedule should not be blank.',
+      });
+    }
+    console.log({
+      relation: beneficiaryData.relationShipId,
+      name: beneficiaryData.name,
+      age: beneficiaryData.age,
+      gender: beneficiaryData.genderId,
+      timezone: beneficiaryData.timeZone,
+      phone_no: beneficiaryData.phoneNumber,
+      about: beneficiaryData.aboutPerson,
+      comment: beneficiaryData.comment,
+      seekings: beneficiaryData.seekingOption,
+      schedule: beneficiaryData.newArray,
+      image: beneficiaryData.base64,
+    });
+
     axios({
       method: 'post',
       url: `${baseurl}beneficiary/create/`,
@@ -68,18 +88,21 @@ class AddBenificiaryPage3 extends Component {
         comment: beneficiaryData.comment,
         seekings: beneficiaryData.seekingOption,
         schedule: beneficiaryData.newArray,
+        image: beneficiaryData.base64,
       },
     })
       .then((response) => {
         this.setState({submitLoader: false});
         if (response.status == 201) {
           this.setState({
+            completeValue: true,
             modalValue: true,
             message: 'Beneficiary added successfully',
           });
         }
       })
       .catch((err) => {
+        console.log(err.response, 'beneficiarypage');
         this.setState({
           modalValue: true,
           message: 'Something went wrong',
@@ -118,8 +141,12 @@ class AddBenificiaryPage3 extends Component {
   };
 
   closeModal = () => {
-    this.setState({modalValue: false});
-    this.props.navigation.navigate('AddBenificiaryPage4');
+    if (this.state.completeValue) {
+      this.setState({modalValue: false, completeValue: false});
+      this.props.navigation.navigate('AddBenificiaryPage4');
+    } else {
+      this.setState({modalValue: false});
+    }
   };
 
   render() {
@@ -354,13 +381,14 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'benefici');
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addBenificiary, completeBeneficiary}, dispatch);
+  return bindActionCreators({addBenificiary}, dispatch);
 }
 
 export default connect(

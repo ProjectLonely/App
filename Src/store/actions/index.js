@@ -55,7 +55,6 @@ export const getCallLogs = (token) => {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'getcall');
         dispatch({type: 'GetCallLogs', payload: response.data});
         dispatch({type: 'TOGGLE_LOAD'});
       })
@@ -63,6 +62,24 @@ export const getCallLogs = (token) => {
         console.log(error);
         dispatch({type: 'FETCH_ERROR'});
         dispatch({type: 'TOGGLE_LOAD'});
+      });
+  };
+};
+
+export const unseenNotification = (token) => {
+  console.log(token, 'token');
+  return (dispatch) => {
+    axios({
+      method: 'get',
+      url: `${baseurl}api/notification/active-count/`,
+      headers: {Authorization: `Token ${token}`},
+    })
+      .then((response) => {
+        console.log(response, 'response');
+        dispatch({type: 'NotificationCount', payload: response.data.count});
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 };

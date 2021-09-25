@@ -10,13 +10,15 @@ const initialState = {
   selectedSeekOption: [],
   comment: '',
   newArray: [],
+  base64: '',
+  sourceURL: '',
 };
 export default function (state = initialState, action) {
   switch (action.type) {
     case 'addBeneficiary':
       return {...state, ...action.payload};
     case 'completeBeneficiary':
-      return initialState;
+      return {...initialState, newArray: []};
     default:
       return state;
   }

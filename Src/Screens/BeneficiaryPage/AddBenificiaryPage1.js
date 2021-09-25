@@ -96,9 +96,13 @@ class AddBenificiaryPage1 extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      console.log(image, 'image');
+      // console.log(image, 'image');
+      // this.props.addBenificiary({
+      //   sourceURL: image.sourceURL,
+      //   // base64: image.data,
+      // });
       this.setState({
-        sourceURL: image.sourceURL,
+        // sourceURL: image.sourceURL,
         imageModal: false,
       });
     });
@@ -110,8 +114,12 @@ class AddBenificiaryPage1 extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
+      // this.props.addBenificiary({
+      //   sourceURL: image.sourceURL,
+      //   // base64: image.data,
+      // });
       this.setState({
-        sourceURL: image.sourceURL,
+        // sourceURL: image.sourceURL,
         imageModal: false,
       });
     });
@@ -238,7 +246,7 @@ class AddBenificiaryPage1 extends Component {
               paddingHorizontal: '1%',
               borderColor: '#004ACE',
               borderWidth: 1,
-              height: 180,
+              height: 130,
               width: '88%',
               marginHorizontal: '1%',
             }}
@@ -351,7 +359,7 @@ class AddBenificiaryPage1 extends Component {
             }
             value={this.props.beneficiaryData.phoneNumber}
           />
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -359,19 +367,19 @@ class AddBenificiaryPage1 extends Component {
             }}>
             <Text style={styles.headingText}>Add Beneficiary Picture</Text>
             <TouchableOpacity onPress={this.openModal} style={styles.imageView}>
-              {sourceURL == '' ? (
+              {this.props.beneficiaryData.sourceURL == '' ? (
                 <Image
                   source={require('../../Assets/Images/group.png')}
                   style={{height: 100, width: 100, borderRadius: 50}}
                 />
               ) : (
                 <Image
-                  source={{uri: sourceURL}}
+                  source={{uri: this.props.beneficiaryData.sourceURL}}
                   style={{height: 100, width: 100, borderRadius: 50}}
                 />
               )}
             </TouchableOpacity>
-          </View>
+          </View> */}
           <ImageModal
             imageModal={imageModal}
             closeModal={() => this.setState({imageModal: false})}
@@ -415,6 +423,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'state');
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

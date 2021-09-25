@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   View,
@@ -11,9 +11,33 @@ import {
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
+import {connect} from 'react-redux';
+import {unseenNotification} from '../store/actions';
+import {bindActionCreators} from 'redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Header = ({notification, leftIcon, middleText, notifyPress}) => {
+const Header = ({
+  notification,
+  leftIcon,
+  middleText,
+  notifyPress,
+  unseenCount,
+  unseenNotification,
+}) => {
   const navigation = useNavigation();
+  // const dispatch = useDispatch();
+  // const [unseenCount, setCount] = useState(
+  //   useStore().getState().unseenNotification,
+  // );
+
+  useEffect(() => {
+    const data = async () => {
+      const token = await AsyncStorage.getItem('token');
+      console.getlog(token, 'token');
+      // dispatch(unseenNotification(token));
+      unseenNotification(token);
+    };
+  }, [unseenCount]);
   return (
     <ImageBackground
       source={require('../Assets/Images/headerimage.png')}
@@ -55,8 +79,11 @@ const Header = ({notification, leftIcon, middleText, notifyPress}) => {
           <TouchableOpacity onPress={notifyPress} style={styles.notifyView}>
             <Image
               source={require('../Assets/Images/bell.png')}
-              style={{width: 25, height: 23, resizeMode: 'contain'}}
+              style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
             />
+            <Text style={{top: -10, left: -2, color: '#004ACE'}}>
+              {unseenCount}
+            </Text>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -80,7 +107,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 11,
+    flexDirection: 'row',
   },
 });
 
-export default Header;
+function mapStateToProps(state) {
+  return {
+    unseenCount: state.unseenNotification,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({unseenNotification}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
+
+// export default Header;

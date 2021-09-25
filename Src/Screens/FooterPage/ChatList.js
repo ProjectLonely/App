@@ -19,7 +19,7 @@ import moment from 'moment';
 import Footer from '../../Common/Footer';
 
 class ChatList extends Component {
-  state = {modalValue: false, operatorArray: []};
+  state = {modalValue: false, operatorArray: [], activeUser: []};
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -29,12 +29,21 @@ class ChatList extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response);
-        this.setState({operatorArray: response.data});
+        this.setState({operatorArray: response.data, token});
       })
       .catch((err) => {
         console.log(err);
       });
+    this.socket(token);
+  };
+
+  socket = (token) => {
+    this.ws = new WebSocket(`ws://digimonk.co:1612/ws/chat/global/${token}/`);
+
+    this.ws.onmessage = (res) => {
+      const activeUser = JSON.parse(res.data).active_users;
+      this.setState({activeUser});
+    };
   };
 
   selectChat = (operatorId, operatorName) => {
@@ -69,21 +78,41 @@ class ChatList extends Component {
                     onPress={() =>
                       this.selectChat(operatorData.id, operatorData.name)
                     }
-                    style={{width: '80%'}}>
-                    <View style={styles.normalView}>
-                      <Image
-                        source={require('../../Assets/Images/smalluser.png')}
-                        style={styles.imageStyle}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: FontStyle.bold,
-                          fontSize: 13,
-                          color: '#10275A',
-                          left: 5,
-                        }}>
-                        {operatorData.name}
-                      </Text>
+                    style={{width: '100%'}}>
+                    <View
+                      style={[
+                        styles.normalView,
+                        {justifyContent: 'space-between'},
+                      ]}>
+                      <View style={{flexDirection: 'row'}}>
+                        <Image
+                          source={require('../../Assets/Images/smalluser.png')}
+                          style={styles.imageStyle}
+                        />
+
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.bold,
+                            fontSize: 13,
+                            color: '#10275A',
+                            left: 5,
+                          }}>
+                          {operatorData.name}
+                        </Text>
+                      </View>
+                      {this.state.activeUser.some(
+                        (data) => data == operatorData.id,
+                      ) ? (
+                        <View
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 5,
+                            backgroundColor: 'green',
+                            alignSelf: 'flex-end',
+                          }}
+                        />
+                      ) : null}
                     </View>
                     <View style={styles.normalView}>
                       <Image
@@ -127,6 +156,7 @@ class ChatList extends Component {
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
           chatPress={() => this.props.navigation.navigate('ChatList')}
+          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
         />
       </View>
     );

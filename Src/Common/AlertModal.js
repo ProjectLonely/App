@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 import FontStyle from '../Assets/Fonts/FontStyle';
 
 const AlertModal = ({modalValue, closeModal, message}) => {
+  console.log(modalValue, message, 'asdfkl');
   return (
     <View>
       <Modal

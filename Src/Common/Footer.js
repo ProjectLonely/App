@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,9 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import {connect} from 'react-redux';
+import {unseenNotification} from '../store/actions';
+import {bindActionCreators} from 'redux';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
@@ -19,7 +22,17 @@ const Footer = ({
   dashboardPress,
   callLogPress,
   chatPress,
+  unseenCount,
+  unseenNotification,
 }) => {
+  useEffect(() => {
+    const data = async () => {
+      const token = await AsyncStorage.getItem('token');
+      console.getlog(token, 'token');
+      // dispatch(unseenNotification(token));
+      unseenNotification(token);
+    };
+  }, [unseenCount]);
   return (
     <View style={styles.mainContainer}>
       <TouchableOpacity onPress={dashboardPress} style={styles.optionContainer}>
@@ -52,15 +65,38 @@ const Footer = ({
       </TouchableOpacity>
       <TouchableOpacity onPress={chatPress} style={styles.optionContainer}>
         {footerValue == 'chat' ? (
-          <Image
-            source={require('../Assets/Images/footerimage/chatactive.png')}
-            style={styles.iconStyle}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              source={require('../Assets/Images/footerimage/chatactive.png')}
+              style={styles.iconStyle}
+            />
+            <Text
+              style={{
+                top: -8,
+                left: -5,
+                color: '#004ACE',
+                fontFamily: FontStyle.bold,
+                fontSize: 16,
+              }}>
+              {unseenCount}
+            </Text>
+          </View>
         ) : (
-          <Image
-            source={require('../Assets/Images/footerimage/chatinactive.png')}
-            style={styles.iconStyle}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              source={require('../Assets/Images/footerimage/chatinactive.png')}
+              style={styles.iconStyle}
+            />
+            <Text
+              style={{
+                top: -8,
+                left: -5,
+                fontFamily: FontStyle.bold,
+                fontSize: 16,
+              }}>
+              {unseenCount}
+            </Text>
+          </View>
         )}
       </TouchableOpacity>
       <TouchableOpacity onPress={callLogPress} style={styles.optionContainer}>
@@ -121,4 +157,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Footer;
+function mapStateToProps(state) {
+  return {
+    unseenCount: state.unseenNotification,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({unseenNotification}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+
+// export default Footer;

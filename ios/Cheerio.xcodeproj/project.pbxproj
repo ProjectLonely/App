@@ -41,6 +41,7 @@
 		CB81202B64A6404AB9D041CB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB83D42F38FB4ED48B9919D0 /* MaterialIcons.ttf */; };
 		DC272CC03E3F44329CC1A914 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E80393ACB34F4F38AFB0A4D2 /* Fontisto.ttf */; };
 		F1265268D95B4591924B4EFC /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B94BCC42C69F43D5A23A823E /* AntDesign.ttf */; };
+		F2F38061F60407B9F1300652 /* libPods-Cheerio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CDFA890F257B9C3335E92C /* libPods-Cheerio.a */; };
 		FAA3A1405EB94810B75A79F2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23698AB1CDA54330A17DC347 /* Feather.ttf */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2F38061F60407B9F1300652 /* libPods-Cheerio.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,8 +841,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F4994CACJJ;
-				EXCLUDED_ARCHS = arm64;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2;

@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
@@ -16,16 +17,64 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import CalendarModal from '../../Common/CalendarModal';
 
 class CallLogs extends Component {
+  state = {
+    calendarValue: false,
+    startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
+    date: moment('Sep 01 2021'),
+    endDate: moment().format('MMM DD YYYY'),
+  };
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.props.getCallLogs(token);
   };
 
+  selectDuration = (duration) => {
+    if (duration == 'week') {
+      const from_date = moment().subtract(6, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'week',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    } else if (duration == 'month') {
+      const from_date = moment().subtract(30, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'month',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    } else if (duration == 'year') {
+      const from_date = moment().subtract(364, 'd').format('MMM DD YYYY');
+      this.setState({
+        startDate: from_date,
+        durationStatus: 'year',
+        endDate: moment().format('MMM DD YYYY'),
+      });
+    }
+  };
+
+  startCallBack = (childData) => {
+    this.setState({
+      startDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
+  endCallBack = (childData) => {
+    this.setState({
+      endDate: moment(childData).format('MMM DD YYYY'),
+      durationStatus: '',
+    });
+  };
+
   render() {
     const {callingData, operatorData} = this.props;
-
+    const {calendarValue, startDate, endDate, date, durationStatus} =
+      this.state;
+    console.log(callingData, 'sdf');
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -34,6 +83,16 @@ class CallLogs extends Component {
             middleText={'Call Log'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
+          />
+          <CalendarModal
+            calendarValue={calendarValue}
+            closeModal={() => this.setState({calendarValue: false})}
+            lastWeek={() => this.selectDuration('week')}
+            lastMonth={() => this.selectDuration('month')}
+            lastYear={() => this.selectDuration('year')}
+            startDateFromParent={this.startCallBack}
+            endDateFromParent={this.endCallBack}
+            durationStatus={durationStatus}
           />
           <View style={{height: '84%', backgroundColor: '#fff'}}>
             <View
@@ -50,7 +109,9 @@ class CallLogs extends Component {
                 }}>
                 Recent Activity
               </Text>
-              <View style={styles.calendarView}>
+              <TouchableOpacity
+                onPress={() => this.setState({calendarValue: !calendarValue})}
+                style={Styles.calendarView}>
                 <Image
                   source={require('../../Assets/Images/calendar.png')}
                   style={{
@@ -66,9 +127,9 @@ class CallLogs extends Component {
                     fontSize: 12,
                     color: '#525F77',
                   }}>
-                  August 2021
+                  {startDate} - {endDate}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -117,46 +178,52 @@ class CallLogs extends Component {
                     <FlatList
                       data={callingData}
                       renderItem={({item: callLogs}) => {
-                        console.log(callLogs, 'calllogs');
-                        return operatorData.name == callLogs.name ? (
-                          <View style={Styles.smallContainer}>
-                            <View style={{width: '72%'}}>
-                              <Text
+                        const callDate = moment(callLogs.callDate);
+
+                        return moment(callDate).isBetween(
+                          startDate,
+                          endDate,
+                          null,
+                          [],
+                        ) ? (
+                          operatorData.name == callLogs.name ? (
+                            <View style={Styles.smallContainer}>
+                              <View style={{width: '72%'}}>
+                                <Text
+                                  style={{
+                                    fontFamily: FontStyle.medium,
+                                    color: '#3A3A3A',
+                                    fontSize: 12,
+                                  }}>
+                                  {callLogs.callDate}
+                                </Text>
+                                <Text
+                                  style={{
+                                    fontFamily: FontStyle.bold,
+                                    color: '#223E6D',
+                                    fontSize: 15,
+                                  }}>
+                                  {callLogs.status}
+                                </Text>
+                              </View>
+                              <View
                                 style={{
-                                  fontFamily: FontStyle.medium,
-                                  color: '#3A3A3A',
-                                  fontSize: 12,
+                                  width: '25%',
                                 }}>
-                                {callLogs.callDate}
-                              </Text>
-                              <Text
-                                style={{
-                                  fontFamily: FontStyle.bold,
-                                  color: '#223E6D',
-                                  fontSize: 15,
-                                }}>
-                                {/* {callLogs.description} */}
-                                asdflkasd alsdfjasjalskfjaslkf asdfasdj
-                                fkasdfkal fjalsfjalsdf
-                              </Text>
+                                <Text
+                                  style={{
+                                    fontFamily: FontStyle.medium,
+                                    fontSize: 12,
+                                    color:
+                                      callLogs.callStatus == 'call_received'
+                                        ? '#1F9F00'
+                                        : '#EA3232',
+                                  }}>
+                                  {callLogs.callStatus}
+                                </Text>
+                              </View>
                             </View>
-                            <View
-                              style={{
-                                width: '25%',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FontStyle.medium,
-                                  fontSize: 12,
-                                  color:
-                                    callLogs.callStatus == 'call_received'
-                                      ? '#1F9F00'
-                                      : '#EA3232',
-                                }}>
-                                {callLogs.callStatus}
-                              </Text>
-                            </View>
-                          </View>
+                          ) : null
                         ) : null;
                       }}
                     />

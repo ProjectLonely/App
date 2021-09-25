@@ -60,7 +60,7 @@ class Benificiary extends Component {
 
   render() {
     const {beneficiaryArray, modalValue, message} = this.props;
-
+    console.log(beneficiaryArray);
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -132,9 +132,7 @@ class Benificiary extends Component {
                           style={styles.imageStyle}
                         />
                         <Text style={styles.normalText}>
-                          {/* {beneficiaryData.companionOperator}
-                           */}
-                          companionOperator: Operator 1
+                          companionOperator: {beneficiaryData.companionOperator}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -187,7 +185,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'getbene');
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,

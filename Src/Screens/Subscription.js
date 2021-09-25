@@ -43,6 +43,23 @@ class Subscription extends Component {
         <SafeAreaView />
 
         <View style={{height: '90%', alignItems: 'center'}}>
+          <TouchableOpacity
+            style={{
+              width: '10%',
+              alignSelf: 'flex-start',
+              marginHorizontal: '5%',
+              height: 30,
+            }}
+            onPress={() => this.props.navigation.goBack()}>
+            <Image
+              source={require('../Assets/Images/back.png')}
+              style={{
+                width: 25,
+                height: 23,
+                resizeMode: 'contain',
+              }}
+            />
+          </TouchableOpacity>
           <FlatList
             data={subscriptionList}
             showsVerticalScrollIndicator={false}

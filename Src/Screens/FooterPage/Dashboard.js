@@ -14,7 +14,7 @@ import Footer from '../../Common/Footer';
 import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import CalendarModal from '../../Common/CalendarModal';
-import {getCallLogs} from '../../store/actions';
+import {getCallLogs, unseenNotification} from '../../store/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -26,6 +26,7 @@ const {height, width} = Dimensions.get('screen');
 
 class Beneficiary extends Component {
   state = {
+    userName: '',
     loadingValue: false,
     calendarValue: false,
     startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
@@ -35,7 +36,10 @@ class Beneficiary extends Component {
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
+    this.setState({userName: await AsyncStorage.getItem('name')});
+
     this.props.getCallLogs(token);
+    this.props.unseenNotification(token);
   };
 
   selectDuration = (duration) => {
@@ -78,9 +82,9 @@ class Beneficiary extends Component {
   };
 
   render() {
-    const {calendarValue, startDate, endDate, durationStatus, loadingValue} =
+    const {calendarValue, startDate, endDate, durationStatus, userName} =
       this.state;
-    const {callingData} = this.props;
+    const {callingData, unseenCount} = this.props;
 
     return (
       <ImageBackground
@@ -112,7 +116,7 @@ class Beneficiary extends Component {
                   fontSize: 22,
                   fontFamily: FontStyle.bold,
                 }}>
-                {`Hi, Jhonny`}
+                {`Hi, ${userName}`}
               </Text>
               <Text
                 style={{
@@ -128,8 +132,11 @@ class Beneficiary extends Component {
               style={styles.notifyView}>
               <Image
                 source={require('../../Assets/Images/bell.png')}
-                style={{width: 25, height: 23, resizeMode: 'contain'}}
+                style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
               />
+              <Text style={{top: -10, left: -2, color: '#004ACE'}}>
+                {unseenCount}
+              </Text>
             </TouchableOpacity>
           </View>
           {this.props.loading ? (
@@ -320,6 +327,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 11,
+    flexDirection: 'row',
   },
 
   containerStyle: {
@@ -337,11 +345,12 @@ function mapStateToProps(state) {
   return {
     callingData: state.GetCallLogs.data,
     loading: state.GetCallLogs.loading,
+    unseenCount: state.unseenNotification,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getCallLogs}, dispatch);
+  return bindActionCreators({getCallLogs, unseenNotification}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Beneficiary);

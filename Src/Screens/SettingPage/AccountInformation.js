@@ -29,6 +29,8 @@ class AccountInformation extends Component {
     imageModal: false,
     updateLoader: false,
     success: false,
+    base64: '',
+    getImage: '',
   };
 
   componentDidMount = async () => {
@@ -43,9 +45,11 @@ class AccountInformation extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
+        console.log(response, 'get profile');
         this.setState({
           firstName: response.data.first_name,
           email: response.data.email,
+          getImage: response.data.image,
         });
         AsyncStorage.setItem('email', response.data.email);
       })
@@ -79,6 +83,7 @@ class AccountInformation extends Component {
           first_name: this.state.firstName,
           password: this.state.password,
           password1: this.state.confirmPassword,
+          image: this.state.base64,
         },
       })
         .then((response) => {
@@ -108,7 +113,9 @@ class AccountInformation extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
+      console.log(image, 'image');
       this.setState({
+        base64: image.data,
         sourceURL: image.sourceURL,
         imageModal: false,
       });
@@ -122,6 +129,7 @@ class AccountInformation extends Component {
       includeBase64: true,
     }).then((image) => {
       this.setState({
+        base64: image.data,
         sourceURL: image.sourceURL,
         imageModal: false,
       });
@@ -151,7 +159,7 @@ class AccountInformation extends Component {
 
   render() {
     const {sourceURL, imageModal, modalValue, message} = this.state;
-
+    console.log(`http://digimonk.co:1612${this.state.getImage}`, 'getim');
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -185,7 +193,14 @@ class AccountInformation extends Component {
               <TouchableOpacity
                 onPress={this.openModal}
                 style={styles.imageView}>
-                {sourceURL == '' ? (
+                {this.state.getImage != '' && sourceURL == '' ? (
+                  <Image
+                    source={{
+                      uri: `http://digimonk.co:1612${this.state.getImage}`,
+                    }}
+                    style={{height: 100, width: 100, borderRadius: 50}}
+                  />
+                ) : sourceURL == '' ? (
                   <Image
                     source={require('../../Assets/Images/group.png')}
                     style={{height: 100, width: 100, borderRadius: 50}}
