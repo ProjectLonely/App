@@ -25,9 +25,7 @@ class AboutApp extends Component {
           this.setState({aboutData: response.data});
         }
       })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .catch((err) => {});
   };
 
   render() {

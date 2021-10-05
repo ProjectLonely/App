@@ -4,7 +4,6 @@ import AppNavigator from './Src/Screens/AppNavigator';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import reducers from './Src/store/reducers';
-import promiseMiddleware from 'redux-promise';
 import thunk from 'redux-thunk';
 
 class App extends Component {

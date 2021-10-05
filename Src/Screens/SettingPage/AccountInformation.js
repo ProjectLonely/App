@@ -25,7 +25,7 @@ class AccountInformation extends Component {
     token: '',
     password: '',
     confirmPassword: '',
-    sourceURL: '',
+    source: '',
     imageModal: false,
     updateLoader: false,
     success: false,
@@ -45,7 +45,6 @@ class AccountInformation extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
-        console.log(response, 'get profile');
         this.setState({
           firstName: response.data.first_name,
           email: response.data.email,
@@ -53,9 +52,7 @@ class AccountInformation extends Component {
         });
         AsyncStorage.setItem('email', response.data.email);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   updateProfileData = () => {
@@ -87,7 +84,6 @@ class AccountInformation extends Component {
         },
       })
         .then((response) => {
-          console.log(response);
           this.setState({
             modalValue: true,
             message: 'Profile is updated successfully',
@@ -96,7 +92,6 @@ class AccountInformation extends Component {
           });
         })
         .catch((err) => {
-          console.log(err.response);
           this.setState({
             modalValue: true,
             message: 'Something went wrong',
@@ -113,10 +108,9 @@ class AccountInformation extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      console.log(image, 'image');
       this.setState({
         base64: image.data,
-        sourceURL: image.sourceURL,
+        source: image.sourceURL,
         imageModal: false,
       });
     });
@@ -130,7 +124,7 @@ class AccountInformation extends Component {
     }).then((image) => {
       this.setState({
         base64: image.data,
-        sourceURL: image.sourceURL,
+        source: image.path,
         imageModal: false,
       });
     });
@@ -158,8 +152,8 @@ class AccountInformation extends Component {
   };
 
   render() {
-    const {sourceURL, imageModal, modalValue, message} = this.state;
-    console.log(`http://digimonk.co:1612${this.state.getImage}`, 'getim');
+    const {source, imageModal, modalValue, message} = this.state;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -193,21 +187,21 @@ class AccountInformation extends Component {
               <TouchableOpacity
                 onPress={this.openModal}
                 style={styles.imageView}>
-                {this.state.getImage != '' && sourceURL == '' ? (
+                {this.state.getImage != '' && source == '' ? (
                   <Image
                     source={{
                       uri: `http://digimonk.co:1612${this.state.getImage}`,
                     }}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />
-                ) : sourceURL == '' ? (
+                ) : source == '' ? (
                   <Image
                     source={require('../../Assets/Images/group.png')}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />
                 ) : (
                   <Image
-                    source={{uri: sourceURL}}
+                    source={{uri: source}}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />
                 )}

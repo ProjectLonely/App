@@ -96,13 +96,12 @@ class AddBenificiaryPage1 extends Component {
       cropping: true,
       includeBase64: true,
     }).then((image) => {
-      // console.log(image, 'image');
-      // this.props.addBenificiary({
-      //   sourceURL: image.sourceURL,
-      //   // base64: image.data,
-      // });
+      this.props.addBenificiary({
+        sourceURL: image.sourceURL,
+        base64: image.data,
+      });
       this.setState({
-        // sourceURL: image.sourceURL,
+        sourceURL: image.sourceURL,
         imageModal: false,
       });
     });
@@ -113,11 +112,14 @@ class AddBenificiaryPage1 extends Component {
       height: 400,
       cropping: true,
       includeBase64: true,
+      includeExif: true,
+      mediaType: 'photo',
     }).then((image) => {
-      // this.props.addBenificiary({
-      //   sourceURL: image.sourceURL,
-      //   // base64: image.data,
-      // });
+      console.log(image, 'camera');
+      this.props.addBenificiary({
+        sourceURL: image.path,
+        base64: image.data,
+      });
       this.setState({
         // sourceURL: image.sourceURL,
         imageModal: false,
@@ -359,7 +361,7 @@ class AddBenificiaryPage1 extends Component {
             }
             value={this.props.beneficiaryData.phoneNumber}
           />
-          {/* <View
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -379,7 +381,7 @@ class AddBenificiaryPage1 extends Component {
                 />
               )}
             </TouchableOpacity>
-          </View> */}
+          </View>
           <ImageModal
             imageModal={imageModal}
             closeModal={() => this.setState({imageModal: false})}
@@ -423,7 +425,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'state');
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

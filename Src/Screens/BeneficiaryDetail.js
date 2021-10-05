@@ -69,15 +69,12 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'beneficiasldf');
         this.setState({
           beneficiaryData: response.data,
           schedule: response.data.schedule,
         });
       })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .catch((err) => {});
   };
 
   expandOption = (dayId) => {
@@ -91,12 +88,6 @@ class BeneficiaryDetail extends Component {
   };
 
   updateProfile = (beneficiaryId) => {
-    console.log({
-      headers: {Authorization: `Token ${this.state.token}`},
-      data: {
-        schedule: this.state.schedule,
-      },
-    });
     axios({
       method: 'patch',
       url: `${baseurl}beneficiary/${beneficiaryId}/`,
@@ -106,7 +97,6 @@ class BeneficiaryDetail extends Component {
       },
     })
       .then((response) => {
-        console.log(response);
         if (response.status == 200) {
           this.setState({
             modalValue: true,
@@ -115,7 +105,6 @@ class BeneficiaryDetail extends Component {
         }
       })
       .catch((err) => {
-        console.log(err.response, 'err');
         this.setState({
           modalValue: true,
           message: 'Something went wrong',
@@ -426,7 +415,6 @@ class BeneficiaryDetail extends Component {
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: callingData}) => {
-                  console.log(callingData, 'callingdata');
                   const callDate = moment(callingData.callDate);
                   return moment(callDate).isBetween(
                     startDate,

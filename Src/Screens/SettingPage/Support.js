@@ -44,7 +44,6 @@ class Support extends Component {
       },
     })
       .then((response) => {
-        console.log(response);
         this.setState({submitLoader: false});
         if (response.status == 201) {
           this.setState({thanksValue: true});
@@ -52,7 +51,6 @@ class Support extends Component {
       })
       .catch((err) => {
         this.setState({submitLoader: false});
-        console.log(err);
       });
   };
 
@@ -93,7 +91,7 @@ class Support extends Component {
 
           <View
             style={{
-              height: height / 2.4,
+              height: height / 1.8,
               backgroundColor: '#D5FAFB',
               width: '90%',
               alignSelf: 'center',

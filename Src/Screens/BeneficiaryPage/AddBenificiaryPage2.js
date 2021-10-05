@@ -30,7 +30,7 @@ class AddBenificiaryPage2 extends Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          this.setState({seekingOption: response.data});
+          this.setState({seekingOption: response.data.results});
         }
       })
       .catch((err) => {
@@ -52,14 +52,16 @@ class AddBenificiaryPage2 extends Component {
   };
 
   selectedSeeking = (option) => {
-    const seekingOption = this.state.selectedSeekOption;
-    if (seekingOption.some((data) => data == option)) {
+    const seekingOption = this.props.beneficiaryData.selectedSeekOption;
+
+    if (seekingOption.some((data) => data.id == option)) {
       const index = seekingOption.findIndex((data) => data.id == option);
       seekingOption.splice(index, 1);
-      this.props.addBenificiary({seekingOption});
+
+      this.props.addBenificiary({selectedSeekOption: seekingOption});
     } else {
       seekingOption.push({id: option});
-      this.props.addBenificiary({seekingOption});
+      this.props.addBenificiary({selectedSeekOption: seekingOption});
     }
   };
 
@@ -190,7 +192,6 @@ class AddBenificiaryPage2 extends Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state, 'console');
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

@@ -69,9 +69,7 @@ class Chat extends Component {
         this.setState({roomId: roomId});
         this.socket(roomId);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   chatHistory = () => {
@@ -86,9 +84,7 @@ class Chat extends Component {
           lastChatTime: response.data.chats[0].created_at,
         });
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   socket = (roomId) => {
@@ -133,9 +129,7 @@ class Chat extends Component {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   render() {

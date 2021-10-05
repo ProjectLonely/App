@@ -75,6 +75,7 @@ class SignUp extends Component {
         },
       })
         .then(async (response) => {
+          console.log(response, 'res');
           this.setState({registerLoader: false});
           if (response.data.exist == true) {
             this.setState({
@@ -87,6 +88,7 @@ class SignUp extends Component {
           }
         })
         .catch((err) => {
+          console.log(err.response);
           this.setState({
             modalValue: true,
             message: err.response.data.email,

@@ -5,10 +5,12 @@ import {
   View,
   Text,
   SafeAreaView,
-  FlatList,
+  ScrollView,
   StyleSheet,
   Image,
   TouchableOpacity,
+  RefreshControl,
+  Dimensions,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import {baseurl} from '../Common/Baseurl';
@@ -18,6 +20,7 @@ import {unseenNotification} from '../store/actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {SwipeListView} from 'react-native-swipe-list-view';
+const {height, width} = Dimensions.get('screen');
 
 class Notification extends Component {
   state = {
@@ -37,14 +40,12 @@ class Notification extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
-        console.log(response, 'apinotifi');
+        console.log(response, 'resposne');
         this.setState({notificationArray: response.data.results});
         this.seenNotification(token);
         this.props.unseenNotification(token);
       })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .catch((err) => {});
   };
 
   seenNotification = (token) => {
@@ -65,6 +66,10 @@ class Notification extends Component {
     });
   };
 
+  pageRefresh = () => {
+    this.getNotification;
+  };
+
   render() {
     const {notificationArray} = this.state;
 
@@ -76,62 +81,101 @@ class Notification extends Component {
           middleText={'Notification'}
           notification={true}
         />
-        <SwipeListView
-          data={notificationArray}
-          renderItem={(notifyData, rowMap) => (
-            <View style={[Styles.smallContainer]}>
-              <View>
+        {notificationArray.length < 1 ? (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={this.pageRefresh}
+                tintColor="#004ACE"
+              />
+            }>
+            <Image
+              source={require('../Assets/Images/Notifications.png')}
+              style={{width: width / 1.1, height: height / 1.6}}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                fontFamily: FontStyle.regular,
+                fontSize: 23,
+                color: '#575757',
+              }}>
+              You don't have any notification
+            </Text>
+          </ScrollView>
+        ) : (
+          <SwipeListView
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={this.pageRefresh}
+                tintColor="#004ACE"
+              />
+            }
+            data={notificationArray}
+            renderItem={(notifyData, rowMap) => (
+              <View style={[Styles.smallContainer]}>
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.medium,
+                      fontSize: 14,
+                      color: '#333333',
+                    }}>
+                    {notifyData.item.notification
+                      ? notifyData.item.notification.chat
+                      : null}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.regular,
+                      fontSize: 14,
+                      color: '#777777',
+                    }}>
+                    {notifyData.item.notification
+                      ? notifyData.item.notification.name
+                      : null}
+                  </Text>
+                </View>
                 <Text
                   style={{
                     fontFamily: FontStyle.medium,
-                    fontSize: 14,
-                    color: '#333333',
-                  }}>
-                  {notifyData.item.notification
-                    ? notifyData.item.notification.chat
-                    : null}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FontStyle.regular,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: '#777777',
                   }}>
-                  {notifyData.item.notification
-                    ? notifyData.item.notification.name
-                    : null}
+                  {notifyData.item.notification ? notifyData.item.time : null}
+                  07:30
                 </Text>
               </View>
-              <Text
-                style={{
-                  fontFamily: FontStyle.medium,
-                  fontSize: 12,
-                  color: '#777777',
-                }}>
-                {notifyData.item.notification ? notifyData.item.time : null}
-                07:30
-              </Text>
-            </View>
-          )}
-          renderHiddenItem={(data, rowMap) => (
-            <TouchableOpacity
-              onPress={() =>
-                this.deleteNotification(data.item.pk, this.state.token)
-              }
-              style={styles.rowBack}>
-              <Image
-                source={require('../Assets/Images/delete.png')}
-                style={{height: 50, width: 50, resizeMode: 'contain'}}
-              />
-              <Image
-                source={require('../Assets/Images/delete.png')}
-                style={{height: 50, width: 50, resizeMode: 'contain'}}
-              />
-            </TouchableOpacity>
-          )}
-          leftOpenValue={75}
-          rightOpenValue={-75}
-        />
+            )}
+            renderHiddenItem={(data, rowMap) => (
+              <TouchableOpacity
+                onPress={() =>
+                  this.deleteNotification(data.item.pk, this.state.token)
+                }
+                style={styles.rowBack}>
+                <Image
+                  source={require('../Assets/Images/delete.png')}
+                  style={{height: 50, width: 50, resizeMode: 'contain'}}
+                />
+                <Image
+                  source={require('../Assets/Images/delete.png')}
+                  style={{height: 50, width: 50, resizeMode: 'contain'}}
+                />
+              </TouchableOpacity>
+            )}
+            leftOpenValue={75}
+            rightOpenValue={-75}
+          />
+        )}
+
         {/* <FlatList
           data={notificationArray}
           showsVerticalScrollIndicator={false}
@@ -214,9 +258,8 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
-    unseenCount: state.unseenNotification,
+    unseenCount: state.unseenNotification.normal,
   };
 }
 
@@ -225,5 +268,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notification);
-
-// export default Notification;

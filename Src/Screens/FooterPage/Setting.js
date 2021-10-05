@@ -15,6 +15,10 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
+import {StackActions} from '@react-navigation/native';
+import {getCallLogs, unseenNotification} from '../../store/actions';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 const {width} = Dimensions.get('screen');
 
 class Setting extends Component {
@@ -53,6 +57,11 @@ class Setting extends Component {
     ],
   };
 
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    this.props.unseenNotification(token);
+  };
+
   selectOption = async (pageName) => {
     const token = await AsyncStorage.getItem('token');
     if (pageName == 'SignOut') {
@@ -61,9 +70,9 @@ class Setting extends Component {
         url: `${baseurl}logout/`,
         headers: {Authorization: `Token ${token}`},
       })
-        .then((response) => {
+        .then(async (response) => {
           AsyncStorage.clear();
-          this.props.navigation.navigate('SignIn');
+          this.props.navigation.dispatch(StackActions.replace('SignIn'));
         })
         .catch((err) => {
           AsyncStorage.clear();
@@ -75,6 +84,7 @@ class Setting extends Component {
   };
   render() {
     const {settingArray} = this.state;
+    const {unseenValue} = this.props;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -121,6 +131,7 @@ class Setting extends Component {
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           chatPress={() => this.props.navigation.navigate('ChatList')}
+          unseenValue={unseenValue}
         />
       </View>
     );
@@ -149,4 +160,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Setting;
+function mapStateToProps(state) {
+  return {
+    unseenValue: state.unseenNotification.chat,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({unseenNotification}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

@@ -3,11 +3,11 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import FontStyle from '../Assets/Fonts/FontStyle';
 
-const AlertModal = ({modalValue, closeModal, message}) => {
+const ConfirmModal = ({confirmValue, closeModal, deleteValue}) => {
   return (
     <View>
       <Modal
-        isVisible={modalValue}
+        isVisible={confirmValue}
         onBackButtonPress={closeModal}
         onBackdropPress={closeModal}
         style={{
@@ -18,10 +18,10 @@ const AlertModal = ({modalValue, closeModal, message}) => {
         <View
           style={{
             backgroundColor: '#fff',
-            width: '70%',
+            width: '80%',
             minHeight: '20%',
             maxHeight: 'auto',
-            paddingVertical: '2%',
+            paddingVertical: '4%',
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
@@ -33,7 +33,7 @@ const AlertModal = ({modalValue, closeModal, message}) => {
               fontFamily: FontStyle.medium,
               textAlign: 'center',
             }}>
-            {message || `Are you sure to cancel\n the subcription?`}
+            {`Are you sure you want to delete this beneficiary?\n This cannot be undone.`}
           </Text>
           <View
             style={{
@@ -42,33 +42,14 @@ const AlertModal = ({modalValue, closeModal, message}) => {
               marginTop: '5%',
               width: '90%',
             }}>
-            {!message ? (
-              <View>
-                <TouchableOpacity
-                  onPress={closeModal}
-                  style={[
-                    styles.buttonStyle,
-                    {
-                      backgroundColor: '#fff',
-                      borderColor: '#004ACE',
-                      borderWidth: 1,
-                    },
-                  ]}>
-                  <Text style={[styles.buttonText, {color: '#004ACE'}]}>
-                    Yes
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={closeModal}
-                  style={styles.buttonStyle}>
-                  <Text style={styles.buttonText}>No</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity onPress={closeModal} style={styles.buttonStyle}>
-                <Text style={styles.buttonText}>ok</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              onPress={deleteValue}
+              style={[styles.buttonStyle]}>
+              <Text style={[styles.buttonText]}>Yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={closeModal} style={styles.buttonStyle}>
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -78,18 +59,21 @@ const AlertModal = ({modalValue, closeModal, message}) => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    width: '45%',
+    width: 80,
     height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#004ACE',
+
     borderRadius: 10,
+    backgroundColor: '#fff',
+    borderColor: '#004ACE',
+    borderWidth: 1,
   },
   buttonText: {
     fontFamily: FontStyle.bold,
     fontSize: 16,
-    color: '#fff',
+    color: '#004ACE',
   },
 });
 
-export default AlertModal;
+export default ConfirmModal;

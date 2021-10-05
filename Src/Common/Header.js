@@ -49,6 +49,8 @@ const Header = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: '#dbdbdb',
       }}>
       <View
         style={{paddingLeft: '5%', flexDirection: 'row', alignItems: 'center'}}>
@@ -74,9 +76,11 @@ const Header = ({
         </Text>
       </View>
 
-      <View style={{paddingRight: '5%'}}>
+      <View style={{paddingRight: 20}}>
         {notification ? (
-          <TouchableOpacity onPress={notifyPress} style={styles.notifyView}>
+          <TouchableOpacity
+            onPress={notifyPress}
+            style={[styles.notifyView, leftIcon ? {right: 20} : null]}>
             <Image
               source={require('../Assets/Images/bell.png')}
               style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    unseenCount: state.unseenNotification,
+    unseenCount: state.unseenNotification.normal,
   };
 }
 

@@ -7,17 +7,21 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  Dimensions,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
 import Header from '../../Common/Header';
 import Styles from '../../Common/Style';
-import {getCallLogs} from '../../store/actions';
+import {getCallLogs, unseenNotification} from '../../store/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import CalendarModal from '../../Common/CalendarModal';
+const {height, width} = Dimensions.get('screen');
 
 class CallLogs extends Component {
   state = {
@@ -29,6 +33,7 @@ class CallLogs extends Component {
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.props.getCallLogs(token);
+    this.props.unseenNotification(token);
   };
 
   selectDuration = (duration) => {
@@ -70,11 +75,14 @@ class CallLogs extends Component {
     });
   };
 
+  pageRefresh = () => {
+    this.props.getCallLogs(this.state.token);
+  };
+
   render() {
-    const {callingData, operatorData} = this.props;
-    const {calendarValue, startDate, endDate, date, durationStatus} =
-      this.state;
-    console.log(callingData, 'sdf');
+    const {callingData, operatorData, unseenValue} = this.props;
+    const {calendarValue, startDate, endDate, durationStatus} = this.state;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -139,98 +147,136 @@ class CallLogs extends Component {
                 marginTop: '2.5%',
               }}
             />
-            <FlatList
-              data={operatorData}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item: operatorData}) => {
-                return (
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        paddingHorizontal: '5%',
-                        alignItems: 'center',
-                        paddingVertical: '3%',
-                      }}>
-                      <Image
-                        source={require('../../Assets/Images/lineuser.png')}
-                        style={{height: 12, width: 11, resizeMode: 'contain'}}
-                      />
-                      <Text
+            {operatorData.length < 1 ? (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={this.pageRefresh}
+                    tintColor="#004ACE"
+                  />
+                }>
+                <Image
+                  source={require('../../Assets/Images/calllogs.png')}
+                  style={{width: width / 1.1, height: height / 1.6}}
+                  resizeMode="contain"
+                />
+                <Text
+                  style={{
+                    fontFamily: FontStyle.regular,
+                    fontSize: 23,
+                    color: '#575757',
+                  }}>
+                  You don't have any call logs
+                </Text>
+              </ScrollView>
+            ) : (
+              <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={this.pageRefresh}
+                    tintColor="#004ACE"
+                  />
+                }
+                data={operatorData}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item: operatorData}) => {
+                  return (
+                    <View>
+                      <View
                         style={{
-                          fontFamily: FontStyle.bold,
-                          color: '#10275A',
-                          fontSize: 18,
-                          left: 5,
+                          flexDirection: 'row',
+                          paddingHorizontal: '5%',
+                          alignItems: 'center',
+                          paddingVertical: '3%',
                         }}>
-                        {operatorData.name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: FontStyle.bold,
-                          color: '#10275A',
-                          fontSize: 18,
-                          left: 5,
-                        }}>
-                        {` (${operatorData.relationship})`}
-                      </Text>
-                    </View>
-                    <FlatList
-                      data={callingData}
-                      renderItem={({item: callLogs}) => {
-                        const callDate = moment(callLogs.callDate);
+                        <Image
+                          source={require('../../Assets/Images/lineuser.png')}
+                          style={{height: 12, width: 11, resizeMode: 'contain'}}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.bold,
+                            color: '#10275A',
+                            fontSize: 18,
+                            left: 5,
+                          }}>
+                          {operatorData.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.bold,
+                            color: '#10275A',
+                            fontSize: 18,
+                            left: 5,
+                          }}>
+                          {` (${operatorData.relationship})`}
+                        </Text>
+                      </View>
+                      <FlatList
+                        data={callingData}
+                        renderItem={({item: callLogs}) => {
+                          const callDate = moment(callLogs.callDate);
 
-                        return moment(callDate).isBetween(
-                          startDate,
-                          endDate,
-                          null,
-                          [],
-                        ) ? (
-                          operatorData.name == callLogs.name ? (
-                            <View style={Styles.smallContainer}>
-                              <View style={{width: '72%'}}>
-                                <Text
+                          return moment(callDate).isBetween(
+                            startDate,
+                            endDate,
+                            null,
+                            [],
+                          ) ? (
+                            operatorData.name == callLogs.name ? (
+                              <View style={Styles.smallContainer}>
+                                <View style={{width: '72%'}}>
+                                  <Text
+                                    style={{
+                                      fontFamily: FontStyle.medium,
+                                      color: '#3A3A3A',
+                                      fontSize: 12,
+                                    }}>
+                                    {callLogs.callDate}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      fontFamily: FontStyle.bold,
+                                      color: '#223E6D',
+                                      fontSize: 15,
+                                    }}>
+                                    {callLogs.status}
+                                  </Text>
+                                </View>
+                                <View
                                   style={{
-                                    fontFamily: FontStyle.medium,
-                                    color: '#3A3A3A',
-                                    fontSize: 12,
+                                    width: '25%',
                                   }}>
-                                  {callLogs.callDate}
-                                </Text>
-                                <Text
-                                  style={{
-                                    fontFamily: FontStyle.bold,
-                                    color: '#223E6D',
-                                    fontSize: 15,
-                                  }}>
-                                  {callLogs.status}
-                                </Text>
+                                  <Text
+                                    style={{
+                                      fontFamily: FontStyle.medium,
+                                      fontSize: 12,
+                                      color:
+                                        callLogs.callStatus == 'call_received'
+                                          ? '#1F9F00'
+                                          : '#EA3232',
+                                    }}>
+                                    {callLogs.callStatus}
+                                  </Text>
+                                </View>
                               </View>
-                              <View
-                                style={{
-                                  width: '25%',
-                                }}>
-                                <Text
-                                  style={{
-                                    fontFamily: FontStyle.medium,
-                                    fontSize: 12,
-                                    color:
-                                      callLogs.callStatus == 'call_received'
-                                        ? '#1F9F00'
-                                        : '#EA3232',
-                                  }}>
-                                  {callLogs.callStatus}
-                                </Text>
-                              </View>
-                            </View>
-                          ) : null
-                        ) : null;
-                      }}
-                    />
-                  </View>
-                );
-              }}
-            />
+                            ) : null
+                          ) : null;
+                        }}
+                      />
+                    </View>
+                  );
+                }}
+              />
+            )}
           </View>
         </View>
         <Footer
@@ -240,6 +286,7 @@ class CallLogs extends Component {
           settingPress={() => this.props.navigation.navigate('Setting')}
           benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
           chatPress={() => this.props.navigation.navigate('ChatList')}
+          unseenValue={unseenValue}
         />
       </View>
     );
@@ -276,11 +323,12 @@ function mapStateToProps(state) {
       (v, i, a) => a.findIndex((t) => t.name === v.name) === i,
     ),
     callingData: state.GetCallLogs.data,
+    unseenValue: state.unseenNotification.chat,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getCallLogs}, dispatch);
+  return bindActionCreators({getCallLogs, unseenNotification}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CallLogs);

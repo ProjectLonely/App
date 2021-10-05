@@ -34,11 +34,13 @@ class ForgotPassword extends Component {
         },
       })
         .then(async (response) => {
+          console.log(response);
           this.setState({sendLoader: false});
           await AsyncStorage.setItem('temp_token', response.data.token);
           this.props.navigation.navigate('VerificationCode');
         })
         .catch((err) => {
+          console.log(err.response);
           this.setState({sendLoader: false});
           alert('Enter a valid email address');
           this.setState({

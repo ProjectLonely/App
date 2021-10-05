@@ -27,8 +27,8 @@ class Subscription extends Component {
     this.props.SubscriptionPlan(token);
   };
 
-  addBenificiary = (planId) => {
-    this.props.addBenificiary({planId});
+  addBenificiary = (planId, planAmount) => {
+    this.props.addBenificiary({planId, planAmount});
     this.props.navigation.navigate('AddBenificiaryPage1');
   };
 
@@ -152,7 +152,9 @@ class Subscription extends Component {
                       <Button
                         btnheight={40}
                         btnwidth={'70%'}
-                        onPress={() => this.addBenificiary(item.id)}>
+                        onPress={() =>
+                          this.addBenificiary(item.id, item.price)
+                        }>
                         SELECT
                       </Button>
                     </View>

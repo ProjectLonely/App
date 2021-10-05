@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Dimensions,
+  RefreshControl,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
@@ -16,7 +16,7 @@ import Button from '../../Common/Button';
 import Styles from '../../Common/Style';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getAllBeneficiary} from '../../store/actions';
+import {getAllBeneficiary, unseenNotification} from '../../store/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import axios from 'axios';
@@ -24,31 +24,38 @@ import LoadingView from '../../Common/LoadingView';
 
 import {baseurl} from '../../Common/Baseurl';
 import AlertModal from '../../Common/AlertModal';
+import ConfirmModal from '../../Common/ConfirmModal';
 
 class Benificiary extends Component {
   state = {
     beneficiaryArray: [],
+    confirmValue: false,
   };
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.setState({token});
     this.props.getAllBeneficiary(token);
+    this.props.unseenNotification(token);
   };
 
-  deleteBeneficiary = (beneficiaryId) => {
+  deleteModal = (beneficiaryId) => {
+    this.setState({beneficiaryId, confirmValue: true});
+  };
+
+  deleteBeneficiary = () => {
     axios({
       method: 'delete',
-      url: `${baseurl}beneficiary/${beneficiaryId}/`,
+      url: `${baseurl}beneficiary/${this.state.beneficiaryId}/`,
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
+        this.setState({confirmValue: false});
         if (response.status == 204) {
           this.props.getAllBeneficiary(this.state.token);
         }
       })
       .catch((err) => {
-        console.log(err.response);
         this.setState({modalValue: true, message: 'Something went wrong'});
       });
   };
@@ -58,9 +65,14 @@ class Benificiary extends Component {
     this.props.navigation.navigate('BeneficiaryDetail');
   };
 
+  pageRefresh = () => {
+    this.props.getAllBeneficiary(this.state.token);
+  };
+
   render() {
-    const {beneficiaryArray, modalValue, message} = this.props;
-    console.log(beneficiaryArray);
+    const {beneficiaryArray, modalValue, message, unseenValue} = this.props;
+    const {confirmValue} = this.state;
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
@@ -69,6 +81,11 @@ class Benificiary extends Component {
             middleText={'Beneficiaries'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
+          />
+          <ConfirmModal
+            confirmValue={confirmValue}
+            deleteValue={() => this.deleteBeneficiary()}
+            closeModal={() => this.setState({confirmValue: false})}
           />
           <AlertModal
             modalValue={modalValue}
@@ -79,10 +96,18 @@ class Benificiary extends Component {
             <LoadingView heightValue={1.2} />
           ) : (
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={this.pageRefresh}
+                  tintColor="#004ACE"
+                />
+              }
               data={beneficiaryArray}
               contentContainerStyle={{width: '100%'}}
               showsVerticalScrollIndicator={false}
               renderItem={({item: beneficiaryData}) => {
+                console.log(beneficiaryData, 'bene');
                 return (
                   <View style={[Styles.smallContainer]}>
                     <TouchableOpacity
@@ -132,14 +157,15 @@ class Benificiary extends Component {
                           style={styles.imageStyle}
                         />
                         <Text style={styles.normalText}>
-                          companionOperator: {beneficiaryData.companionOperator}
+                          Companion Operator:
+                          {beneficiaryData.operator__first_name
+                            ? beneficiaryData.operator__first_name
+                            : ' waiting to be assigned'}
                         </Text>
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() =>
-                        this.deleteBeneficiary(beneficiaryData.id)
-                      }>
+                      onPress={() => this.deleteModal(beneficiaryData.id)}>
                       <Image
                         source={require('../../Assets/Images/delete.png')}
                         style={{height: 50, width: 50, resizeMode: 'contain'}}
@@ -163,6 +189,7 @@ class Benificiary extends Component {
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
           chatPress={() => this.props.navigation.navigate('ChatList')}
+          unseenValue={unseenValue}
         />
       </View>
     );
@@ -188,11 +215,12 @@ function mapStateToProps(state) {
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,
+    unseenValue: state.unseenNotification.chat,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getAllBeneficiary}, dispatch);
+  return bindActionCreators({getAllBeneficiary, unseenNotification}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Benificiary);

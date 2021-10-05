@@ -24,11 +24,12 @@
     "react-native-calendar-picker": "^7.1.2",
     "react-native-dropdown-picker": "^5.1.23",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-image-crop-picker": "^0.36.2",
+    "react-native-image-crop-picker": "^0.35.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-modal": "^13.0.0",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-paper": "^4.9.2",
+    "react-native-payments": "^0.8.4",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.15.0",
     "react-native-swipe-list-view": "^3.2.9",
@@ -36,8 +37,8 @@
     "react-native-websocket": "^1.0.2",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
-    "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "qs": "^6.10.1"
   },
   "devDependencies": {
     "@babel/core": "7.15.0",

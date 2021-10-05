@@ -9,11 +9,9 @@ export const SubscriptionPlan = (token) => {
       url: `${baseurl}plans/`,
     })
       .then((response) => {
-        dispatch({type: 'SubscriptionPlan', payload: response.data});
+        dispatch({type: 'SubscriptionPlan', payload: response.data.results});
       })
-      .catch((err) => {
-        console.log(err, 'subscritpionPlan');
-      });
+      .catch((err) => {});
   };
 };
 
@@ -59,7 +57,6 @@ export const getCallLogs = (token) => {
         dispatch({type: 'TOGGLE_LOAD'});
       })
       .catch((error) => {
-        console.log(error);
         dispatch({type: 'FETCH_ERROR'});
         dispatch({type: 'TOGGLE_LOAD'});
       });
@@ -67,7 +64,6 @@ export const getCallLogs = (token) => {
 };
 
 export const unseenNotification = (token) => {
-  console.log(token, 'token');
   return (dispatch) => {
     axios({
       method: 'get',
@@ -75,11 +71,8 @@ export const unseenNotification = (token) => {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'response');
         dispatch({type: 'NotificationCount', payload: response.data.count});
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 };

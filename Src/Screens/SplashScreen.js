@@ -22,7 +22,6 @@ class SplashScreen extends Component {
   fade_animation = async () => {
     const token = await AsyncStorage.getItem('token');
 
-    console.log(token);
     Animated.timing(this.state.opacity_animation, {
       toValue: 1,
       duration: 5000,

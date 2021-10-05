@@ -17,6 +17,7 @@ import {baseurl} from '../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../Common/AlertModal';
 import Spinner from '../Common/Spinner';
+import {StackActions} from '@react-navigation/native';
 
 class SignIn extends Component {
   state = {
@@ -47,16 +48,16 @@ class SignIn extends Component {
         },
       })
         .then(async (response) => {
+          console.log(response, 'signinpage');
           this.setState({signinLoader: false});
           if (response.data.is_active == false) {
             await AsyncStorage.setItem('temp_token', response.data.temp_token);
 
             this.props.navigation.navigate('VerificationCode');
           } else if (response.data.is_active == true) {
-            console.log(response.data.name);
             await AsyncStorage.setItem('token', response.data.token);
             await AsyncStorage.setItem('name', response.data.name);
-            this.props.navigation.navigate('Dashboard');
+            this.props.navigation.dispatch(StackActions.replace('Dashboard'));
           }
         })
         .catch((err) => {

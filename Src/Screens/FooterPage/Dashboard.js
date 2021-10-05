@@ -9,6 +9,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 import Footer from '../../Common/Footer';
 import Button from '../../Common/Button';
@@ -36,7 +38,7 @@ class Beneficiary extends Component {
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
-    this.setState({userName: await AsyncStorage.getItem('name')});
+    this.setState({userName: await AsyncStorage.getItem('name'), token});
 
     this.props.getCallLogs(token);
     this.props.unseenNotification(token);
@@ -81,10 +83,14 @@ class Beneficiary extends Component {
     });
   };
 
+  pageRefresh = () => {
+    this.props.getCallLogs(this.state.token);
+  };
+
   render() {
     const {calendarValue, startDate, endDate, durationStatus, userName} =
       this.state;
-    const {callingData, unseenCount} = this.props;
+    const {callingData, unseenCount, unseenValue} = this.props;
 
     return (
       <ImageBackground
@@ -139,16 +145,31 @@ class Beneficiary extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          <View
+            style={{
+              width: '100%',
+              height: 1,
+              marginTop: 10,
+              backgroundColor: '#dbdbdb',
+            }}
+          />
           {this.props.loading ? (
             <LoadingView heightValue={1.2} />
           ) : callingData.length < 1 ? (
-            <View
-              style={{
-                height: '80%',
-                width: '100%',
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+                flex: 1,
+              }}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={this.pageRefresh}
+                  tintColor="#004ACE"
+                />
+              }>
               <Image
                 source={require('../../Assets/Images/beneficiary.png')}
                 style={{width: width / 1.6, height: height / 2.4}}
@@ -166,7 +187,7 @@ class Beneficiary extends Component {
                 onPress={() => this.props.navigation.navigate('Subscription')}>
                 ADD BENEFICIARY
               </Button>
-            </View>
+            </ScrollView>
           ) : (
             <View style={{height: '87%'}}>
               <View
@@ -206,6 +227,13 @@ class Beneficiary extends Component {
                 </TouchableOpacity>
               </View>
               <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={this.pageRefresh}
+                    tintColor="#004ACE"
+                  />
+                }
                 data={callingData}
                 style={{
                   alignSelf: 'center',
@@ -305,6 +333,7 @@ class Beneficiary extends Component {
           callLogPress={() => this.props.navigation.navigate('CallLogs')}
           settingPress={() => this.props.navigation.navigate('Setting')}
           chatPress={() => this.props.navigation.navigate('ChatList')}
+          unseenValue={unseenValue}
         />
       </ImageBackground>
     );
@@ -345,7 +374,8 @@ function mapStateToProps(state) {
   return {
     callingData: state.GetCallLogs.data,
     loading: state.GetCallLogs.loading,
-    unseenCount: state.unseenNotification,
+    unseenCount: state.unseenNotification.normal,
+    unseenValue: state.unseenNotification.chat,
   };
 }
 

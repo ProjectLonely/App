@@ -9,9 +9,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {unseenNotification} from '../store/actions';
-import {bindActionCreators} from 'redux';
+
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
 
@@ -24,15 +22,16 @@ const Footer = ({
   chatPress,
   unseenCount,
   unseenNotification,
+  unseenValue,
 }) => {
-  useEffect(() => {
-    const data = async () => {
-      const token = await AsyncStorage.getItem('token');
-      console.getlog(token, 'token');
-      // dispatch(unseenNotification(token));
-      unseenNotification(token);
-    };
-  }, [unseenCount]);
+  // useEffect(() => {
+  //   const data = async () => {
+  //     const token = await AsyncStorage.getItem('token');
+  //     console.getlog(token, 'token');
+  //     // dispatch(unseenNotification(token));
+  //     unseenNotification(token);
+  //   };
+  // }, [unseenCount]);
   return (
     <View style={styles.mainContainer}>
       <TouchableOpacity onPress={dashboardPress} style={styles.optionContainer}>
@@ -78,7 +77,7 @@ const Footer = ({
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>
-              {unseenCount}
+              {unseenValue}
             </Text>
           </View>
         ) : (
@@ -91,10 +90,11 @@ const Footer = ({
               style={{
                 top: -8,
                 left: -5,
+                color: '#004ACE',
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>
-              {unseenCount}
+              {unseenValue}
             </Text>
           </View>
         )}
@@ -157,16 +157,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return {
-    unseenCount: state.unseenNotification,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({unseenNotification}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default Footer;
 
 // export default Footer;
