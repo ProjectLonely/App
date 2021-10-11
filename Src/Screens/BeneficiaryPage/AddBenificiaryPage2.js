@@ -89,7 +89,7 @@ class AddBenificiaryPage2 extends Component {
           <Header leftIcon={true} middleText={'Add Beneficiary'} />
           <View style={{width: '100%', alignItems: 'center'}}>
             <TextInput
-              placeholder="Tell us something about the person"
+              placeholder="please tell us something about this person"
               value={this.props.beneficiaryData.aboutPerson}
               maxLength={300}
               placeholderTextColor="#707070"

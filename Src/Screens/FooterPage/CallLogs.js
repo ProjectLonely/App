@@ -86,7 +86,7 @@ class CallLogs extends Component {
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
-        <View style={{height: '86%', backgroundColor: '#fff'}}>
+        <View style={{height: '89%', backgroundColor: '#fff'}}>
           <Header
             middleText={'Call Log'}
             notification={true}
@@ -163,8 +163,8 @@ class CallLogs extends Component {
                   />
                 }>
                 <Image
-                  source={require('../../Assets/Images/calllogs.png')}
-                  style={{width: width / 1.1, height: height / 1.6}}
+                  source={require('../../Assets/Images/beneficiary.png')}
+                  style={{width: width / 1.6, height: height / 2.4}}
                   resizeMode="contain"
                 />
                 <Text
@@ -172,8 +172,10 @@ class CallLogs extends Component {
                     fontFamily: FontStyle.regular,
                     fontSize: 23,
                     color: '#575757',
+                    textAlign: 'center',
                   }}>
-                  You don't have any call logs
+                  Your beneficiarie calls have received any calls yet. When they
+                  do, you will see the call logs here.
                 </Text>
               </ScrollView>
             ) : (

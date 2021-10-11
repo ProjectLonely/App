@@ -29,7 +29,12 @@ class VerificationCode extends Component {
   };
   componentDidMount = async () => {
     this.timer();
-    this.setState({temp_token: await AsyncStorage.getItem('temp_token')});
+    const pageValue = this.props.route.params;
+    this.setState({
+      temp_token: await AsyncStorage.getItem('temp_token'),
+      pageValue,
+    });
+    console.log(pageValue);
   };
 
   verify = () => {
@@ -43,11 +48,18 @@ class VerificationCode extends Component {
         code: otp,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
+        console.log(response, 'verify', this.state.pageValue);
         this.setState({verifyLoader: false});
         if (response.status == 201) {
-          AsyncStorage.setItem('token', response.data.token);
-          this.props.navigation.navigate('AccountInformation');
+          await AsyncStorage.setItem('token', response.data.token);
+          await AsyncStorage.setItem('name', response.data.name);
+          await AsyncStorage.setItem('email', response.data.email);
+          if (this.state.pageValue == 'signup') {
+            this.props.navigation.navigate('Dashboard');
+          } else {
+            this.props.navigation.navigate('AccountInformation');
+          }
         }
       })
       .catch((err) => {
@@ -69,6 +81,7 @@ class VerificationCode extends Component {
       },
     })
       .then((response) => {
+        console.log(response);
         this.setState({timer: 30, resendLoader: false});
         if (response.status == 204) {
           this.setState({

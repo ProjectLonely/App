@@ -8,6 +8,8 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
@@ -25,6 +27,7 @@ import LoadingView from '../../Common/LoadingView';
 import {baseurl} from '../../Common/Baseurl';
 import AlertModal from '../../Common/AlertModal';
 import ConfirmModal from '../../Common/ConfirmModal';
+const {height, width} = Dimensions.get('screen');
 
 class Benificiary extends Component {
   state = {
@@ -76,7 +79,7 @@ class Benificiary extends Component {
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
-        <View style={{height: '86%', backgroundColor: '#fff'}}>
+        <View style={{height: '89%', backgroundColor: '#fff'}}>
           <Header
             middleText={'Beneficiaries'}
             notification={true}
@@ -94,6 +97,36 @@ class Benificiary extends Component {
           />
           {this.props.loading ? (
             <LoadingView heightValue={1.2} />
+          ) : beneficiaryArray.length < 1 ? (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+              }}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={this.pageRefresh}
+                  tintColor="#004ACE"
+                />
+              }>
+              <Image
+                source={require('../../Assets/Images/beneficiary.png')}
+                style={{width: width / 1.6, height: height / 2.4}}
+                resizeMode="contain"
+              />
+              <Text
+                style={{
+                  fontFamily: FontStyle.regular,
+                  fontSize: 23,
+                  color: '#575757',
+                  textAlign: 'center',
+                }}>
+                You don't have any beneficiaries.
+              </Text>
+            </ScrollView>
           ) : (
             <FlatList
               refreshControl={
@@ -212,6 +245,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'bene');
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,

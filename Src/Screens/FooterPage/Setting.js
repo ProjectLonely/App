@@ -88,7 +88,7 @@ class Setting extends Component {
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
-        <View style={{height: '86%', backgroundColor: '#fff'}}>
+        <View style={{height: '89%', backgroundColor: '#fff'}}>
           <Header
             leftIcon={true}
             middleText={'Settings'}

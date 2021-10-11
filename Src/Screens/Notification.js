@@ -106,8 +106,10 @@ class Notification extends Component {
                 fontFamily: FontStyle.regular,
                 fontSize: 23,
                 color: '#575757',
+                textAlign: 'center',
               }}>
-              You don't have any notification
+              You have no notifications at this moment. When you recive an
+              alert, this is where it will appear.
             </Text>
           </ScrollView>
         ) : (

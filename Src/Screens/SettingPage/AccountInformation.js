@@ -30,7 +30,7 @@ class AccountInformation extends Component {
     updateLoader: false,
     success: false,
     base64: '',
-    getImage: '',
+    getImage: null,
   };
 
   componentDidMount = async () => {
@@ -52,7 +52,9 @@ class AccountInformation extends Component {
         });
         AsyncStorage.setItem('email', response.data.email);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   updateProfileData = () => {
@@ -83,7 +85,8 @@ class AccountInformation extends Component {
           image: this.state.base64,
         },
       })
-        .then((response) => {
+        .then(async (response) => {
+          await AsyncStorage.setItem('name', this.state.firstName);
           this.setState({
             modalValue: true,
             message: 'Profile is updated successfully',
@@ -187,7 +190,7 @@ class AccountInformation extends Component {
               <TouchableOpacity
                 onPress={this.openModal}
                 style={styles.imageView}>
-                {this.state.getImage != '' && source == '' ? (
+                {this.state.getImage != null && source == '' ? (
                   <Image
                     source={{
                       uri: `http://digimonk.co:1612${this.state.getImage}`,

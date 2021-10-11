@@ -1,1 +1,1 @@
-exports.baseurl = 'http://digimonk.co:1612/';
+exports.baseurl = 'http://digimonk.co:1617/';

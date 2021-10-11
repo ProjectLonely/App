@@ -40,7 +40,6 @@ class ChatList extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'chat');
         this.setState({operatorArray: response.data, token});
       })
       .catch((err) => {});
@@ -81,7 +80,7 @@ class ChatList extends Component {
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <SafeAreaView />
-        <View style={{height: '86%', backgroundColor: '#fff'}}>
+        <View style={{height: '89%', backgroundColor: '#fff'}}>
           <Header
             middleText={'Chat List'}
             notification={true}
@@ -117,8 +116,10 @@ class ChatList extends Component {
                   fontFamily: FontStyle.regular,
                   fontSize: 23,
                   color: '#575757',
+                  textAlign: 'center',
                 }}>
-                You don't have any chat
+                You have no chat at this moment. When you recive an alert, this
+                is where it will appear.
               </Text>
             </ScrollView>
           ) : (

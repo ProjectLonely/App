@@ -97,7 +97,7 @@ class Beneficiary extends Component {
         source={require('../../Assets/Images/splashWhite.png')}
         style={{height: '100%', width: '100%'}}
         resizeMode="cover">
-        <View style={{height: '91.5%'}}>
+        <View style={{height: '92%'}}>
           <CalendarModal
             calendarValue={calendarValue}
             closeModal={() => this.setState({calendarValue: false})}
@@ -180,13 +180,15 @@ class Beneficiary extends Component {
                   fontFamily: FontStyle.regular,
                   fontSize: 23,
                   color: '#575757',
+                  textAlign: 'center',
                 }}>
-                You don't have any beneficiary
+                Your beneficiarie have received any calls yet. When they do, you
+                will see the call logs here.
               </Text>
-              <Button
+              {/* <Button
                 onPress={() => this.props.navigation.navigate('Subscription')}>
                 ADD BENEFICIARY
-              </Button>
+              </Button> */}
             </ScrollView>
           ) : (
             <View style={{height: '87%'}}>

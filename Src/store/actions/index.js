@@ -9,9 +9,12 @@ export const SubscriptionPlan = (token) => {
       url: `${baseurl}plans/`,
     })
       .then((response) => {
+        console.log(response, 'list');
         dispatch({type: 'SubscriptionPlan', payload: response.data.results});
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 

@@ -83,12 +83,13 @@ class SignUp extends Component {
               message: 'this email id alredy exist',
             });
           } else {
+            const pageValue = 'signup';
             AsyncStorage.setItem('temp_token', response.data.temp_token);
-            this.props.navigation.navigate('VerificationCode');
+            this.props.navigation.navigate('VerificationCode', pageValue);
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
           this.setState({
             modalValue: true,
             message: err.response.data.email,

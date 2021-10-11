@@ -22,6 +22,7 @@ import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../../Common/AlertModal';
+import Spinner from '../../Common/Spinner';
 var qs = require('qs');
 
 const PaymentRequest = require('react-native-payments').PaymentRequest;
@@ -30,6 +31,7 @@ class AddBenificiaryPage3 extends Component {
   state = {
     modalValue: false,
     dayId: '',
+    payLoader: false,
     completeValue: false,
     expandValue: false,
     newArray: [],
@@ -96,13 +98,12 @@ class AddBenificiaryPage3 extends Component {
     paymentRequests
       .canMakePayments()
       .then((canMakePayment) => {
-        console.log(canMakePayment, 'canmake');
         if (canMakePayment) {
           paymentRequests.show().then((paymentResponse) => {
             console.log(paymentResponse, 'resposne');
             if (paymentResponse._details.paymentToken != '') {
               paymentResponse.complete('success');
-
+              this.setState({payLoader: true});
               axios({
                 method: 'post',
                 url: 'https://api.stripe.com/v1/charges',
@@ -122,7 +123,7 @@ class AddBenificiaryPage3 extends Component {
                   if (response.status == 200) {
                     setTimeout(() => {
                       this.next();
-                    }, 2000);
+                    }, 1000);
                   } else {
                     alert('Something went wrong');
                   }
@@ -143,7 +144,7 @@ class AddBenificiaryPage3 extends Component {
         this.setState({
           SubscribeLoader: false,
         });
-        console.log(err, 'asdfsdf');
+
         this.paymentRequest.abort();
       });
   };
@@ -183,6 +184,7 @@ class AddBenificiaryPage3 extends Component {
             this.setState({
               completeValue: true,
               modalValue: true,
+              payLoader: false,
               message: 'Beneficiary added successfully',
             });
           }
@@ -235,6 +237,18 @@ class AddBenificiaryPage3 extends Component {
     }
   };
 
+  renderButton = () => {
+    if (this.state.payLoader) {
+      return (
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Spinner spinnercolor="#fff" marginTop={17.5} />
+        </View>
+      );
+    } else {
+      return <Button onPress={() => this.applePay()}>NEXT</Button>;
+    }
+  };
+
   render() {
     const {dayOption, dayId, timeOption, newArray, modalValue, message} =
       this.state;
@@ -247,7 +261,10 @@ class AddBenificiaryPage3 extends Component {
           backgroundColor: '#fff',
         }}>
         <SafeAreaView />
-        <Header leftIcon={true} middleText={'Set up a call schedule'} />
+        <Header
+          leftIcon={true}
+          middleText={'select beneficiary availability'}
+        />
         <View style={{height: '65%'}}>
           <AlertModal
             modalValue={modalValue}
@@ -443,7 +460,7 @@ class AddBenificiaryPage3 extends Component {
           />
         </View>
 
-        <Button onPress={() => this.applePay()}>NEXT</Button>
+        {this.renderButton()}
       </View>
     );
   }

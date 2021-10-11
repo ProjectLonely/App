@@ -34,7 +34,7 @@ class Subscription extends Component {
 
   render() {
     const {subscriptionList} = this.props;
-
+    console.log(subscriptionList, 'sub list');
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
