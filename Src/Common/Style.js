@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import FontStyle from '../Assets/Fonts/FontStyle';
 
 const Styles = StyleSheet.create({
   smallContainer: {
@@ -44,6 +45,13 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 11,
+  },
+  labelText: {
+    width: '100%',
+    fontSize: 16,
+    fontFamily: FontStyle.medium,
+    color: '#004ACE',
+    paddingHorizontal: '6%',
   },
 });
 

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import moment from 'moment';
 import React, {Component} from 'react';
 import {
   View,
@@ -29,6 +30,7 @@ class Chat extends Component {
     chatData: [],
     lastChatTime: '',
     rohit: true,
+    currentDate: moment(),
   };
   _keyboardDidShow = () => {
     this.setState({isShowKeyboard: true});
@@ -79,12 +81,15 @@ class Chat extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then(async (response) => {
+        console.log(response);
         this.setState({
           chatData: response.data.chats,
           lastChatTime: response.data.chats[0].created_at,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   socket = (roomId) => {
@@ -133,7 +138,8 @@ class Chat extends Component {
   };
 
   render() {
-    const {chatData, operatorId, isShowKeyboard, operatorName} = this.state;
+    const {chatData, operatorId, isShowKeyboard, operatorName, currentDate} =
+      this.state;
 
     return (
       <View
@@ -173,6 +179,14 @@ class Chat extends Component {
                   : null
               }
               renderItem={({item: chat}) => {
+                var chatDate = moment(chat.created_at).format('DD-MM-YYYY');
+                var chatTime = moment(chatDate, 'DD-MM-YYYY HH:mm:ss');
+                var currentTime = moment(currentDate, 'DD-MM-YYYY HH:mm:ss');
+                var timeDifference = moment
+                  .duration(currentTime.diff(chatTime))
+                  .asDays();
+                console.log(timeDifference, currentDate, chatTime);
+
                 return (
                   <View
                     style={[
@@ -199,6 +213,10 @@ class Chat extends Component {
                           chat.user_id == operatorId ? '#63697B' : '#FFFFFF',
                       }}>
                       {chat.chat}
+                    </Text>
+
+                    <Text style={{color: '#fff', alignSelf: 'flex-end'}}>
+                      {moment(chat.created_at).format('DD MMM YYYY')}
                     </Text>
                   </View>
                 );

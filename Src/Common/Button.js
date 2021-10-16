@@ -10,6 +10,7 @@ const Button = ({
   bordercolor,
   onPress,
   children,
+  marginTop,
 }) => {
   return (
     <View style={{width: '100%'}}>
@@ -23,6 +24,7 @@ const Button = ({
             backgroundColor: bgcolor || '#004ACE',
             borderWidth: btnborder,
             borderColor: bordercolor,
+            marginTop: marginTop || '5%',
           },
         ]}>
         <Text style={styles.normal_text}>{children}</Text>

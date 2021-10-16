@@ -90,17 +90,20 @@ class AddBenificiaryPage3 extends Component {
       ],
       total: {
         label: 'Cheerio App',
-        amount: {currency: 'USD', value: this.props.beneficiaryData.planAmount},
+        amount: {
+          currency: 'USD',
+          value: this.props.beneficiaryData.planAmount,
+        },
       },
     };
     var paymentRequests = new PaymentRequest(METHOD_DATA, DETAILS);
-    console.log(paymentRequests, 'request');
+
     paymentRequests
       .canMakePayments()
       .then((canMakePayment) => {
         if (canMakePayment) {
           paymentRequests.show().then((paymentResponse) => {
-            console.log(paymentResponse, 'resposne');
+            // console.log(paymentResponse, 'resposne');
             if (paymentResponse._details.paymentToken != '') {
               paymentResponse.complete('success');
               this.setState({payLoader: true});
@@ -112,14 +115,16 @@ class AddBenificiaryPage3 extends Component {
                   'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: qs.stringify({
-                  amount: this.props.beneficiaryData.planAmount,
+                  amount: this.props.beneficiaryData.planAmount * 100,
+
                   currency: 'usd',
                   source: paymentResponse._details.paymentToken,
                   description: this.state.userId,
                 }),
               })
                 .then((response) => {
-                  console.log(response);
+                  // console.log(response, 'payment response');
+                  this.setState({transaction_id: response.id});
                   if (response.status == 200) {
                     setTimeout(() => {
                       this.next();
@@ -129,7 +134,7 @@ class AddBenificiaryPage3 extends Component {
                   }
                 })
                 .catch((error) => {
-                  console.log(error);
+                  // console.log(error.response, 'rrrrrr');
                   alert(error.response.data.error.code);
                 });
             }
@@ -175,13 +180,15 @@ class AddBenificiaryPage3 extends Component {
           seekings: beneficiaryData.selectedSeekOption,
           schedule: beneficiaryData.newArray,
           image: beneficiaryData.base64,
+          plan_id: beneficiaryData.planId,
+          transaction_id: this.state.transaction_id,
         },
       })
         .then((response) => {
-          console.log(response);
           // this.setState({submitLoader: false});
           if (response.status == 201) {
             this.setState({
+              payLoader: false,
               completeValue: true,
               modalValue: true,
               payLoader: false,
@@ -190,9 +197,11 @@ class AddBenificiaryPage3 extends Component {
           }
         })
         .catch((err) => {
+          console.log(Object.values(err.response.data));
           this.setState({
+            payLoader: false,
             modalValue: true,
-            message: 'Something went wrong',
+            message: Object.values(err.response.data).toString(),
             submitLoader: false,
           });
         });
@@ -484,7 +493,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state.AddBeneficiaryReducer);
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

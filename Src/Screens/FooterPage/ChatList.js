@@ -23,7 +23,11 @@ import Footer from '../../Common/Footer';
 const {height, width} = Dimensions.get('screen');
 
 class ChatList extends Component {
-  state = {modalValue: false, operatorArray: [], activeUser: []};
+  state = {
+    modalValue: false,
+    operatorArray: [],
+    activeUser: [],
+  };
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -75,7 +79,7 @@ class ChatList extends Component {
   };
 
   render() {
-    const {modalValue, message, operatorArray} = this.state;
+    const {modalValue, message, operatorArray, currentDate} = this.state;
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>

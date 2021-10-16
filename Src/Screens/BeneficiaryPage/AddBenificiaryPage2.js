@@ -12,7 +12,7 @@ import AlertModal from '../../Common/AlertModal';
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Styles from '../../Common/Style';
 class AddBenificiaryPage2 extends Component {
   state = {
     checkbox: false,
@@ -88,8 +88,11 @@ class AddBenificiaryPage2 extends Component {
           />
           <Header leftIcon={true} middleText={'Add Beneficiary'} />
           <View style={{width: '100%', alignItems: 'center'}}>
+            <Text style={[Styles.labelText]}>
+              Tell us something about this person.
+            </Text>
             <TextInput
-              placeholder="please tell us something about this person"
+              placeholder="Enter detail here"
               value={this.props.beneficiaryData.aboutPerson}
               maxLength={300}
               placeholderTextColor="#707070"
@@ -153,13 +156,7 @@ class AddBenificiaryPage2 extends Component {
               }}
             />
             <View style={{width: '100%', paddingHorizontal: '5%', height: 150}}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: FontStyle.medium,
-                  color: '#004ACE',
-                  marginVertical: '5%',
-                }}>
+              <Text style={[Styles.labelText, {paddingHorizontal: '2%'}]}>
                 leave a comment
               </Text>
               <TextInput

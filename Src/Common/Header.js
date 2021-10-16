@@ -85,7 +85,12 @@ const Header = ({
               source={require('../Assets/Images/bell.png')}
               style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
             />
-            <Text style={{top: -10, left: -2, color: '#004ACE'}}>
+            <Text
+              style={{
+                top: -10,
+                left: -2,
+                color: unseenCount > 0 ? '#004ACE' : '#FFF',
+              }}>
               {unseenCount}
             </Text>
           </TouchableOpacity>

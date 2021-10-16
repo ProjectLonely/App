@@ -140,8 +140,13 @@ class Beneficiary extends Component {
                 source={require('../../Assets/Images/bell.png')}
                 style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
               />
-              <Text style={{top: -10, left: -2, color: '#004ACE'}}>
-                {unseenCount}
+              <Text
+                style={{
+                  top: -10,
+                  left: -2,
+                  color: unseenCount > 0 ? '#004ACE' : '#FFF',
+                }}>
+                {unseenCount > 0 ? unseenCount : '0'}
               </Text>
             </TouchableOpacity>
           </View>

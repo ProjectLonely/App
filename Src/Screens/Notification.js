@@ -78,7 +78,7 @@ class Notification extends Component {
         <SafeAreaView />
         <Header
           leftIcon={true}
-          middleText={'Notification'}
+          middleText={'Notifications'}
           notification={true}
         />
         {notificationArray.length < 1 ? (

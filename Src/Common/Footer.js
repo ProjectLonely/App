@@ -73,7 +73,7 @@ const Footer = ({
               style={{
                 top: -8,
                 left: -5,
-                color: '#004ACE',
+                color: unseenValue > 0 ? '#004ACE' : '#fff',
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>
@@ -90,7 +90,7 @@ const Footer = ({
               style={{
                 top: -8,
                 left: -5,
-                color: '#004ACE',
+                color: unseenValue > 0 ? '#004ACE' : '#fff',
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>

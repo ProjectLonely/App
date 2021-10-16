@@ -20,12 +20,13 @@ import {addBenificiary} from '../../store/actions/index';
 import AlertModal from '../../Common/AlertModal';
 import ImageModal from '../../Common/ImageModal';
 import ImagePicker from 'react-native-image-crop-picker';
+import Styles from '../../Common/Style';
 
 class AddBenificiaryPage1 extends Component {
   state = {
     relationOption: ['Self', 'Mother', 'Father', 'Spouse', 'Others'],
     relationShipId: 2,
-    genderOption: ['Men', 'Women', 'Other'],
+    genderOption: ['Male', 'Female', 'Other'],
     genderId: 0,
     selectedItems: '',
     imageModal: false,
@@ -132,16 +133,11 @@ class AddBenificiaryPage1 extends Component {
 
   render() {
     const {
-      relationShipArray,
-      selectedItems,
       genderOption,
-      genderId,
       relationOption,
-      relationShipId,
       modalValue,
       message,
       imageModal,
-      sourceURL,
       timeZoneOption,
     } = this.state;
 
@@ -165,6 +161,7 @@ class AddBenificiaryPage1 extends Component {
             closeModal={() => this.setState({modalValue: false})}
             message={message}
           />
+          <Text style={Styles.labelText}>Who is this beneficiary</Text>
           <ModalDropdown
             options={relationOption}
             onSelect={(relationShipId) =>
@@ -223,13 +220,14 @@ class AddBenificiaryPage1 extends Component {
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
           </ModalDropdown>
-
+          <Text style={[Styles.labelText, {top: 10}]}>Beneficiary Name</Text>
           <Input
             placeholder="Enter Name"
             onChangeText={(name) => this.props.addBenificiary({name})}
             value={this.props.beneficiaryData.name}
             maxLength={40}
           />
+          <Text style={[Styles.labelText, {top: 10}]}>Beneficiary Age</Text>
           <Input
             placeholder="Enter Age"
             onChangeText={(age) => this.props.addBenificiary({age: age})}
@@ -237,6 +235,7 @@ class AddBenificiaryPage1 extends Component {
             maxLength={3}
             value={this.props.beneficiaryData.age}
           />
+          <Text style={[Styles.labelText, {top: 10}]}>Beneficiary gender</Text>
           <ModalDropdown
             onSelect={(genderId) =>
               this.props.addBenificiary({genderId: genderOption[genderId]})
@@ -293,6 +292,9 @@ class AddBenificiaryPage1 extends Component {
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
           </ModalDropdown>
+          <Text style={[Styles.labelText, {top: 18}]}>
+            Beneficiary timezone
+          </Text>
           <ModalDropdown
             onSelect={(timeZoneId) =>
               this.props.addBenificiary({timeZone: timeZoneOption[timeZoneId]})
@@ -350,7 +352,9 @@ class AddBenificiaryPage1 extends Component {
               <Icon name="chevron-down" size={24} color={'grey'} />
             </View>
           </ModalDropdown>
-
+          <Text style={[Styles.labelText, {top: 22}]}>
+            Beneficiary phone number
+          </Text>
           <Input
             placeholder="Phone Number"
             keyboardType={'number-pad'}

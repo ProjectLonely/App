@@ -73,25 +73,24 @@ class Subscription extends Component {
                       : null,
                   ]}>
                   <View style={{flexDirection: 'row', height: '100%'}}>
-                    <Image
+                    {/* <Image
                       source={{uri: item.image}}
                       style={styles.imageStyle}
-                    />
+                    /> */}
                     <View
                       style={{
-                        width: '80%',
+                        width: '100%',
                         height: '100%',
-                        paddingLeft: '5%',
                       }}>
                       <Text
                         style={{
                           fontFamily: FontStyle.bold,
                           fontSize: 18,
-                          paddingLeft: '12%',
                         }}>
                         {item.name}
                       </Text>
-                      {item.descriptions.map((description) => {
+                      <Text>{item.description}</Text>
+                      {/* {item.descriptions.map((description) => {
                         return (
                           <View
                             style={{
@@ -121,7 +120,7 @@ class Subscription extends Component {
                             </Text>
                           </View>
                         );
-                      })}
+                      })} */}
                       <View
                         style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text
@@ -130,7 +129,7 @@ class Subscription extends Component {
                             fontSize: 36,
                             color: '#0F0A39',
                           }}>
-                          ${item.price}{' '}
+                          ${item.price_per_month}{' '}
                         </Text>
                         <Text
                           style={{
@@ -138,7 +137,7 @@ class Subscription extends Component {
                             fontSize: 22,
                             color: '#0F0A39',
                           }}>
-                          Per {item.duration}
+                          Per Month
                         </Text>
                       </View>
                       <Text
@@ -152,8 +151,9 @@ class Subscription extends Component {
                       <Button
                         btnheight={40}
                         btnwidth={'70%'}
+                        marginTop={40}
                         onPress={() =>
-                          this.addBenificiary(item.id, item.price)
+                          this.addBenificiary(item.id, item.price_per_month)
                         }>
                         SELECT
                       </Button>

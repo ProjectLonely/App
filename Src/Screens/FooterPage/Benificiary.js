@@ -179,7 +179,8 @@ class Benificiary extends Component {
                         />
                         <Text style={styles.normalText}>
                           {/* {beneficiaryData.created_at} */}
-                          {moment(beneficiaryData.created_at).format(
+                          {'Date of last call : '}
+                          {moment(beneficiaryData.last_call).format(
                             'MMM,DD YYYY ',
                           )}
                         </Text>
@@ -190,7 +191,7 @@ class Benificiary extends Component {
                           style={styles.imageStyle}
                         />
                         <Text style={styles.normalText}>
-                          Companion Operator:
+                          {'Companion Operator : '}
                           {beneficiaryData.operator__first_name
                             ? beneficiaryData.operator__first_name
                             : ' waiting to be assigned'}
@@ -245,7 +246,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'bene');
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,

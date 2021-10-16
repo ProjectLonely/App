@@ -4,7 +4,7 @@ const initialState = {
   name: '',
   timeZone: 'Central Daylight Time Chicago (GMT-5)',
   age: '',
-  genderId: 'Men',
+  genderId: 'Male',
   phoneNumber: '',
   aboutPerson: '',
   selectedSeekOption: [],

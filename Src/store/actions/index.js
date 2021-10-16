@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {ActionSheetIOS} from 'react-native';
 import {baseurl} from '../../Common/Baseurl';
 
 export const SubscriptionPlan = (token) => {
@@ -6,10 +7,9 @@ export const SubscriptionPlan = (token) => {
     axios({
       method: 'get',
       headers: {Authorization: 'Token ' + token},
-      url: `${baseurl}plans/`,
+      url: `${baseurl}api/v1/plans/all/`,
     })
       .then((response) => {
-        console.log(response, 'list');
         dispatch({type: 'SubscriptionPlan', payload: response.data.results});
       })
       .catch((err) => {
@@ -77,5 +77,25 @@ export const unseenNotification = (token) => {
         dispatch({type: 'NotificationCount', payload: response.data.count});
       })
       .catch((err) => {});
+  };
+};
+
+export const transactionPlan = (token) => {
+  return (dispatch) => {
+    axios({
+      method: 'get',
+      url: `${baseurl}api/v1/plans/active_transactions/`,
+      headers: {
+        Authorization: `Token 7636ff9efc4bf56c2019c57ed0ff67bcfc52f91b`,
+      },
+    })
+      .then((response) => {
+        // console.log(response, 'transaction');
+        dispatch({type: 'transactionDetail', payload: response.data});
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err);
+      });
   };
 };
