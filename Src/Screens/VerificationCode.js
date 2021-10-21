@@ -26,11 +26,13 @@ class VerificationCode extends Component {
     modalValue: false,
     verifyLoader: false,
     resendLoader: false,
+    deviceId: '',
   };
   componentDidMount = async () => {
     this.timer();
     const pageValue = this.props.route.params;
     this.setState({
+      deviceId: await AsyncStorage.getItem('deviceToken'),
       temp_token: await AsyncStorage.getItem('temp_token'),
       pageValue,
     });
@@ -39,17 +41,17 @@ class VerificationCode extends Component {
 
   verify = () => {
     this.setState({verifyLoader: true});
-    const {temp_token, otp} = this.state;
+    const {temp_token, otp, deviceId} = this.state;
     axios({
       method: 'POST',
       url: `${baseurl}verify/`,
       data: {
         temp_token: temp_token,
         code: otp,
+        device_id: deviceId,
       },
     })
       .then(async (response) => {
-        console.log(response, 'verify', this.state.pageValue);
         this.setState({verifyLoader: false});
         if (response.status == 201) {
           await AsyncStorage.setItem('token', response.data.token);
@@ -66,7 +68,7 @@ class VerificationCode extends Component {
         this.setState({verifyLoader: false});
         this.setState({
           modalValue: true,
-          message: err.response.data.__all__.toString(),
+          message: Object.values(err.response.data),
         });
       });
   };

@@ -123,8 +123,8 @@ class AddBenificiaryPage3 extends Component {
                 }),
               })
                 .then((response) => {
-                  // console.log(response, 'payment response');
-                  this.setState({transaction_id: response.id});
+                  console.log(response, 'payment response');
+                  this.setState({transaction_id: response.data.id});
                   if (response.status == 200) {
                     setTimeout(() => {
                       this.next();
@@ -134,7 +134,7 @@ class AddBenificiaryPage3 extends Component {
                   }
                 })
                 .catch((error) => {
-                  // console.log(error.response, 'rrrrrr');
+                  console.log(error.response, 'rrrrrr');
                   alert(error.response.data.error.code);
                 });
             }
@@ -197,7 +197,7 @@ class AddBenificiaryPage3 extends Component {
           }
         })
         .catch((err) => {
-          console.log(Object.values(err.response.data));
+          console.log(Object.values(err.response));
           this.setState({
             payLoader: false,
             modalValue: true,

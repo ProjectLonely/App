@@ -52,7 +52,7 @@ const CalendarModal = ({
         }}>
         <View
           style={{
-            height: height / 1.1,
+            height: height / 2.4,
             width: width,
             backgroundColor: '#fff',
             borderTopLeftRadius: 10,
@@ -124,7 +124,7 @@ const CalendarModal = ({
               </Text>
             </TouchableOpacity>
 
-            <View style={styles.calendarContainer}>
+            {/* <View style={styles.calendarContainer}>
               <CalendarPicker
                 todayBackgroundColor="#004ACE"
                 selectedDayColor="#004ACE"
@@ -141,7 +141,7 @@ const CalendarModal = ({
                 }}>
                 Drag circles to change date range.
               </Text>
-            </View>
+            </View> */}
 
             <Button onPress={closeModal}>APPLY</Button>
           </View>

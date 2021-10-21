@@ -28,10 +28,15 @@ class SignIn extends Component {
     passwordSecure: true,
     modalValue: false,
     signinLoader: false,
+    deviceId: '',
+  };
+
+  componentDidMount = async () => {
+    this.setState({deviceId: await AsyncStorage.getItem('deviceToken')});
   };
 
   signin = () => {
-    const {email, password} = this.state;
+    const {email, password, deviceId} = this.state;
     if (email == '') {
       this.setState({emailError: true});
     } else if (password == '') {
@@ -45,6 +50,7 @@ class SignIn extends Component {
         data: {
           email: email,
           password: password,
+          device_id: deviceId,
         },
       })
         .then(async (response) => {

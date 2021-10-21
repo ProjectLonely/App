@@ -40,7 +40,7 @@ class ForgotPassword extends Component {
           this.props.navigation.navigate('VerificationCode', pageValue);
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log(err.response, 'err');
           this.setState({sendLoader: false});
           alert('Enter a valid email address');
           this.setState({

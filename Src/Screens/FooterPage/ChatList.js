@@ -44,6 +44,7 @@ class ChatList extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response, 'response');
         this.setState({operatorArray: response.data, token});
       })
       .catch((err) => {});
@@ -145,73 +146,99 @@ class ChatList extends Component {
                       onPress={() =>
                         this.selectChat(operatorData.id, operatorData.name)
                       }
-                      style={{width: '100%'}}>
-                      <View
-                        style={[
-                          styles.normalView,
-                          {justifyContent: 'space-between'},
-                        ]}>
-                        <View style={{flexDirection: 'row'}}>
+                      style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                      }}>
+                      <View style={{width: '20%', backgroundColor: '#fff'}}>
+                        {operatorData.image == null ? (
                           <Image
-                            source={require('../../Assets/Images/smalluser.png')}
+                            source={require('../../Assets/Images/group.png')}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        ) : (
+                          <Image
+                            source={{uri: operatorData.image}}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        )}
+                      </View>
+                      <View style={{width: '75%', paddingHorizontal: '2.5%'}}>
+                        <View
+                          style={[
+                            styles.normalView,
+                            {justifyContent: 'space-between'},
+                          ]}>
+                          <View style={{flexDirection: 'row'}}>
+                            <Image
+                              source={require('../../Assets/Images/smalluser.png')}
+                              style={styles.imageStyle}
+                            />
+
+                            <Text
+                              style={{
+                                fontFamily: FontStyle.bold,
+                                fontSize: 13,
+                                color: '#10275A',
+                                left: 5,
+                              }}>
+                              {operatorData.name}
+                            </Text>
+                          </View>
+                          {this.state.activeUser.some(
+                            (data) => data == operatorData.id,
+                          ) ? (
+                            <View
+                              style={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: 'green',
+                                alignSelf: 'flex-end',
+                              }}
+                            />
+                          ) : null}
+                        </View>
+                        <View style={styles.normalView}>
+                          <Image
+                            source={require('../../Assets/Images/smallgroup.png')}
                             style={styles.imageStyle}
                           />
 
-                          <Text
-                            style={{
-                              fontFamily: FontStyle.bold,
-                              fontSize: 13,
-                              color: '#10275A',
-                              left: 5,
-                            }}>
-                            {operatorData.name}
+                          {operatorData.beneficiary.map((data) => (
+                            <Text style={styles.normalText}>{data.name}, </Text>
+                          ))}
+                        </View>
+                        <View style={styles.normalView}>
+                          <Image
+                            source={require('../../Assets/Images/smallcalendar.png')}
+                            style={styles.imageStyle}
+                          />
+                          <Text style={styles.normalText}>
+                            {moment(operatorData.last_chat_created_at).format(
+                              'MMM,DD YYYY ',
+                            )}
                           </Text>
                         </View>
-                        {this.state.activeUser.some(
-                          (data) => data == operatorData.id,
-                        ) ? (
-                          <View
-                            style={{
-                              width: 10,
-                              height: 10,
-                              borderRadius: 5,
-                              backgroundColor: 'green',
-                              alignSelf: 'flex-end',
-                            }}
+                        <View style={styles.normalView}>
+                          <Image
+                            source={require('../../Assets/Images/smallcompanion.png')}
+                            style={styles.imageStyle}
                           />
-                        ) : null}
-                      </View>
-                      <View style={styles.normalView}>
-                        <Image
-                          source={require('../../Assets/Images/smallgroup.png')}
-                          style={styles.imageStyle}
-                        />
-
-                        {operatorData.beneficiary.map((data) => (
-                          <Text style={styles.normalText}>{data.name}, </Text>
-                        ))}
-                      </View>
-                      <View style={styles.normalView}>
-                        <Image
-                          source={require('../../Assets/Images/smallcalendar.png')}
-                          style={styles.imageStyle}
-                        />
-                        <Text style={styles.normalText}>
-                          {moment(operatorData.created_at).format(
-                            'MMM,DD YYYY ',
-                          )}
-                        </Text>
-                      </View>
-                      <View style={styles.normalView}>
-                        <Image
-                          source={require('../../Assets/Images/smallcompanion.png')}
-                          style={styles.imageStyle}
-                        />
-                        <Text style={styles.normalText}>
-                          {/* {beneficiaryData.companionOperator}
-                           */}
-                          companionOperator: Operator 1
-                        </Text>
+                          <Text style={styles.normalText}>
+                            {/* {beneficiaryData.companionOperator}
+                             */}
+                            companionOperator: Operator 1
+                          </Text>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   </View>

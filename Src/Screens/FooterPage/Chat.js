@@ -215,8 +215,13 @@ class Chat extends Component {
                       {chat.chat}
                     </Text>
 
+                    {timeDifference > 1 ? (
+                      <Text style={{color: '#fff', alignSelf: 'flex-end'}}>
+                        {moment(chat.created_at).format('DD MMM YYYY')}
+                      </Text>
+                    ) : null}
                     <Text style={{color: '#fff', alignSelf: 'flex-end'}}>
-                      {moment(chat.created_at).format('DD MMM YYYY')}
+                      {moment(chat.created_at).format('hh:mm a')}
                     </Text>
                   </View>
                 );

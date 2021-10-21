@@ -38,7 +38,11 @@
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "@react-native-firebase/app": "^12.6.0",
+    "react-native-push-notification": "^7.4.0",
+    "@react-native-community/push-notification-ios": "^1.9.0",
+    "@react-native-firebase/messaging": "^12.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.15.0",

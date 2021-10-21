@@ -91,7 +91,7 @@ class Beneficiary extends Component {
     const {calendarValue, startDate, endDate, durationStatus, userName} =
       this.state;
     const {callingData, unseenCount, unseenValue} = this.props;
-
+    console.log(this.state.token);
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}

@@ -180,9 +180,11 @@ class Benificiary extends Component {
                         <Text style={styles.normalText}>
                           {/* {beneficiaryData.created_at} */}
                           {'Date of last call : '}
-                          {moment(beneficiaryData.last_call).format(
-                            'MMM,DD YYYY ',
-                          )}
+                          {beneficiaryData.last_call
+                            ? moment(beneficiaryData.last_call).format(
+                                'MMM,DD YYYY ',
+                              )
+                            : 'No call yet'}
                         </Text>
                       </View>
                       <View style={styles.normalView}>
