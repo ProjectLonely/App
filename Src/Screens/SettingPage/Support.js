@@ -72,7 +72,7 @@ class Support extends Component {
       <View
         style={{backgroundColor: '#fff', height: '100%', width: '100%'}}
         pointerEvents={submitLoader ? 'none' : 'auto'}>
-        <SafeAreaView />
+        {/* <SafeAreaView /> */}
         <Header
           leftIcon={true}
           middleText={'Support'}
@@ -82,7 +82,7 @@ class Support extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          style={{height: '100%', width: '100%'}}>
+          style={{height: '100%', width: '100%', marginVertical: '5%'}}>
           <ThanksModal
             email={email}
             thanksValue={thanksValue}

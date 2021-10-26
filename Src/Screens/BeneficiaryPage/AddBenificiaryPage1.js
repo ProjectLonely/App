@@ -149,7 +149,7 @@ class AddBenificiaryPage1 extends Component {
           alignItems: 'center',
           backgroundColor: '#fff',
         }}>
-        <SafeAreaView />
+        {/* <SafeAreaView /> */}
         <Header leftIcon={true} middleText={'Add Beneficiary'} />
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"

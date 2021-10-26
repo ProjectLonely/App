@@ -78,8 +78,7 @@ class Benificiary extends Component {
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
-        <View style={{height: '89%', backgroundColor: '#fff'}}>
+        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
           <Header
             middleText={'Beneficiaries'}
             notification={true}
@@ -140,7 +139,6 @@ class Benificiary extends Component {
               contentContainerStyle={{width: '100%'}}
               showsVerticalScrollIndicator={false}
               renderItem={({item: beneficiaryData}) => {
-                console.log(beneficiaryData, 'bene');
                 return (
                   <View style={[Styles.smallContainer]}>
                     <TouchableOpacity
@@ -214,7 +212,9 @@ class Benificiary extends Component {
           )}
 
           <Button
-            onPress={() => this.props.navigation.navigate('Subscription')}>
+            onPress={() =>
+              this.props.navigation.navigate('AddBenificiaryPage1')
+            }>
             ADD NEW BENEFICIARY
           </Button>
         </View>

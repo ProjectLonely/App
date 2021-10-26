@@ -18,6 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../Common/AlertModal';
 import Spinner from '../Common/Spinner';
 import {StackActions} from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 
 class SignIn extends Component {
   state = {
@@ -37,6 +39,11 @@ class SignIn extends Component {
 
   signin = () => {
     const {email, password, deviceId} = this.state;
+    console.log({
+      email: email,
+      password: password,
+      device_id: deviceId,
+    });
     if (email == '') {
       this.setState({emailError: true});
     } else if (password == '') {
@@ -67,10 +74,11 @@ class SignIn extends Component {
           }
         })
         .catch((err) => {
+          console.log(err.response);
           this.setState({
             signinLoader: false,
             modalValue: true,
-            message: 'email or password is incorrect',
+            message: Object.values(err.response.data),
           });
         });
     }

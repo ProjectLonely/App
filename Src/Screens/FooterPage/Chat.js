@@ -81,7 +81,6 @@ class Chat extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then(async (response) => {
-        console.log(response);
         this.setState({
           chatData: response.data.chats,
           lastChatTime: response.data.chats[0].created_at,
@@ -94,11 +93,14 @@ class Chat extends Component {
 
   socket = (roomId) => {
     this.ws = new WebSocket(
-      `ws://digimonk.co:1612/ws/chat/${roomId}/${this.state.token}/`,
+      `ws://digimonk.co:1617/ws/chat/${roomId}/${this.state.token}/`,
     );
 
-    this.ws.onopen = (open) => {};
+    this.ws.onopen = (open) => {
+      console.log(open, 'asdfasfasdf');
+    };
     this.ws.onmessage = (res) => {
+      console.log(res, 'onmessage');
       const chatHistory = this.state.chatData;
       chatHistory.push({
         chat: JSON.parse(res.data).message,
@@ -147,7 +149,6 @@ class Chat extends Component {
           height: height,
           width: '100%',
         }}>
-        <SafeAreaView />
         <Header
           leftIcon={true}
           middleText={operatorName}
@@ -185,7 +186,6 @@ class Chat extends Component {
                 var timeDifference = moment
                   .duration(currentTime.diff(chatTime))
                   .asDays();
-                console.log(timeDifference, currentDate, chatTime);
 
                 return (
                   <View
@@ -194,7 +194,7 @@ class Chat extends Component {
                       chat.user_id == operatorId
                         ? {
                             alignSelf: 'flex-start',
-                            backgroundColor: '#EAECF2',
+                            backgroundColor: '#808080',
                             borderBottomRightRadius: 10,
                             borderBottomLeftRadius: 0,
                           }
@@ -207,20 +207,30 @@ class Chat extends Component {
                     ]}>
                     <Text
                       style={{
-                        fontFamily: FontStyle.regular,
+                        fontFamily: FontStyle.bold,
                         fontSize: 12,
-                        color:
-                          chat.user_id == operatorId ? '#63697B' : '#FFFFFF',
+                        color: chat.user_id == operatorId ? '#FFF' : '#FFFFFF',
                       }}>
                       {chat.chat}
                     </Text>
 
                     {timeDifference > 1 ? (
-                      <Text style={{color: '#fff', alignSelf: 'flex-end'}}>
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.regular,
+                          color:
+                            chat.user_id == operatorId ? '#FFF' : '#FFFFFF',
+                          alignSelf: 'flex-end',
+                        }}>
                         {moment(chat.created_at).format('DD MMM YYYY')}
                       </Text>
                     ) : null}
-                    <Text style={{color: '#fff', alignSelf: 'flex-end'}}>
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.regular,
+                        color: chat.user_id == operatorId ? '#FFF' : '#FFFFFF',
+                        alignSelf: 'flex-end',
+                      }}>
                       {moment(chat.created_at).format('hh:mm a')}
                     </Text>
                   </View>
@@ -258,15 +268,22 @@ class Chat extends Component {
                 }}>
                 <TextInput
                   multiline={true}
-                  style={{width: '90%'}}
+                  style={{width: '90%', fontFamily: FontStyle.regular}}
                   placeholder="Type a message"
                   onChangeText={(text) => this.setState({message: text})}
                   value={this.state.message}
                 />
-                <TouchableOpacity onPress={() => this.sendMessage()}>
+                <TouchableOpacity
+                  style={{
+                    height: 50,
+                    width: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => this.sendMessage()}>
                   <Image
                     source={require('../../Assets/Images/sendicon.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                    style={{height: 20, width: 20, resizeMode: 'contain'}}
                   />
                 </TouchableOpacity>
               </View>
@@ -281,7 +298,7 @@ class Chat extends Component {
 const styles = StyleSheet.create({
   messageView: {
     minWidth: '60%',
-    maxWidth: '80%',
+    maxWidth: '90%',
     minHeight: 50,
     maxHeight: 'auto',
     marginVertical: '5%',

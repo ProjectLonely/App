@@ -37,11 +37,17 @@ class Beneficiary extends Component {
   };
 
   componentDidMount = async () => {
+    console.log(this.props.authorized, 'status');
+    // if (this.props.authorized) {
     const token = await AsyncStorage.getItem('token');
     this.setState({userName: await AsyncStorage.getItem('name'), token});
 
     this.props.getCallLogs(token);
     this.props.unseenNotification(token);
+    // }
+    // else {
+    //   this.props.navigation.navigate('SignIn');
+    // }
   };
 
   selectDuration = (duration) => {
@@ -91,13 +97,13 @@ class Beneficiary extends Component {
     const {calendarValue, startDate, endDate, durationStatus, userName} =
       this.state;
     const {callingData, unseenCount, unseenValue} = this.props;
-    console.log(this.state.token);
+
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}
         style={{height: '100%', width: '100%'}}
         resizeMode="cover">
-        <View style={{height: '92%'}}>
+        <View style={{height: height / 1.09}}>
           <CalendarModal
             calendarValue={calendarValue}
             closeModal={() => this.setState({calendarValue: false})}
@@ -187,13 +193,9 @@ class Beneficiary extends Component {
                   color: '#575757',
                   textAlign: 'center',
                 }}>
-                Your beneficiarie have received any calls yet. When they do, you
-                will see the call logs here.
+                Your beneficiaries have not received any calls yet. When they
+                do, you will see the call logs here.
               </Text>
-              {/* <Button
-                onPress={() => this.props.navigation.navigate('Subscription')}>
-                ADD BENEFICIARY
-              </Button> */}
             </ScrollView>
           ) : (
             <View style={{height: '87%'}}>
@@ -261,7 +263,8 @@ class Beneficiary extends Component {
                         styles.containerStyle,
                         {
                           backgroundColor:
-                            callingData.callStatus == 'call_received'
+                            callingData.callStatus == 'call_received' ||
+                            callingData.callStatus == 'call_completed'
                               ? '#D5FAFB'
                               : '#FF7A7A',
                         },
@@ -308,7 +311,8 @@ class Beneficiary extends Component {
                           justifyContent: 'center',
                           borderRadius: 5,
                           borderColor:
-                            callingData.callStatus == 'call_received'
+                            callingData.callStatus == 'call_received' ||
+                            callingData.callStatus == 'call_completed'
                               ? '#1F9F00'
                               : '#E40000',
                         }}>
@@ -318,13 +322,16 @@ class Beneficiary extends Component {
                             fontSize: 8,
 
                             color:
-                              callingData.callStatus == 'call_received'
+                              callingData.callStatus == 'call_received' ||
+                              callingData.callStatus == 'call_completed'
                                 ? '#1F9F00'
                                 : '#EA3232',
                           }}>
                           {callingData.callStatus == 'call_received'
                             ? 'Call Received'
-                            : 'Call Missed'}
+                            : callingData.callStatus == 'call_completed'
+                            ? 'Call Completed'
+                            : 'Missed Call'}
                         </Text>
                       </View>
                     </View>
@@ -378,8 +385,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'state');
   return {
     callingData: state.GetCallLogs.data,
+    authorized: state.GetCallLogs.authorized,
     loading: state.GetCallLogs.loading,
     unseenCount: state.unseenNotification.normal,
     unseenValue: state.unseenNotification.chat,

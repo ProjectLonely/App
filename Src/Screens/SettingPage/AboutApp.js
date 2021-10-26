@@ -32,14 +32,20 @@ class AboutApp extends Component {
     const {aboutData} = this.state;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
+        {/* <SafeAreaView /> */}
         <Header
           middleText={'About App'}
           leftIcon={true}
           notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
         />
-        <View style={{height: '100%', width: '100%', paddingHorizontal: '5%'}}>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            paddingHorizontal: '5%',
+            marginVertical: '5%',
+          }}>
           <View
             style={{
               height: '68%',
@@ -54,7 +60,7 @@ class AboutApp extends Component {
                 fontFamily: FontStyle.bold,
                 fontSize: 18,
               }}>
-              How this app works
+              How this app works?
             </Text>
             <Text
               style={{

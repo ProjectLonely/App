@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: 50,
+    height: 75,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {

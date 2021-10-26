@@ -16,10 +16,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 import {StackActions} from '@react-navigation/native';
-import {getCallLogs, unseenNotification} from '../../store/actions';
+import {unseenNotification} from '../../store/actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-const {width} = Dimensions.get('screen');
+const {width, height} = Dimensions.get('screen');
 
 class Setting extends Component {
   state = {
@@ -71,7 +71,9 @@ class Setting extends Component {
         headers: {Authorization: `Token ${token}`},
       })
         .then(async (response) => {
-          AsyncStorage.clear();
+          AsyncStorage.getAllKeys().then((keys) =>
+            AsyncStorage.multiRemove('token', 'name'),
+          );
           this.props.navigation.dispatch(StackActions.replace('SignIn'));
         })
         .catch((err) => {
@@ -87,8 +89,7 @@ class Setting extends Component {
     const {unseenValue} = this.props;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
-        <View style={{height: '89%', backgroundColor: '#fff'}}>
+        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
           <Header
             leftIcon={true}
             middleText={'Settings'}

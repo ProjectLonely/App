@@ -69,6 +69,7 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response, 'alskdjflasdf');
         this.setState({
           beneficiaryData: response.data,
           schedule: response.data.schedule,
@@ -184,6 +185,7 @@ class BeneficiaryDetail extends Component {
         <SafeAreaView />
         <Header
           leftIcon={true}
+          relation={beneficiaryData.relation}
           middleText={beneficiaryData.name}
           notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
@@ -210,7 +212,7 @@ class BeneficiaryDetail extends Component {
               alignItems: 'center',
               paddingBottom: 200,
             }}>
-            <View style={styles.container}>
+            <View style={[styles.container, {backgroundColor: 'orange'}]}>
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
@@ -220,28 +222,21 @@ class BeneficiaryDetail extends Component {
                 }}>
                 {beneficiaryData.about}
               </Text>
-              <View style={{flexDirection: 'row'}}>
-                <View style={styles.smallContainer}>
-                  <Text
-                    style={
-                      styles.normalText
-                    }>{`Relation : ${beneficiaryData.relation}`}</Text>
-                </View>
-                <View style={styles.smallContainer}>
-                  <Text
-                    style={
-                      styles.normalText
-                    }>{`Age : ${beneficiaryData.age}`}</Text>
-                </View>
-                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={require('../Assets/Images/call.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
-                  />
-                  <Text style={[styles.normalText, {left: 5}]}>
-                    {beneficiaryData.phone_no}
-                  </Text>
-                </View>
+
+              <View style={styles.smallContainer}>
+                <Text
+                  style={
+                    styles.normalText
+                  }>{`Age : ${beneficiaryData.age}`}</Text>
+              </View>
+              <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+                <Image
+                  source={require('../Assets/Images/call.png')}
+                  style={{height: 17, width: 17, resizeMode: 'contain'}}
+                />
+                <Text style={[styles.normalText, {left: 5}]}>
+                  {beneficiaryData.phone_no}
+                </Text>
               </View>
             </View>
             <View style={{width: '100%'}}>
@@ -504,8 +499,8 @@ class BeneficiaryDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     minHeight: height / 6,
     maxHeight: 'auto',
     borderLeftWidth: 4,
@@ -532,6 +527,7 @@ const styles = StyleSheet.create({
   smallContainer: {
     height: 38,
     width: '32%',
+    marginVertical: '1%',
     backgroundColor: '#F4F7FF',
     borderRadius: 5,
     justifyContent: 'center',

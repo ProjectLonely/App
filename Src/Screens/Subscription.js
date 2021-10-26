@@ -17,9 +17,21 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {SubscriptionPlan, addBenificiary} from '../store/actions/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {baseurl} from '../Common/Baseurl';
+import Header from '../Common/Header';
+import axios from 'axios';
+import AlertModal from '../Common/AlertModal';
+var qs = require('qs');
+const PaymentRequest = require('react-native-payments').PaymentRequest;
 class Subscription extends Component {
   state = {
     subscriptionArray: [],
+    modalValue: false,
+    message: '',
+    appleKeySK:
+      'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
+    appleKeyPk:
+      'pk_test_51JbzGgJVxtiQnRVuJ5Kahb2lpum6cOgbXyQRBieZdB7mHEp7lobeGyqfKAi3lRo29zkmAUfe3w9byKuhOKvXjWx600Bf2J1vI8',
   };
 
   componentDidMount = async () => {
@@ -27,39 +39,212 @@ class Subscription extends Component {
     this.props.SubscriptionPlan(token);
   };
 
+  closeModal = () => {
+    if (this.state.completeValue) {
+      this.setState({modalValue: false, completeValue: false});
+      this.props.navigation.navigate('AddBenificiaryPage4');
+    } else {
+      this.setState({modalValue: false});
+    }
+  };
+
   addBenificiary = (planId, planAmount) => {
     this.props.addBenificiary({planId, planAmount});
-    this.props.navigation.navigate('AddBenificiaryPage1');
+    setTimeout(() => {
+      this.applePay();
+    }, 1000);
+    // this.props.navigation.navigate('AddBenificiaryPage1');
+  };
+
+  applePay = () => {
+    var METHOD_DATA = [
+      {
+        supportedMethods: ['apple-pay'],
+        data: {
+          merchantIdentifier: 'merchant.cheerioApplePay',
+          supportedNetworks: ['visa', 'mastercard'],
+          countryCode: 'US',
+          currencyCode: 'USD',
+          paymentMethodTokenizationParameters: {
+            parameters: {
+              gateway: 'stripe',
+              'stripe:publishableKey': this.state.appleKeyPk,
+            },
+          },
+        },
+      },
+    ];
+
+    var DETAILS = {
+      id: 'basic-example',
+      displayItems: [
+        {
+          label: 'Subscription Plan',
+          amount: {
+            currency: 'USD',
+            value: this.props.beneficiaryData.planAmount,
+          },
+        },
+      ],
+      total: {
+        label: 'Cheerio App',
+        amount: {
+          currency: 'USD',
+          value: this.props.beneficiaryData.planAmount,
+        },
+      },
+    };
+    var paymentRequests = new PaymentRequest(METHOD_DATA, DETAILS);
+
+    paymentRequests
+      .canMakePayments()
+      .then((canMakePayment) => {
+        if (canMakePayment) {
+          paymentRequests.show().then((paymentResponse) => {
+            // console.log(paymentResponse, 'resposne');
+            if (paymentResponse._details.paymentToken != '') {
+              paymentResponse.complete('success');
+              this.setState({payLoader: true});
+              axios({
+                method: 'post',
+                url: 'https://api.stripe.com/v1/charges',
+                headers: {
+                  Authorization: `Bearer ${this.state.appleKeySK}`,
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                data: qs.stringify({
+                  amount: this.props.beneficiaryData.planAmount * 100,
+
+                  currency: 'usd',
+                  source: paymentResponse._details.paymentToken,
+                  description: this.state.userId,
+                }),
+              })
+                .then((response) => {
+                  console.log(response, 'payment response');
+                  this.setState({transaction_id: response.data.id});
+                  if (response.status == 200) {
+                    setTimeout(() => {
+                      this.next();
+                    }, 1000);
+                  } else {
+                    alert('Something went wrong');
+                  }
+                })
+                .catch((error) => {
+                  console.log(error.response, 'rrrrrr');
+                  alert(error.response.data.error.code);
+                });
+            }
+          });
+        } else {
+          this.setState({
+            SubscribeLoader: false,
+          });
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          SubscribeLoader: false,
+        });
+
+        this.paymentRequest.abort();
+      });
+  };
+
+  next = async () => {
+    const {beneficiaryData} = this.props;
+    this.setState({submitLoader: true});
+    const token = await AsyncStorage.getItem('token');
+    if (beneficiaryData.newArray.length < 1) {
+      this.setState({
+        modalValue: true,
+        message: 'Call schedule should not be blank.',
+      });
+    } else {
+      console.log({
+        relation: beneficiaryData.relationShipId,
+        name: beneficiaryData.name,
+        age: beneficiaryData.age,
+        gender: beneficiaryData.genderId,
+        timezone: beneficiaryData.timeZone,
+        phone_no: beneficiaryData.phoneNumber,
+        about: beneficiaryData.aboutPerson,
+        comment: beneficiaryData.comment,
+        seekings: beneficiaryData.selectedSeekOption,
+        schedule: beneficiaryData.newArray,
+        image: beneficiaryData.base64,
+        plan_id: beneficiaryData.planId,
+        transaction_id: this.state.transaction_id,
+      });
+      axios({
+        method: 'post',
+        url: `${baseurl}beneficiary/create/`,
+        headers: {Authorization: 'Token ' + token},
+        data: {
+          relation: beneficiaryData.relationShipId,
+          name: beneficiaryData.name,
+          age: beneficiaryData.age,
+          gender: beneficiaryData.genderId,
+          timezone: beneficiaryData.timeZone,
+          phone_no: beneficiaryData.phoneNumber,
+          about: beneficiaryData.aboutPerson,
+          comment: beneficiaryData.comment,
+          seekings: beneficiaryData.selectedSeekOption,
+          schedule: beneficiaryData.newArray,
+          image: beneficiaryData.base64,
+          plan_id: beneficiaryData.planId,
+          transaction_id: this.state.transaction_id,
+        },
+      })
+        .then((response) => {
+          console.log(response, 'response');
+          // this.setState({submitLoader: false});
+          if (response.status == 201) {
+            this.setState({
+              payLoader: false,
+              completeValue: true,
+              modalValue: true,
+              payLoader: false,
+              message: 'Beneficiary added successfully',
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+          console.log(Object.values(err.response));
+          this.setState({
+            payLoader: false,
+            modalValue: true,
+            message: Object.values(err.response.data).toString(),
+            submitLoader: false,
+          });
+        });
+    }
   };
 
   render() {
     const {subscriptionList} = this.props;
+    const {modalValue, message} = this.state;
     console.log(subscriptionList, 'sub list');
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
         style={{height: '100%', width: '100%'}}
         resizeMode="cover">
-        <SafeAreaView />
+        <Header
+          middleText={'Select Plan'}
+          leftIcon={true}
+          // notification={true}
+          notifyPress={() => this.props.navigation.navigate('Notification')}
+        />
+        <AlertModal
+          modalValue={modalValue}
+          closeModal={() => this.closeModal()}
+          message={message}
+        />
 
         <View style={{height: '90%', alignItems: 'center'}}>
-          <TouchableOpacity
-            style={{
-              width: '10%',
-              alignSelf: 'flex-start',
-              marginHorizontal: '5%',
-              height: 30,
-            }}
-            onPress={() => this.props.navigation.goBack()}>
-            <Image
-              source={require('../Assets/Images/back.png')}
-              style={{
-                width: 25,
-                height: 23,
-                resizeMode: 'contain',
-              }}
-            />
-          </TouchableOpacity>
           <FlatList
             data={subscriptionList}
             showsVerticalScrollIndicator={false}
@@ -89,38 +274,17 @@ class Subscription extends Component {
                         }}>
                         {item.name}
                       </Text>
-                      <Text>{item.description}</Text>
-                      {/* {item.descriptions.map((description) => {
-                        return (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}>
-                            <Image
-                              source={require('../Assets/Images/right.png')}
-                              style={{
-                                height: 20,
-                                width: 20,
-                                resizeMode: 'contain',
-                                marginVertical: 5,
-                              }}
-                            />
-                            <Text
-                              ellipsizeMode={'tail'}
-                              numberOfLines={2}
-                              style={{
-                                fontFamily: FontStyle.regular,
-                                fontSize: 14,
-                                color: '#3A3A3A',
-                                paddingLeft: 5,
-                                width: '80%',
-                              }}>
-                              {description.description}
-                            </Text>
-                          </View>
-                        );
-                      })} */}
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.bold,
+                          fontSize: 18,
+                        }}>
+                        Calls per week : {item.calls_per_week}
+                      </Text>
+                      <Text style={{fontFamily: FontStyle.regular}}>
+                        {item.description}
+                      </Text>
+
                       <View
                         style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text
@@ -133,8 +297,8 @@ class Subscription extends Component {
                         </Text>
                         <Text
                           style={{
-                            fontFamily: FontStyle.regular,
-                            fontSize: 22,
+                            fontFamily: FontStyle.bold,
+                            fontSize: 36,
                             color: '#0F0A39',
                           }}>
                           Per Month
@@ -151,7 +315,7 @@ class Subscription extends Component {
                       <Button
                         btnheight={40}
                         btnwidth={'70%'}
-                        marginTop={40}
+                        marginTop={30}
                         onPress={() =>
                           this.addBenificiary(item.id, item.price_per_month)
                         }>

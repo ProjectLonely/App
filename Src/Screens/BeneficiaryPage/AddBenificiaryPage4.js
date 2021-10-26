@@ -17,7 +17,7 @@ class AddBenificiaryPage4 extends Component {
   continue = (value) => {
     this.props.completeBeneficiary();
     if (value == 'addNew') {
-      this.props.navigation.navigate('Subscription');
+      this.props.navigation.navigate('AddBenificiaryPage1');
     } else {
       this.props.navigation.navigate('Dashboard');
     }

@@ -43,6 +43,7 @@ const Input = ({
         styles.textStyle,
         {
           height: height || 55,
+
           textAlignVertical: 'top',
           marginTop: marginTop,
         },

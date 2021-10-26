@@ -76,7 +76,7 @@ class AddBenificiaryPage2 extends Component {
           width: '100%',
           backgroundColor: '#fff',
         }}>
-        <SafeAreaView />
+        {/* <SafeAreaView /> */}
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}

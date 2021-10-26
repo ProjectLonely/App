@@ -20,6 +20,7 @@ import Styles from '../../Common/Style';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import moment from 'moment';
 import Footer from '../../Common/Footer';
+import LoadingView from '../../Common/LoadingView';
 const {height, width} = Dimensions.get('screen');
 
 class ChatList extends Component {
@@ -27,6 +28,7 @@ class ChatList extends Component {
     modalValue: false,
     operatorArray: [],
     activeUser: [],
+    pageLoading: true,
   };
 
   componentDidMount = async () => {
@@ -45,13 +47,19 @@ class ChatList extends Component {
     })
       .then((response) => {
         console.log(response, 'response');
-        this.setState({operatorArray: response.data, token});
+        this.setState({
+          operatorArray: response.data,
+          token,
+          pageLoading: false,
+        });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        this.setState({pageLoading: false});
+      });
   };
 
   socket = (token) => {
-    this.ws = new WebSocket(`ws://digimonk.co:1612/ws/chat/global/${token}/`);
+    this.ws = new WebSocket(`ws://digimonk.co:1617/ws/chat/global/${token}/`);
 
     this.ws.onmessage = (res) => {
       const activeUser = JSON.parse(res.data).active_users;
@@ -80,12 +88,11 @@ class ChatList extends Component {
   };
 
   render() {
-    const {modalValue, message, operatorArray, currentDate} = this.state;
+    const {modalValue, message, operatorArray, pageLoading} = this.state;
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
-        <View style={{height: '89%', backgroundColor: '#fff'}}>
+        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
           <Header
             middleText={'Chat List'}
             notification={true}
@@ -96,7 +103,9 @@ class ChatList extends Component {
             closeModal={() => this.setState({modalValue: false})}
             message={message}
           />
-          {operatorArray.length < 1 ? (
+          {pageLoading ? (
+            <LoadingView heightValue={1.2} />
+          ) : operatorArray.length < 1 ? (
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
@@ -141,7 +150,7 @@ class ChatList extends Component {
               showsVerticalScrollIndicator={false}
               renderItem={({item: operatorData}) => {
                 return (
-                  <View style={[Styles.smallContainer]}>
+                  <View style={[styles.smallContainer]}>
                     <TouchableOpacity
                       onPress={() =>
                         this.selectChat(operatorData.id, operatorData.name)
@@ -150,34 +159,57 @@ class ChatList extends Component {
                         width: '100%',
                         flexDirection: 'row',
                       }}>
-                      <View style={{width: '20%', backgroundColor: '#fff'}}>
+                      <View style={{width: '25%', backgroundColor: '#fff'}}>
                         {operatorData.image == null ? (
                           <Image
                             source={require('../../Assets/Images/group.png')}
                             style={{
-                              height: '100%',
-                              width: '100%',
+                              height: 70,
+                              width: 70,
                               resizeMode: 'contain',
                             }}
                           />
                         ) : (
                           <Image
-                            source={{uri: operatorData.image}}
+                            source={{
+                              uri: `http://digimonk.co:1617/${operatorData.image}`,
+                            }}
                             style={{
-                              height: '100%',
-                              width: '100%',
-                              resizeMode: 'contain',
+                              height: 70,
+                              width: 70,
+                              resizeMode: 'cover',
+                              borderRadius: 70 / 2,
                             }}
                           />
                         )}
                       </View>
-                      <View style={{width: '75%', paddingHorizontal: '2.5%'}}>
-                        <View
-                          style={[
-                            styles.normalView,
-                            {justifyContent: 'space-between'},
-                          ]}>
-                          <View style={{flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          width: '70%',
+                          justifyContent: 'center',
+                        }}>
+                        {this.state.activeUser.some(
+                          (data) => data == operatorData.id,
+                        ) ? (
+                          <View
+                            style={{
+                              width: 10,
+                              height: 10,
+                              borderRadius: 5,
+                              backgroundColor: 'green',
+                              alignSelf: 'flex-end',
+                              left: '5%',
+                            }}
+                          />
+                        ) : null}
+                        <View style={[styles.normalView]}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              // backgroundColor: 'orange',
+                              width: '75%',
+                            }}>
                             <Image
                               source={require('../../Assets/Images/smalluser.png')}
                               style={styles.imageStyle}
@@ -186,57 +218,37 @@ class ChatList extends Component {
                             <Text
                               style={{
                                 fontFamily: FontStyle.bold,
-                                fontSize: 13,
+                                fontSize: 16,
                                 color: '#10275A',
                                 left: 5,
                               }}>
                               {operatorData.name}
                             </Text>
                           </View>
-                          {this.state.activeUser.some(
-                            (data) => data == operatorData.id,
-                          ) ? (
-                            <View
-                              style={{
-                                width: 10,
-                                height: 10,
-                                borderRadius: 5,
-                                backgroundColor: 'green',
-                                alignSelf: 'flex-end',
-                              }}
-                            />
-                          ) : null}
-                        </View>
-                        <View style={styles.normalView}>
-                          <Image
-                            source={require('../../Assets/Images/smallgroup.png')}
-                            style={styles.imageStyle}
-                          />
 
-                          {operatorData.beneficiary.map((data) => (
-                            <Text style={styles.normalText}>{data.name}, </Text>
-                          ))}
-                        </View>
-                        <View style={styles.normalView}>
-                          <Image
-                            source={require('../../Assets/Images/smallcalendar.png')}
-                            style={styles.imageStyle}
-                          />
-                          <Text style={styles.normalText}>
+                          <Text
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
+                            style={styles.normalText}>
                             {moment(operatorData.last_chat_created_at).format(
                               'MMM,DD YYYY ',
                             )}
                           </Text>
                         </View>
+
                         <View style={styles.normalView}>
                           <Image
-                            source={require('../../Assets/Images/smallcompanion.png')}
+                            source={require('../../Assets/Images/smallcalendar.png')}
                             style={styles.imageStyle}
                           />
-                          <Text style={styles.normalText}>
-                            {/* {beneficiaryData.companionOperator}
-                             */}
-                            companionOperator: Operator 1
+                          <Text
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
+                            style={[styles.normalText, {width: '60%'}]}>
+                            {operatorData.last_chat_message}
+                            {/* {moment(operatorData.last_chat_created_at).format(
+                              'MMM,DD YYYY ',
+                            )} */}
                           </Text>
                         </View>
                       </View>
@@ -266,13 +278,36 @@ const styles = StyleSheet.create({
   normalText: {
     fontFamily: FontStyle.regular,
     color: '#004ACE',
-    fontSize: 11,
+    fontSize: 14,
     left: 5,
   },
   imageStyle: {
     width: 8,
     height: 11,
     resizeMode: 'contain',
+  },
+  smallContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 100,
+    borderLeftWidth: 4,
+    borderLeftColor: '#004ACE',
+    width: '90%',
+    backgroundColor: '#fff',
+    marginVertical: '2%',
+    padding: '2%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 2.65,
+
+    elevation: 2,
   },
 });
 

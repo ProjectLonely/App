@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {ActionSheetIOS} from 'react-native';
 import {baseurl} from '../../Common/Baseurl';
 
 export const SubscriptionPlan = (token) => {
@@ -60,6 +59,7 @@ export const getCallLogs = (token) => {
         dispatch({type: 'TOGGLE_LOAD'});
       })
       .catch((error) => {
+        console.log(error);
         dispatch({type: 'FETCH_ERROR'});
         dispatch({type: 'TOGGLE_LOAD'});
       });
@@ -85,16 +85,17 @@ export const transactionPlan = (token) => {
     axios({
       method: 'get',
       url: `${baseurl}api/v1/plans/active_transactions/`,
-      headers: {
-        Authorization: `Token 7636ff9efc4bf56c2019c57ed0ff67bcfc52f91b`,
-      },
+      headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        // console.log(response, 'transaction');
-        dispatch({type: 'transactionDetail', payload: response.data});
+        console.log(response, 'hi hi ');
+        dispatch({
+          type: 'transactionDetail',
+          payload: response.data.all_transactions,
+        });
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         console.log(err);
       });
   };

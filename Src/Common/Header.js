@@ -23,6 +23,7 @@ const Header = ({
   notifyPress,
   unseenCount,
   unseenNotification,
+  relation,
 }) => {
   const navigation = useNavigation();
   // const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Header = ({
       source={require('../Assets/Images/headerimage.png')}
       resizeMode="cover"
       style={{
-        height: height / 8,
+        height: height / 7,
         width: width,
         width: '100%',
         alignItems: 'center',
@@ -51,6 +52,7 @@ const Header = ({
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderColor: '#dbdbdb',
+        paddingTop: '10%',
       }}>
       <View
         style={{paddingLeft: '5%', flexDirection: 'row', alignItems: 'center'}}>
@@ -64,16 +66,30 @@ const Header = ({
             />
           </TouchableOpacity>
         ) : null}
-        <Text
-          style={{
-            fontFamily: FontStyle.bold,
-            fontSize: 22,
-            color: '#12175E',
-            left: leftIcon ? 20 : 0,
-            width: '70%',
-          }}>
-          {middleText ? middleText : null}
-        </Text>
+        <View style={{width: '75%'}}>
+          <Text
+            style={{
+              fontFamily: FontStyle.bold,
+              fontSize: 22,
+              color: '#12175E',
+              left: leftIcon ? 20 : 0,
+              width: '70%',
+            }}>
+            {middleText ? middleText : null}
+          </Text>
+          {relation ? (
+            <Text
+              style={{
+                fontFamily: FontStyle.bold,
+                fontSize: 22,
+                color: '#12175E',
+                left: leftIcon ? 20 : 0,
+                width: '70%',
+              }}>
+              {relation}
+            </Text>
+          ) : null}
+        </View>
       </View>
 
       <View style={{paddingRight: 20}}>

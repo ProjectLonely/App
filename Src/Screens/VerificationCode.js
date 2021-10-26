@@ -127,7 +127,7 @@ class VerificationCode extends Component {
 
   render() {
     const {timer, modalValue, message, resendLoader, verifyLoader} = this.state;
-
+    console.log(this.state.deviceId, 'rrr');
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}

@@ -159,7 +159,7 @@ class AccountInformation extends Component {
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
+        {/* <SafeAreaView /> */}
         <AlertModal
           modalValue={modalValue}
           closeModal={() => this.closeModal()}
@@ -193,7 +193,7 @@ class AccountInformation extends Component {
                 {this.state.getImage != null && source == '' ? (
                   <Image
                     source={{
-                      uri: `http://digimonk.co:1612${this.state.getImage}`,
+                      uri: `http://digimonk.co:1617${this.state.getImage}`,
                     }}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />

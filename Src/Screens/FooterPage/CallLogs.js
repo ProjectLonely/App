@@ -85,8 +85,7 @@ class CallLogs extends Component {
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
-        <View style={{height: '89%', backgroundColor: '#fff'}}>
+        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
           <Header
             middleText={'Call Log'}
             notification={true}
@@ -108,6 +107,7 @@ class CallLogs extends Component {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingHorizontal: '5%',
+                paddingTop: '2%',
               }}>
               <Text
                 style={{
@@ -235,7 +235,7 @@ class CallLogs extends Component {
                           ) ? (
                             operatorData.name == callLogs.name ? (
                               <View style={Styles.smallContainer}>
-                                <View style={{width: '72%'}}>
+                                <View style={{width: '67%'}}>
                                   <Text
                                     style={{
                                       fontFamily: FontStyle.medium,
@@ -255,18 +255,21 @@ class CallLogs extends Component {
                                 </View>
                                 <View
                                   style={{
-                                    width: '25%',
+                                    width: '30%',
                                   }}>
                                   <Text
                                     style={{
+                                      textTransform: 'capitalize',
                                       fontFamily: FontStyle.medium,
                                       fontSize: 12,
                                       color:
+                                        callLogs.callStatus ==
+                                          'call_completed' ||
                                         callLogs.callStatus == 'call_received'
                                           ? '#1F9F00'
                                           : '#EA3232',
                                     }}>
-                                    {callLogs.callStatus}
+                                    {callLogs.callStatus.split('_').join(' ')}
                                   </Text>
                                 </View>
                               </View>
