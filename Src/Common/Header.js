@@ -81,12 +81,12 @@ const Header = ({
             <Text
               style={{
                 fontFamily: FontStyle.bold,
-                fontSize: 22,
+                fontSize: 16,
                 color: '#12175E',
                 left: leftIcon ? 20 : 0,
                 width: '70%',
               }}>
-              {relation}
+              ({relation})
             </Text>
           ) : null}
         </View>

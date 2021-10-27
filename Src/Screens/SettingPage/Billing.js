@@ -18,6 +18,7 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width, height} = Dimensions.get('window');
+import LoadingView from '../../Common/LoadingView';
 
 class Billing extends Component {
   state = {
@@ -30,7 +31,7 @@ class Billing extends Component {
 
   render() {
     const {modalValue} = this.state;
-    const {transactionArray} = this.props;
+    const {transactionArray, loading} = this.props;
     // console.log(active_plans, 'active plans');
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
@@ -40,7 +41,9 @@ class Billing extends Component {
           notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
         />
-        {transactionArray.length < 1 ? (
+        {loading ? (
+          <LoadingView heightValue={1.2} />
+        ) : transactionArray.length < 1 ? (
           <View
             style={{
               height: '60%',
@@ -235,9 +238,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'transaction');
   return {
-    transactionArray: state.TransactionReducer,
+    transactionArray: state.TransactionReducer.data,
+    loading: state.TransactionReducer.loading,
   };
 }
 

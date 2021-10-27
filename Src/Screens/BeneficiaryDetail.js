@@ -182,7 +182,6 @@ class BeneficiaryDetail extends Component {
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <SafeAreaView />
         <Header
           leftIcon={true}
           relation={beneficiaryData.relation}
@@ -212,31 +211,81 @@ class BeneficiaryDetail extends Component {
               alignItems: 'center',
               paddingBottom: 200,
             }}>
-            <View style={[styles.container, {backgroundColor: 'orange'}]}>
+            <View style={[styles.container]}>
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
                   color: '#7B7890',
                   fontSize: 14,
                   textAlign: 'justify',
+                  paddingHorizontal: '2.5%',
                 }}>
                 {beneficiaryData.about}
               </Text>
-
-              <View style={styles.smallContainer}>
-                <Text
-                  style={
-                    styles.normalText
-                  }>{`Age : ${beneficiaryData.age}`}</Text>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+                  <Image
+                    source={require('../Assets/Images/age-2.png')}
+                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                  />
+                  <Text style={[styles.normalText, {left: 5}]}>
+                    {beneficiaryData.age}
+                  </Text>
+                </View>
+                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+                  <Image
+                    source={require('../Assets/Images/gender-2.png')}
+                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                  />
+                  <Text style={[styles.normalText, {left: 5}]}>
+                    {beneficiaryData.gender}
+                  </Text>
+                </View>
               </View>
-              <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+                  <Image
+                    source={require('../Assets/Images/call.png')}
+                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                  />
+                  <Text style={[styles.normalText, {left: 5}]}>
+                    {beneficiaryData.phone_no}
+                  </Text>
+                </View>
+                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
+                  <Image
+                    source={require('../Assets/Images/compass-2.png')}
+                    style={{height: 17, width: 17, resizeMode: 'contain'}}
+                  />
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={[styles.normalText, {left: 5, width: '80%'}]}>
+                    {beneficiaryData.timezone}
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={[
+                  styles.smallContainer,
+                  {
+                    flexDirection: 'row',
+                    width: '98%',
+                    justifyContent: 'flex-start',
+                  },
+                ]}>
                 <Image
-                  source={require('../Assets/Images/call.png')}
+                  source={require('../Assets/Images/seeking-2.png')}
                   style={{height: 17, width: 17, resizeMode: 'contain'}}
                 />
-                <Text style={[styles.normalText, {left: 5}]}>
-                  {beneficiaryData.phone_no}
-                </Text>
+                {beneficiaryData.seekings ? (
+                  <Text
+                    style={styles.normalText}>{`${beneficiaryData.seekings.map(
+                    (data) => data.name,
+                  )}`}</Text>
+                ) : null}
               </View>
             </View>
             <View style={{width: '100%'}}>
@@ -526,11 +575,12 @@ const styles = StyleSheet.create({
   },
   smallContainer: {
     height: 38,
-    width: '32%',
+    width: '45%',
     marginVertical: '1%',
     backgroundColor: '#F4F7FF',
     borderRadius: 5,
-    justifyContent: 'center',
+    paddingHorizontal: '5%',
+    paddingHorizontal: '5%',
     alignItems: 'center',
     marginHorizontal: '1%',
   },

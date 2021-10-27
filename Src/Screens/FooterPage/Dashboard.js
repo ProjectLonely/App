@@ -29,7 +29,6 @@ const {height, width} = Dimensions.get('screen');
 class Beneficiary extends Component {
   state = {
     userName: '',
-    loadingValue: false,
     calendarValue: false,
     startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
     date: moment('Sep 01 2021'),
@@ -38,16 +37,12 @@ class Beneficiary extends Component {
 
   componentDidMount = async () => {
     console.log(this.props.authorized, 'status');
-    // if (this.props.authorized) {
+
     const token = await AsyncStorage.getItem('token');
     this.setState({userName: await AsyncStorage.getItem('name'), token});
 
     this.props.getCallLogs(token);
     this.props.unseenNotification(token);
-    // }
-    // else {
-    //   this.props.navigation.navigate('SignIn');
-    // }
   };
 
   selectDuration = (duration) => {
@@ -385,7 +380,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'state');
   return {
     callingData: state.GetCallLogs.data,
     authorized: state.GetCallLogs.authorized,

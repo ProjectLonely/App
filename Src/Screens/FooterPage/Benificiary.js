@@ -75,7 +75,7 @@ class Benificiary extends Component {
   render() {
     const {beneficiaryArray, modalValue, message, unseenValue} = this.props;
     const {confirmValue} = this.state;
-
+    console.log(this.props.loading, 'loading');
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
@@ -248,6 +248,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'check loading');
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,

@@ -20,11 +20,13 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Footer from '../Common/Footer';
+import LoadingView from '../Common/LoadingView';
 const {height, width} = Dimensions.get('screen');
 
 class Notification extends Component {
   state = {
     notificationArray: [],
+    loadingValue: true,
   };
 
   componentDidMount = async () => {
@@ -40,12 +42,16 @@ class Notification extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
-        console.log(response, 'resposne');
-        this.setState({notificationArray: response.data.results});
+        this.setState({
+          notificationArray: response.data.results,
+          loadingValue: false,
+        });
         this.seenNotification(token);
         this.props.unseenNotification(token);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        this.setState({loadingValue: false});
+      });
   };
 
   seenNotification = (token) => {
@@ -71,7 +77,7 @@ class Notification extends Component {
   };
 
   render() {
-    const {notificationArray} = this.state;
+    const {notificationArray, loadingValue} = this.state;
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
@@ -81,7 +87,9 @@ class Notification extends Component {
             middleText={'Notifications'}
             notification={true}
           />
-          {notificationArray.length < 1 ? (
+          {loadingValue ? (
+            <LoadingView heightValue={1.2} />
+          ) : notificationArray.length < 1 ? (
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{

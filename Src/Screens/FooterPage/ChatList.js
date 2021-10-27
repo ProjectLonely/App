@@ -16,7 +16,6 @@ import AlertModal from '../../Common/AlertModal';
 import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Styles from '../../Common/Style';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import moment from 'moment';
 import Footer from '../../Common/Footer';
@@ -46,7 +45,6 @@ class ChatList extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'response');
         this.setState({
           operatorArray: response.data,
           token,
@@ -89,7 +87,6 @@ class ChatList extends Component {
 
   render() {
     const {modalValue, message, operatorArray, pageLoading} = this.state;
-
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
         <View style={{height: height / 1.09, backgroundColor: '#fff'}}>

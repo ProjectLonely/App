@@ -57,6 +57,36 @@ class AccountInformation extends Component {
       });
   };
 
+  updateImage = () => {
+    axios({
+      method: 'post',
+      url: `${baseurl}profile/`,
+      headers: {Authorization: `Token ${this.state.token}`},
+      data: {
+        first_name: this.state.firstName,
+        password: this.state.password,
+        password1: this.state.confirmPassword,
+        image: this.state.base64,
+      },
+    })
+      .then(async (response) => {
+        await AsyncStorage.setItem('name', this.state.firstName);
+        this.setState({
+          modalValue: true,
+          message: 'Photo is updated successfully',
+          updateLoader: false,
+          success: true,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          modalValue: true,
+          message: 'Something went wrong',
+          updateLoader: false,
+        });
+      });
+  };
+
   updateProfileData = () => {
     const {password, confirmPassword} = this.state;
     const strongPassword =
@@ -116,6 +146,9 @@ class AccountInformation extends Component {
         source: image.sourceURL,
         imageModal: false,
       });
+      setTimeout(() => {
+        this.updateImage();
+      }, 1000);
     });
   }
   selectImageFromCamera() {
@@ -130,6 +163,9 @@ class AccountInformation extends Component {
         source: image.path,
         imageModal: false,
       });
+      setTimeout(() => {
+        this.updateImage();
+      }, 1000);
     });
   }
   openModal = () => {

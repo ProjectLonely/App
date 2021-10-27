@@ -38,11 +38,11 @@ export const getAllBeneficiary = (token) => {
     })
       .then((response) => {
         dispatch({type: 'GetBeneficiary', payload: response.data});
-        dispatch({type: 'TOGGLE_LOAD'});
+        dispatch({type: 'BENI_LOAD'});
       })
       .catch((error) => {
         dispatch({type: 'FETCH_ERROR'});
-        dispatch({type: 'TOGGLE_LOAD'});
+        dispatch({type: 'BENI_LOAD'});
       });
   };
 };
@@ -88,15 +88,14 @@ export const transactionPlan = (token) => {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'hi hi ');
         dispatch({
           type: 'transactionDetail',
           payload: response.data.all_transactions,
         });
+        dispatch({type: 'TRANSACTION_LOAD'});
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log(err);
+        dispatch({type: 'TRANSACTION_LOAD'});
       });
   };
 };
