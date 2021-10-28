@@ -113,6 +113,7 @@ class Beneficiary extends Component {
           <View
             style={{
               paddingHorizontal: '5%',
+              paddingVertical: '2.5%',
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
@@ -198,7 +199,8 @@ class Beneficiary extends Component {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  padding: '5%',
+                  paddingHorizontal: '5%',
+                  paddingVertical: '2.5%',
                 }}>
                 <Text
                   style={{
@@ -369,10 +371,10 @@ const styles = StyleSheet.create({
   },
 
   containerStyle: {
-    minHeight: height / 5,
+    minHeight: height / 7,
     maxHeight: 'auto',
     width: width / 1.1,
-    marginVertical: '1%',
+    marginVertical: '2%',
     borderRadius: 10,
     padding: '5%',
     flexDirection: 'row',

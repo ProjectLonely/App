@@ -210,7 +210,7 @@ class AccountInformation extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          style={{height: '100%', width: '100%'}}>
+          style={{height: '100%', width: '100%', paddingTop: '2.5%'}}>
           <View
             style={{
               alignItems: 'center',

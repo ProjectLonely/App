@@ -15,8 +15,8 @@
 		1F0636B226F36D73004D13D2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0636B126F36D73004D13D2 /* File.swift */; };
 		1F0636B326F36D73004D13D2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0636B126F36D73004D13D2 /* File.swift */; };
 		1F22C87E27214BC900CCBAB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F22C87D27214BC900CCBAB2 /* GoogleService-Info.plist */; };
+		1F3727D4272ABB8400A522A5 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3727D3272ABB8300A522A5 /* assets */; };
 		1F3CE72926E1FFB600AA2C3E /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
-		1F3CE72B26E2023900AA2C3E /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3CE72A26E2023900AA2C3E /* assets */; };
 		1F981E8F26D4F374007442D9 /* Karla-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */; };
 		1F981E9226D4F381007442D9 /* Karla-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */; };
 		1F981E9326D4F381007442D9 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9126D4F381007442D9 /* Karla-Regular.ttf */; };
@@ -81,6 +81,7 @@
 		1F0636B026F36D73004D13D2 /* Cheerio-tvOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cheerio-tvOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		1F0636B126F36D73004D13D2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		1F22C87D27214BC900CCBAB2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1F3727D3272ABB8300A522A5 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = assets/assets; sourceTree = "<group>"; };
 		1F3CE72A26E2023900AA2C3E /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F4E6388270AD5800096E1C0 /* Cheerio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Cheerio.entitlements; path = Cheerio/Cheerio.entitlements; sourceTree = "<group>"; };
 		1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Bold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Bold.ttf"; sourceTree = "<group>"; };
@@ -228,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				1F3CE72A26E2023900AA2C3E /* assets */,
+				1F3727D3272ABB8300A522A5 /* assets */,
 				1F981E9426D4F5C2007442D9 /* Karla-Medium.ttf */,
 				1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */,
 				1F981E9126D4F381007442D9 /* Karla-Regular.ttf */,
@@ -424,7 +426,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F3CE72B26E2023900AA2C3E /* assets in Resources */,
+				1F3727D4272ABB8400A522A5 /* assets in Resources */,
 				1F3CE72926E1FFB600AA2C3E /* main.jsbundle in Resources */,
 				1F981E8F26D4F374007442D9 /* Karla-Bold.ttf in Resources */,
 				1F981E9526D4F5C2007442D9 /* Karla-Medium.ttf in Resources */,
@@ -847,8 +849,8 @@
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXCLUDED_ARCHS = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.4;
@@ -875,6 +877,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cheerio/Cheerio.entitlements;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
+				ENABLE_BITCODE = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -1,0 +1,211 @@
+
+App Thinning Size Report for All Variants of Cheerio
+
+Variant: Cheerio-14277649-69ED-4A01-9CD7-297834CE71F0.ipa
+Supported variant descriptors: [device: iPad8,8, os-version: 12.0], [device: iPad8,4, os-version: 12.0], [device: iPad8,3, os-version: 12.0], [device: iPad6,3, os-version: 12.0], [device: iPad8,5, os-version: 12.0], [device: iPad7,3, os-version: 12.0], [device: iPad7,4, os-version: 12.0], [device: iPad7,1, os-version: 12.0], [device: iPad8,2, os-version: 12.0], [device: iPad8,1, os-version: 12.0], [device: iPad8,7, os-version: 12.0], [device: iPad6,4, os-version: 12.0], [device: iPad8,6, os-version: 12.0], and [device: iPad7,2, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-19487FF6-9472-460B-9936-1654A489DAB6.ipa
+Supported variant descriptors: [device: iPhone8,4, os-version: 13.0], [device: iPod9,1, os-version: 14.0], [device: iPhone8,1, os-version: 14.0], [device: iPod9,1, os-version: 13.0], [device: iPhone8,4, os-version: 14.0], and [device: iPhone8,1, os-version: 13.0]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-21E33B37-7D47-4D3B-B533-854E266A8E7D.ipa
+Supported variant descriptors: [device: iPhone9,4, os-version: 12.0], [device: iPhone11,6, os-version: 12.0], [device: iPhone10,5, os-version: 12.0], [device: iPhone10,6, os-version: 12.0], [device: iPhone11,4, os-version: 12.0], [device: iPhone9,2, os-version: 12.0], [device: iPhone10,2, os-version: 12.0], [device: iPhone10,3, os-version: 12.0], and [device: iPhone11,2, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-26BF6800-7B77-4B19-A1B1-980A29D823FE.ipa
+Supported variant descriptors: [device: iPhone5,3, os-version: 10.0], [device: iPhone5,2, os-version: 10.0], [device: iPhone5,1, os-version: 10.0], and [device: iPhone5,4, os-version: 10.0]
+App + On Demand Resources size: 9 MB compressed, 19.8 MB uncompressed
+App size: 9 MB compressed, 19.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-2EEF143A-1119-45B2-B794-72A911340AC5.ipa
+Supported variant descriptors: [device: iPhone7,1, os-version: 12.0] and [device: iPhone8,2, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-38C9375F-BB8A-4E20-A766-CDD224A0805C.ipa
+Supported variant descriptors: [device: iPhone9,3, os-version: 12.2], [device: iPhone10,4, os-version: 12.2], [device: iPhone9,1, os-version: 12.2], and [device: iPhone10,1, os-version: 12.2]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-3B7F93F3-8F6E-4EBD-9728-856B4E06B622.ipa
+Supported variant descriptors: [device: iPhone7,2, os-version: 12.0], [device: iPhone8,1, os-version: 12.0], [device: iPod7,1, os-version: 12.0], [device: iPhone6,2, os-version: 12.0], [device: iPhone6,1, os-version: 12.0], and [device: iPhone8,4, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-3D8ED860-B455-43CF-812A-9645B462F63E.ipa
+Supported variant descriptors: [device: iPhone10,6, os-version: 13.0], [device: iPhone12,5, os-version: 13.0], [device: iPhone9,2, os-version: 14.0], [device: iPhone11,4, os-version: 14.0], [device: iPhone9,4, os-version: 14.0], [device: iPhone10,5, os-version: 14.0], [device: iPhone11,4, os-version: 13.0], [device: iPhone10,6, os-version: 14.0], [device: iPhone10,3, os-version: 14.0], [device: iPhone10,3, os-version: 13.0], [device: iPhone13,2, os-version: 14.0], [device: iPhone12,5, os-version: 14.0], [device: iPhone12,3, os-version: 14.0], [device: iPhone13,4, os-version: 14.0], [device: iPhone11,2, os-version: 14.0], [device: iPhone10,2, os-version: 14.0], [device: iPhone11,6, os-version: 14.0], [device: iPhone12,3, os-version: 13.0], [device: iPhone9,4, os-version: 13.0], [device: iPhone10,2, os-version: 13.0], [device: iPhone13,3, os-version: 14.0], [device: iPhone9,2, os-version: 13.0], [device: iPhone13,1, os-version: 14.0], [device: iPhone10,5, os-version: 13.0], [device: iPhone11,2, os-version: 13.0], and [device: iPhone11,6, os-version: 13.0]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-45BE703D-0028-4091-8FB2-F1BD9370083E.ipa
+Supported variant descriptors: [device: iPhone9,3, os-version: 13.0], [device: iPhone9,1, os-version: 14.0], [device: iPhone10,1, os-version: 13.0], [device: iPhone10,4, os-version: 14.0], [device: iPhone12,8, os-version: 14.0], [device: iPhone12,8, os-version: 13.0], [device: iPhone10,4, os-version: 13.0], [device: iPhone9,1, os-version: 13.0], [device: iPhone9,3, os-version: 14.0], and [device: iPhone10,1, os-version: 14.0]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-4671A42C-8214-4AC8-A4DE-93C99F8D3958.ipa
+Supported variant descriptors: [device: iPod7,1, os-version: 10.0], [device: iPhone7,2, os-version: 10.0], [device: iPhone8,4, os-version: 10.0], [device: iPhone6,2, os-version: 10.0], [device: iPhone6,1, os-version: 10.0], and [device: iPhone8,1, os-version: 10.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-4D8BE47B-CD69-407D-A6D8-B75551079E5F.ipa
+Supported variant descriptors: [device: iPad4,8, os-version: 10.0], [device: iPad4,2, os-version: 10.0], [device: iPad4,3, os-version: 10.0], [device: iPad6,7, os-version: 10.0], [device: iPad6,12, os-version: 10.0], [device: iPad4,7, os-version: 10.0], [device: iPad5,1, os-version: 10.0], [device: iPad6,8, os-version: 10.0], [device: iPad4,1, os-version: 10.0], [device: iPad5,2, os-version: 10.0], [device: iPad5,4, os-version: 10.0], [device: iPad7,6, os-version: 11.0], [device: iPad7,5, os-version: 11.0], [device: iPad4,5, os-version: 10.0], [device: iPad4,6, os-version: 10.0], [device: iPad4,4, os-version: 10.0], [device: iPad4,9, os-version: 10.0], [device: iPad6,11, os-version: 10.0], and [device: iPad5,3, os-version: 10.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-65C8C417-40F4-439D-9602-5D46BCA3C059.ipa
+Supported variant descriptors: [device: iPhone10,6, os-version: 11.0], [device: iPhone10,5, os-version: 11.0], [device: iPhone9,4, os-version: 10.0], [device: iPhone10,2, os-version: 11.0], [device: iPhone9,2, os-version: 10.0], and [device: iPhone10,3, os-version: 11.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-693E5B38-AC4D-45D5-BB60-FD912B121825.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 13.0] and [device: iPhone8,2, os-version: 14.0]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-6B631D92-F4D4-4484-BA17-24B5518F6250.ipa
+Supported variant descriptors: [device: iPhone6,1, os-version: 12.2], [device: iPhone6,2, os-version: 12.2], [device: iPhone7,2, os-version: 12.2], [device: iPhone8,1, os-version: 12.2], [device: iPod7,1, os-version: 12.2], [device: iPhone8,4, os-version: 12.2], and [device: iPod9,1, os-version: 12.2]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-81B8C781-4242-4EC3-B3BC-87D27DB35C27.ipa
+Supported variant descriptors: [device: iPad7,3, os-version: 10.0], [device: iPad7,4, os-version: 10.0], [device: iPad7,1, os-version: 10.0], [device: iPad7,2, os-version: 10.0], [device: iPad6,3, os-version: 10.0], and [device: iPad6,4, os-version: 10.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-85355526-4525-4D36-8257-0E4A7737257D.ipa
+Supported variant descriptors: [device: iPhone7,1, os-version: 12.2] and [device: iPhone8,2, os-version: 12.2]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-86C8B4ED-9D3C-48B8-95CB-863645702E84.ipa
+Supported variant descriptors: [device: iPad8,3, os-version: 14.0], [device: iPad6,4, os-version: 14.0], [device: iPad8,5, os-version: 14.0], [device: iPad6,3, os-version: 14.0], [device: iPad8,12, os-version: 13.0], [device: iPad8,1, os-version: 14.0], [device: iPad13,7, os-version: 14.0], [device: iPad13,6, os-version: 14.0], [device: iPad13,9, os-version: 14.0], [device: iPad7,2, os-version: 13.0], [device: iPad11,1, os-version: 13.0], [device: iPad8,7, os-version: 14.0], [device: iPad8,12, os-version: 14.0], [device: iPad8,3, os-version: 13.0], [device: iPad11,2, os-version: 13.0], [device: iPad7,4, os-version: 13.0], [device: iPad8,11, os-version: 14.0], [device: iPad11,3, os-version: 13.0], [device: iPad8,6, os-version: 13.0], [device: iPad8,8, os-version: 14.0], [device: iPad8,5, os-version: 13.0], [device: iPad7,3, os-version: 13.0], [device: iPad8,7, os-version: 13.0], [device: iPad13,1, os-version: 14.0], [device: iPad8,4, os-version: 14.0], [device: iPad11,4, os-version: 14.0], [device: iPad11,3, os-version: 14.0], [device: iPad7,1, os-version: 14.0], [device: iPad8,10, os-version: 13.0], [device: iPad8,4, os-version: 13.0], [device: iPad13,4, os-version: 14.0], [device: iPad8,9, os-version: 14.0], [device: iPad7,1, os-version: 13.0], [device: iPad13,2, os-version: 14.0], [device: iPad8,6, os-version: 14.0], [device: iPad6,3, os-version: 13.0], [device: iPad13,8, os-version: 14.0], [device: iPad8,10, os-version: 14.0], [device: iPad8,1, os-version: 13.0], [device: iPad8,2, os-version: 13.0], [device: iPad11,4, os-version: 13.0], [device: iPad8,9, os-version: 13.0], [device: iPad6,4, os-version: 13.0], [device: iPad7,4, os-version: 14.0], [device: iPad8,2, os-version: 14.0], [device: iPad7,2, os-version: 14.0], [device: MacFamily20,1, os-version: 14.0], [device: iPad13,11, os-version: 14.0], [device: iPad8,11, os-version: 13.0], [device: iPad11,2, os-version: 14.0], [device: iPad13,10, os-version: 14.0], [device: iPad13,5, os-version: 14.0], [device: iPad7,3, os-version: 14.0], [device: iPad11,1, os-version: 14.0], and [device: iPad8,8, os-version: 13.0]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-8C8EC110-84B6-4C5C-B85C-F5F2138916FC.ipa
+Supported variant descriptors: [device: iPhone9,1, os-version: 12.0], [device: iPhone9,3, os-version: 12.0], [device: iPhone10,4, os-version: 12.0], and [device: iPhone10,1, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-8D61D0D2-BB03-48BA-97D6-A0E4F0CB004E.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 13.0], [device: iPhone12,1, os-version: 13.0], [device: iPhone11,8, os-version: 14.0], and [device: iPhone12,1, os-version: 14.0]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-A544052F-A71D-4979-B8ED-3268BB28AB79.ipa
+Supported variant descriptors: [device: iPad8,6, os-version: 12.2], [device: iPad7,1, os-version: 12.2], [device: iPad7,3, os-version: 12.2], [device: iPad11,1, os-version: 12.2], [device: iPad7,4, os-version: 12.2], [device: iPad8,5, os-version: 12.2], [device: iPad11,3, os-version: 12.2], [device: iPad8,4, os-version: 12.2], [device: iPad8,7, os-version: 12.2], [device: iPad8,1, os-version: 12.2], [device: iPad11,4, os-version: 12.2], [device: iPad8,2, os-version: 12.2], [device: iPad8,8, os-version: 12.2], [device: iPad6,3, os-version: 12.2], [device: iPad11,2, os-version: 12.2], [device: iPad8,3, os-version: 12.2], [device: iPad7,2, os-version: 12.2], and [device: iPad6,4, os-version: 12.2]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-AB4C51F8-6DD6-4F18-87F3-28FEA873534E.ipa
+Supported variant descriptors: [device: iPad3,6, os-version: 10.0], [device: iPad3,4, os-version: 10.0], and [device: iPad3,5, os-version: 10.0]
+App + On Demand Resources size: 9 MB compressed, 19.8 MB uncompressed
+App size: 9 MB compressed, 19.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-B0E92285-30CD-4691-8D40-5C819753EE9A.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 10.0] and [device: iPhone7,1, os-version: 10.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-C29CE51F-2A45-47E0-B435-9729181CA9FE.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 12.2]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-D4DCD680-4CDE-40DE-A8F4-C0FD6558643A.ipa
+Supported variant descriptors: [device: iPad5,4, os-version: 14.0], [device: iPad5,1, os-version: 14.0], [device: iPad6,11, os-version: 14.0], [device: iPad5,3, os-version: 13.0], [device: iPad6,8, os-version: 13.0], [device: iPad6,7, os-version: 13.0], [device: iPad7,5, os-version: 13.0], [device: iPad7,6, os-version: 14.0], [device: iPad6,7, os-version: 14.0], [device: iPad6,12, os-version: 14.0], [device: iPad11,7, os-version: 14.0], [device: iPad6,12, os-version: 13.0], [device: iPad7,12, os-version: 13.0], [device: iPad7,5, os-version: 14.0], [device: iPad5,2, os-version: 13.0], [device: iPad6,8, os-version: 14.0], [device: iPad7,12, os-version: 14.0], [device: iPad11,6, os-version: 14.0], [device: iPad5,2, os-version: 14.0], [device: iPad6,11, os-version: 13.0], [device: iPad7,6, os-version: 13.0], [device: iPad5,1, os-version: 13.0], [device: iPad7,11, os-version: 13.0], [device: iPad5,4, os-version: 13.0], [device: iPad5,3, os-version: 14.0], and [device: iPad7,11, os-version: 14.0]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-E043330C-9320-4377-9FC3-606006EA9BCB.ipa
+Supported variant descriptors: [device: iPad6,11, os-version: 12.2], [device: iPad5,4, os-version: 12.2], [device: iPad4,8, os-version: 12.2], [device: iPad4,3, os-version: 12.2], [device: iPad4,9, os-version: 12.2], [device: iPad4,7, os-version: 12.2], [device: iPad5,2, os-version: 12.2], [device: iPad7,5, os-version: 12.2], [device: iPad4,4, os-version: 12.2], [device: iPad7,6, os-version: 12.2], [device: iPad4,5, os-version: 12.2], [device: iPad6,7, os-version: 12.2], [device: iPad4,6, os-version: 12.2], [device: iPad4,1, os-version: 12.2], [device: iPad5,1, os-version: 12.2], [device: iPad6,8, os-version: 12.2], [device: iPad4,2, os-version: 12.2], [device: iPad5,3, os-version: 12.2], and [device: iPad6,12, os-version: 12.2]
+App + On Demand Resources size: 6.1 MB compressed, 15.3 MB uncompressed
+App size: 6.1 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-E0EEE14F-7CC9-4184-A778-9ED472EE351E.ipa
+Supported variant descriptors: [device: iPhone10,2, os-version: 12.2], [device: iPhone10,6, os-version: 12.2], [device: iPhone10,5, os-version: 12.2], [device: iPhone10,3, os-version: 12.2], [device: iPhone11,4, os-version: 12.2], [device: iPhone11,6, os-version: 12.2], [device: iPhone11,2, os-version: 12.2], [device: iPhone9,2, os-version: 12.2], and [device: iPhone9,4, os-version: 12.2]
+App + On Demand Resources size: 6.2 MB compressed, 15.3 MB uncompressed
+App size: 6.2 MB compressed, 15.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-EC7E553B-AAD9-45B9-AEB1-BD2B1ACC3F7E.ipa
+Supported variant descriptors: [device: iPad7,5, os-version: 12.0], [device: iPad5,2, os-version: 12.0], [device: iPad5,1, os-version: 12.0], [device: iPad6,7, os-version: 12.0], [device: iPad6,11, os-version: 12.0], [device: iPad4,1, os-version: 12.0], [device: iPad4,6, os-version: 12.0], [device: iPad6,8, os-version: 12.0], [device: iPad4,3, os-version: 12.0], [device: iPad5,3, os-version: 12.0], [device: iPad4,9, os-version: 12.0], [device: iPad4,4, os-version: 12.0], [device: iPad7,6, os-version: 12.0], [device: iPad5,4, os-version: 12.0], [device: iPad4,5, os-version: 12.0], [device: iPad4,7, os-version: 12.0], [device: iPad4,2, os-version: 12.0], [device: iPad4,8, os-version: 12.0], and [device: iPad6,12, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-F57AB682-54CB-4291-8A1E-E0B3DD0314F6.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 12.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio-FCBB7F24-B614-402B-B7AE-E8FA41FC849E.ipa
+Supported variant descriptors: [device: iPhone10,1, os-version: 11.0], [device: iPhone10,4, os-version: 11.0], [device: iPhone9,3, os-version: 10.0], and [device: iPhone9,1, os-version: 10.0]
+App + On Demand Resources size: 8.5 MB compressed, 22.3 MB uncompressed
+App size: 8.5 MB compressed, 22.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: Cheerio.ipa
+Supported variant descriptors: Universal
+App + On Demand Resources size: 14.7 MB compressed, 36.4 MB uncompressed
+App size: 14.7 MB compressed, 36.4 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed

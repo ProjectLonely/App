@@ -34,7 +34,14 @@ const Footer = ({
   // }, [unseenCount]);
   return (
     <View style={styles.mainContainer}>
-      <TouchableOpacity onPress={dashboardPress} style={styles.optionContainer}>
+      <TouchableOpacity
+        onPress={dashboardPress}
+        style={[
+          styles.optionContainer,
+          footerValue == 'home'
+            ? {borderColor: '#004ACE', borderTopWidth: 1}
+            : null,
+        ]}>
         {footerValue == 'home' ? (
           <Image
             source={require('../Assets/Images/footerimage/homeactive.png')}
@@ -46,10 +53,22 @@ const Footer = ({
             style={styles.iconStyle}
           />
         )}
+        <Text
+          style={[
+            styles.textStyle,
+            footerValue == 'home' ? {color: '#004ACE'} : null,
+          ]}>
+          Home
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={benificiaryPress}
-        style={styles.optionContainer}>
+        style={[
+          styles.optionContainer,
+          footerValue == 'benificiary'
+            ? {borderColor: '#004ACE', borderTopWidth: 1}
+            : null,
+        ]}>
         {footerValue == 'benificiary' ? (
           <Image
             source={require('../Assets/Images/footerimage/beneficiaryactive.png')}
@@ -61,13 +80,27 @@ const Footer = ({
             style={styles.iconStyle}
           />
         )}
+        <Text
+          style={[
+            styles.textStyle,
+            footerValue == 'benificiary' ? {color: '#004ACE'} : null,
+          ]}>
+          Beneficiaries
+        </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={chatPress} style={styles.optionContainer}>
+      <TouchableOpacity
+        onPress={chatPress}
+        style={[
+          styles.optionContainer,
+          footerValue == 'chat'
+            ? {borderColor: '#004ACE', borderTopWidth: 1}
+            : null,
+        ]}>
         {footerValue == 'chat' ? (
           <View style={{flexDirection: 'row'}}>
             <Image
               source={require('../Assets/Images/footerimage/chatactive.png')}
-              style={styles.iconStyle}
+              style={[styles.iconStyle]}
             />
             <Text
               style={{
@@ -77,14 +110,14 @@ const Footer = ({
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>
-              {unseenValue}
+              {unseenValue ? unseenValue : null}
             </Text>
           </View>
         ) : (
           <View style={{flexDirection: 'row'}}>
             <Image
               source={require('../Assets/Images/footerimage/chatinactive.png')}
-              style={styles.iconStyle}
+              style={[styles.iconStyle]}
             />
             <Text
               style={{
@@ -94,12 +127,26 @@ const Footer = ({
                 fontFamily: FontStyle.bold,
                 fontSize: 16,
               }}>
-              {unseenValue}
+              {unseenValue ? unseenValue : null}
             </Text>
           </View>
         )}
+        <Text
+          style={[
+            styles.textStyle,
+            footerValue == 'chat' ? {color: '#004ACE'} : null,
+          ]}>
+          Chat
+        </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={callLogPress} style={styles.optionContainer}>
+      <TouchableOpacity
+        onPress={callLogPress}
+        style={[
+          styles.optionContainer,
+          footerValue == 'call'
+            ? {borderColor: '#004ACE', borderTopWidth: 1}
+            : null,
+        ]}>
         {footerValue == 'call' ? (
           <Image
             source={require('../Assets/Images/footerimage/callactive.png')}
@@ -111,8 +158,22 @@ const Footer = ({
             style={styles.iconStyle}
           />
         )}
+        <Text
+          style={[
+            styles.textStyle,
+            footerValue == 'call' ? {color: '#004ACE'} : null,
+          ]}>
+          Call Logs
+        </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={settingPress} style={styles.optionContainer}>
+      <TouchableOpacity
+        onPress={settingPress}
+        style={[
+          styles.optionContainer,
+          footerValue == 'setting'
+            ? {borderColor: '#004ACE', borderTopWidth: 1}
+            : null,
+        ]}>
         {footerValue == 'setting' ? (
           <Image
             source={require('../Assets/Images/footerimage/settingactive.png')}
@@ -124,6 +185,13 @@ const Footer = ({
             style={styles.iconStyle}
           />
         )}
+        <Text
+          style={[
+            styles.textStyle,
+            footerValue == 'setting' ? {color: '#004ACE'} : null,
+          ]}>
+          Settings
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -147,13 +215,18 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical: '2%',
     width: '20%',
+    // borderTopWidth: 1,
   },
   iconStyle: {
     height: 24,
     width: 23,
     resizeMode: 'contain',
+  },
+  textStyle: {
+    fontFamily: FontStyle.regular,
+    fontSize: 12,
   },
 });
 

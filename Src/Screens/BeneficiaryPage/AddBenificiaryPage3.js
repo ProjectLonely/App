@@ -277,9 +277,9 @@ class AddBenificiaryPage3 extends Component {
         {/* <SafeAreaView /> */}
         <Header
           leftIcon={true}
-          middleText={'select beneficiary availability'}
+          middleText={'Select Beneficiary Availability'}
         />
-        <View style={{height: '65%'}}>
+        <View style={{height: '65%', paddingTop: '4%'}}>
           <AlertModal
             modalValue={modalValue}
             closeModal={() => this.closeModal()}

@@ -110,8 +110,9 @@ class Support extends Component {
                 color: '#3A3A3A',
                 textAlign: 'center',
               }}>
-              For any help or Query you may contact us support@digimonk.in or
-              Call 1800-XXX-XXXX
+              Have a question, suggestion, or an issue that needs resolving?
+              Leave a message here and a team member will respond via email as
+              soon as possible.
             </Text>
             <View
               style={{
@@ -127,10 +128,10 @@ class Support extends Component {
                   color: '#004ACE',
                   textAlign: 'center',
                 }}>
-                Send Your Query-
+                Your message:
               </Text>
               <TextInput
-                placeholder="Query"
+                placeholder="Type a message"
                 maxLength={300}
                 placeholderTextColor="#707070"
                 style={{

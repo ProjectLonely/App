@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, TextInput, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  FlatList,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
@@ -77,16 +85,17 @@ class AddBenificiaryPage2 extends Component {
           backgroundColor: '#fff',
         }}>
         {/* <SafeAreaView /> */}
+
+        <AlertModal
+          modalValue={modalValue}
+          closeModal={() => this.setState({modalValue: false})}
+          message={message}
+        />
+        <Header leftIcon={true} middleText={'Add Beneficiary'} />
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          style={{height: '100%', width: '100%'}}>
-          <AlertModal
-            modalValue={modalValue}
-            closeModal={() => this.setState({modalValue: false})}
-            message={message}
-          />
-          <Header leftIcon={true} middleText={'Add Beneficiary'} />
+          style={{height: '100%', width: '100%', paddingVertical: '4%'}}>
           <View style={{width: '100%', alignItems: 'center'}}>
             <Text style={[Styles.labelText]}>
               Tell us something about this person.

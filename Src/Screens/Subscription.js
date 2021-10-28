@@ -162,21 +162,6 @@ class Subscription extends Component {
         message: 'Call schedule should not be blank.',
       });
     } else {
-      console.log({
-        relation: beneficiaryData.relationShipId,
-        name: beneficiaryData.name,
-        age: beneficiaryData.age,
-        gender: beneficiaryData.genderId,
-        timezone: beneficiaryData.timeZone,
-        phone_no: beneficiaryData.phoneNumber,
-        about: beneficiaryData.aboutPerson,
-        comment: beneficiaryData.comment,
-        seekings: beneficiaryData.selectedSeekOption,
-        schedule: beneficiaryData.newArray,
-        image: beneficiaryData.base64,
-        plan_id: beneficiaryData.planId,
-        transaction_id: this.state.transaction_id,
-      });
       axios({
         method: 'post',
         url: `${baseurl}beneficiary/create/`,
@@ -198,8 +183,6 @@ class Subscription extends Component {
         },
       })
         .then((response) => {
-          console.log(response, 'response');
-          // this.setState({submitLoader: false});
           if (response.status == 201) {
             this.setState({
               payLoader: false,
@@ -226,7 +209,7 @@ class Subscription extends Component {
   render() {
     const {subscriptionList} = this.props;
     const {modalValue, message} = this.state;
-    console.log(subscriptionList, 'sub list');
+
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
@@ -244,7 +227,7 @@ class Subscription extends Component {
           message={message}
         />
 
-        <View style={{height: '90%', alignItems: 'center'}}>
+        <View style={{height: '90%', alignItems: 'center', paddingTop: '4%'}}>
           <FlatList
             data={subscriptionList}
             showsVerticalScrollIndicator={false}

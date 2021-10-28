@@ -128,6 +128,7 @@ class Benificiary extends Component {
             </ScrollView>
           ) : (
             <FlatList
+              style={{paddingTop: '2%'}}
               refreshControl={
                 <RefreshControl
                   refreshing={false}
@@ -248,7 +249,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'check loading');
   return {
     beneficiaryArray: state.GetBeneficiary.data,
     loading: state.GetBeneficiary.loading,

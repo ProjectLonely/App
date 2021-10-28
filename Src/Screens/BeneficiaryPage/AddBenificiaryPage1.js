@@ -154,7 +154,7 @@ class AddBenificiaryPage1 extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          style={{height: '100%', width: '100%'}}
+          style={{height: '100%', width: '100%', paddingTop: '4%'}}
           contentContainerStyle={{alignItems: 'center', paddingBottom: '20%'}}>
           <AlertModal
             modalValue={modalValue}

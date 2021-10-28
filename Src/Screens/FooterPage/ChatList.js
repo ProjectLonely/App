@@ -129,8 +129,8 @@ class ChatList extends Component {
                   color: '#575757',
                   textAlign: 'center',
                 }}>
-                You have no chat at this moment. When you recive an alert, this
-                is where it will appear.
+                You have no messages at this moment. When you recive a message,
+                this is where it will appear.
               </Text>
             </ScrollView>
           ) : (
@@ -142,6 +142,7 @@ class ChatList extends Component {
                   tintColor="#004ACE"
                 />
               }
+              style={{paddingVertical: '2%'}}
               data={operatorArray}
               contentContainerStyle={{width: '100%'}}
               showsVerticalScrollIndicator={false}
@@ -156,7 +157,7 @@ class ChatList extends Component {
                         width: '100%',
                         flexDirection: 'row',
                       }}>
-                      <View style={{width: '25%', backgroundColor: '#fff'}}>
+                      <View style={{width: '20%', backgroundColor: '#fff'}}>
                         {operatorData.image == null ? (
                           <Image
                             source={require('../../Assets/Images/group.png')}
@@ -183,7 +184,6 @@ class ChatList extends Component {
                       <View
                         style={{
                           width: '70%',
-                          justifyContent: 'center',
                         }}>
                         {this.state.activeUser.some(
                           (data) => data == operatorData.id,
@@ -207,11 +207,6 @@ class ChatList extends Component {
                               // backgroundColor: 'orange',
                               width: '75%',
                             }}>
-                            <Image
-                              source={require('../../Assets/Images/smalluser.png')}
-                              style={styles.imageStyle}
-                            />
-
                             <Text
                               style={{
                                 fontFamily: FontStyle.bold,
@@ -233,19 +228,12 @@ class ChatList extends Component {
                           </Text>
                         </View>
 
-                        <View style={styles.normalView}>
-                          <Image
-                            source={require('../../Assets/Images/smallcalendar.png')}
-                            style={styles.imageStyle}
-                          />
+                        <View style={[styles.normalView, {height: '60%'}]}>
                           <Text
                             ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={[styles.normalText, {width: '60%'}]}>
+                            numberOfLines={2}
+                            style={[styles.normalText, {width: '80%'}]}>
                             {operatorData.last_chat_message}
-                            {/* {moment(operatorData.last_chat_created_at).format(
-                              'MMM,DD YYYY ',
-                            )} */}
                           </Text>
                         </View>
                       </View>
@@ -288,8 +276,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 100,
-    borderLeftWidth: 4,
-    borderLeftColor: '#004ACE',
     width: '90%',
     backgroundColor: '#fff',
     marginVertical: '2%',

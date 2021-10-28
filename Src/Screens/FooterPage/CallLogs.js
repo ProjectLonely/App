@@ -102,51 +102,6 @@ class CallLogs extends Component {
             durationStatus={durationStatus}
           />
           <View style={{height: '84%', backgroundColor: '#fff'}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: '5%',
-                paddingTop: '2%',
-              }}>
-              <Text
-                style={{
-                  fontFamily: FontStyle.bold,
-                  fontSize: 20,
-                  color: '#3A3A3A',
-                }}>
-                Recent Activity
-              </Text>
-              <TouchableOpacity
-                onPress={() => this.setState({calendarValue: !calendarValue})}
-                style={Styles.calendarView}>
-                <Image
-                  source={require('../../Assets/Images/calendar.png')}
-                  style={{
-                    height: 16,
-                    width: 16,
-                    resizeMode: 'contain',
-                    right: 5,
-                  }}
-                />
-                <Text
-                  style={{
-                    fontFamily: FontStyle.regular,
-                    fontSize: 12,
-                    color: '#525F77',
-                  }}>
-                  {startDate} - {endDate}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: '100%',
-                height: 1,
-                backgroundColor: '#707070',
-                marginTop: '2.5%',
-              }}
-            />
             {operatorData.length < 1 ? (
               <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -174,113 +129,166 @@ class CallLogs extends Component {
                     color: '#575757',
                     textAlign: 'center',
                   }}>
-                  Your beneficiarie calls have received any calls yet. When they
+                  Your beneficiaries have not received any calls yet. When they
                   do, you will see the call logs here.
                 </Text>
               </ScrollView>
             ) : (
-              <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={false}
-                    onRefresh={this.pageRefresh}
-                    tintColor="#004ACE"
-                  />
-                }
-                data={operatorData}
-                showsVerticalScrollIndicator={false}
-                renderItem={({item: operatorData}) => {
-                  return (
-                    <View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          paddingHorizontal: '5%',
-                          alignItems: 'center',
-                          paddingVertical: '3%',
-                        }}>
-                        <Image
-                          source={require('../../Assets/Images/lineuser.png')}
-                          style={{height: 12, width: 11, resizeMode: 'contain'}}
-                        />
-                        <Text
+              <>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: '5%',
+                    paddingTop: '2%',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.bold,
+                      fontSize: 20,
+                      color: '#3A3A3A',
+                    }}>
+                    Recent Activity
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState({calendarValue: !calendarValue})
+                    }
+                    style={Styles.calendarView}>
+                    <Image
+                      source={require('../../Assets/Images/calendar.png')}
+                      style={{
+                        height: 16,
+                        width: 16,
+                        resizeMode: 'contain',
+                        right: 5,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.regular,
+                        fontSize: 12,
+                        color: '#525F77',
+                      }}>
+                      {startDate} - {endDate}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 1,
+                    backgroundColor: '#707070',
+                    marginTop: '2.5%',
+                  }}
+                />
+                <FlatList
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={false}
+                      onRefresh={this.pageRefresh}
+                      tintColor="#004ACE"
+                    />
+                  }
+                  data={operatorData}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item: operatorData}) => {
+                    return (
+                      <View>
+                        <View
                           style={{
-                            fontFamily: FontStyle.bold,
-                            color: '#10275A',
-                            fontSize: 18,
-                            left: 5,
+                            flexDirection: 'row',
+                            paddingHorizontal: '5%',
+                            alignItems: 'center',
+                            paddingVertical: '3%',
                           }}>
-                          {operatorData.name}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.bold,
-                            color: '#10275A',
-                            fontSize: 18,
-                            left: 5,
-                          }}>
-                          {` (${operatorData.relationship})`}
-                        </Text>
-                      </View>
-                      <FlatList
-                        data={callingData}
-                        renderItem={({item: callLogs}) => {
-                          const callDate = moment(callLogs.callDate);
+                          <Image
+                            source={require('../../Assets/Images/lineuser.png')}
+                            style={{
+                              height: 12,
+                              width: 11,
+                              resizeMode: 'contain',
+                            }}
+                          />
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.bold,
+                              color: '#10275A',
+                              fontSize: 18,
+                              left: 5,
+                            }}>
+                            {operatorData.name}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.bold,
+                              color: '#10275A',
+                              fontSize: 18,
+                              left: 5,
+                            }}>
+                            {` (${operatorData.relationship})`}
+                          </Text>
+                        </View>
+                        <FlatList
+                          data={callingData}
+                          renderItem={({item: callLogs}) => {
+                            const callDate = moment(callLogs.callDate);
 
-                          return moment(callDate).isBetween(
-                            startDate,
-                            endDate,
-                            null,
-                            [],
-                          ) ? (
-                            operatorData.name == callLogs.name ? (
-                              <View style={Styles.smallContainer}>
-                                <View style={{width: '67%'}}>
-                                  <Text
+                            return moment(callDate).isBetween(
+                              startDate,
+                              endDate,
+                              null,
+                              [],
+                            ) ? (
+                              operatorData.name == callLogs.name ? (
+                                <View style={Styles.smallContainer}>
+                                  <View style={{width: '67%'}}>
+                                    <Text
+                                      style={{
+                                        fontFamily: FontStyle.medium,
+                                        color: '#3A3A3A',
+                                        fontSize: 12,
+                                      }}>
+                                      {callLogs.callDate}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: FontStyle.bold,
+                                        color: '#223E6D',
+                                        fontSize: 15,
+                                      }}>
+                                      {callLogs.status}
+                                    </Text>
+                                  </View>
+                                  <View
                                     style={{
-                                      fontFamily: FontStyle.medium,
-                                      color: '#3A3A3A',
-                                      fontSize: 12,
+                                      width: '30%',
                                     }}>
-                                    {callLogs.callDate}
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      fontFamily: FontStyle.bold,
-                                      color: '#223E6D',
-                                      fontSize: 15,
-                                    }}>
-                                    {callLogs.status}
-                                  </Text>
+                                    <Text
+                                      style={{
+                                        textTransform: 'capitalize',
+                                        fontFamily: FontStyle.medium,
+                                        fontSize: 12,
+                                        color:
+                                          callLogs.callStatus ==
+                                            'call_completed' ||
+                                          callLogs.callStatus == 'call_received'
+                                            ? '#1F9F00'
+                                            : '#EA3232',
+                                      }}>
+                                      {callLogs.callStatus.split('_').join(' ')}
+                                    </Text>
+                                  </View>
                                 </View>
-                                <View
-                                  style={{
-                                    width: '30%',
-                                  }}>
-                                  <Text
-                                    style={{
-                                      textTransform: 'capitalize',
-                                      fontFamily: FontStyle.medium,
-                                      fontSize: 12,
-                                      color:
-                                        callLogs.callStatus ==
-                                          'call_completed' ||
-                                        callLogs.callStatus == 'call_received'
-                                          ? '#1F9F00'
-                                          : '#EA3232',
-                                    }}>
-                                    {callLogs.callStatus.split('_').join(' ')}
-                                  </Text>
-                                </View>
-                              </View>
-                            ) : null
-                          ) : null;
-                        }}
-                      />
-                    </View>
-                  );
-                }}
-              />
+                              ) : null
+                            ) : null;
+                          }}
+                        />
+                      </View>
+                    );
+                  }}
+                />
+              </>
             )}
           </View>
         </View>

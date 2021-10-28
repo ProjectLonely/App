@@ -69,10 +69,11 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'alskdjflasdf');
+        console.log(response.data.timezone.split('(')[0], 'alskdjflasdf');
         this.setState({
           beneficiaryData: response.data,
           schedule: response.data.schedule,
+          timeZone: response.data.timezone.split('(')[0],
         });
       })
       .catch((err) => {});
@@ -178,6 +179,7 @@ class BeneficiaryDetail extends Component {
       startDate,
       endDate,
       durationStatus,
+      timeZone,
     } = this.state;
 
     return (
@@ -210,6 +212,7 @@ class BeneficiaryDetail extends Component {
             contentContainerStyle={{
               alignItems: 'center',
               paddingBottom: 200,
+              paddingTop: '2%',
             }}>
             <View style={[styles.container]}>
               <Text
@@ -261,9 +264,12 @@ class BeneficiaryDetail extends Component {
                   />
                   <Text
                     ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={[styles.normalText, {left: 5, width: '80%'}]}>
-                    {beneficiaryData.timezone}
+                    numberOfLines={2}
+                    style={[
+                      styles.normalText,
+                      {left: 5, width: '80%', textAlign: 'center'},
+                    ]}>
+                    {timeZone}
                   </Text>
                 </View>
               </View>
@@ -557,6 +563,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginVertical: '2%',
     padding: '2%',
+
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {

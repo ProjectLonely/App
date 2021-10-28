@@ -70,7 +70,7 @@ class Billing extends Component {
           </View>
         ) : (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{width: '100%', marginVertical: '5%'}}>
+            <View style={{width: '100%', marginVertical: '2.5%'}}>
               <AlertModal
                 modalValue={modalValue}
                 closeModal={() => this.setState({modalValue: false})}
@@ -206,7 +206,7 @@ class Billing extends Component {
                             fontSize: 12,
                             color: '#1F9F00',
                           }}>
-                          SuccessFull
+                          Successfull
                         </Text>
                       </View>
                     </View>

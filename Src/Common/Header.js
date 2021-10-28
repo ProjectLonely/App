@@ -73,7 +73,7 @@ const Header = ({
               fontSize: 22,
               color: '#12175E',
               left: leftIcon ? 20 : 0,
-              width: '70%',
+              width: '75%',
             }}>
             {middleText ? middleText : null}
           </Text>
@@ -84,7 +84,7 @@ const Header = ({
                 fontSize: 16,
                 color: '#12175E',
                 left: leftIcon ? 20 : 0,
-                width: '70%',
+                width: '75%',
               }}>
               ({relation})
             </Text>
