@@ -9,6 +9,7 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
@@ -21,10 +22,12 @@ import {baseurl} from '../Common/Baseurl';
 import Header from '../Common/Header';
 import axios from 'axios';
 import AlertModal from '../Common/AlertModal';
+import PaymentCartModal from '../Common/PaymentCartModal';
 var qs = require('qs');
 const PaymentRequest = require('react-native-payments').PaymentRequest;
 class Subscription extends Component {
   state = {
+    paymentModal: false,
     subscriptionArray: [],
     modalValue: false,
     message: '',
@@ -51,7 +54,9 @@ class Subscription extends Component {
   addBenificiary = (planId, planAmount) => {
     this.props.addBenificiary({planId, planAmount});
     setTimeout(() => {
-      this.applePay();
+      Platform.OS == 'android'
+        ? this.setState({paymentModal: true})
+        : this.applePay();
     }, 1000);
     // this.props.navigation.navigate('AddBenificiaryPage1');
   };
@@ -194,7 +199,6 @@ class Subscription extends Component {
           }
         })
         .catch((err) => {
-          console.log(err.response);
           console.log(Object.values(err.response));
           this.setState({
             payLoader: false,
@@ -208,7 +212,7 @@ class Subscription extends Component {
 
   render() {
     const {subscriptionList} = this.props;
-    const {modalValue, message} = this.state;
+    const {modalValue, message, paymentModal} = this.state;
 
     return (
       <ImageBackground
@@ -220,6 +224,10 @@ class Subscription extends Component {
           leftIcon={true}
           // notification={true}
           notifyPress={() => this.props.navigation.navigate('Notification')}
+        />
+        <PaymentCartModal
+          paymentModal={paymentModal}
+          closeModal={() => this.setState({paymentModal: false})}
         />
         <AlertModal
           modalValue={modalValue}
@@ -241,10 +249,6 @@ class Subscription extends Component {
                       : null,
                   ]}>
                   <View style={{flexDirection: 'row', height: '100%'}}>
-                    {/* <Image
-                      source={{uri: item.image}}
-                      style={styles.imageStyle}
-                    /> */}
                     <View
                       style={{
                         width: '100%',
@@ -338,7 +342,8 @@ class Subscription extends Component {
 
 const styles = StyleSheet.create({
   productView: {
-    height: 220,
+    minHeight: 220,
+    maxHeight: 240,
     width: width / 1.1,
     backgroundColor: '#fff',
     borderRadius: 10,

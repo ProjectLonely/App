@@ -11,6 +11,7 @@ import {
   FlatList,
   ScrollView,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import Footer from '../../Common/Footer';
 import Button from '../../Common/Button';
@@ -98,7 +99,10 @@ class Beneficiary extends Component {
         source={require('../../Assets/Images/splashWhite.png')}
         style={{height: '100%', width: '100%'}}
         resizeMode="cover">
-        <View style={{height: height / 1.09}}>
+        <View
+          style={{
+            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+          }}>
           <CalendarModal
             calendarValue={calendarValue}
             closeModal={() => this.setState({calendarValue: false})}

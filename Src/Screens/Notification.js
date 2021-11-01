@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Dimensions,
+  Platform,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import {baseurl} from '../Common/Baseurl';
@@ -35,13 +36,16 @@ class Notification extends Component {
     this.getNotification();
   };
 
-  getNotification = () => {
+  getNotification = async () => {
+    const token = await AsyncStorage.getItem('token');
     axios({
       method: 'get',
       url: `${baseurl}api/notification/`,
       headers: {Authorization: `Token ${this.state.token}`},
+      data: 'chat',
     })
       .then((response) => {
+        console.log(response, 'notify');
         this.setState({
           notificationArray: response.data.results,
           loadingValue: false,
@@ -50,6 +54,7 @@ class Notification extends Component {
         this.props.unseenNotification(token);
       })
       .catch((err) => {
+        console.log(err, 'notify error');
         this.setState({loadingValue: false});
       });
   };
@@ -81,7 +86,10 @@ class Notification extends Component {
 
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <View style={{height: height / 1.09}}>
+        <View
+          style={{
+            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+          }}>
           <Header
             leftIcon={true}
             middleText={'Notifications'}

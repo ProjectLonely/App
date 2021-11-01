@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "374177493630",
+    "project_id": "cheerio-push",
+    "storage_bucket": "cheerio-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374177493630:android:3fc5906943f57687749e2f",
+        "android_client_info": {
+          "package_name": "com.cheerio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374177493630-p7gpkrq3jgrr80mlsehm9spf9188rnhn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbg83SCflsUJu8oVRRVmibgxlAOdcXPJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374177493630-p7gpkrq3jgrr80mlsehm9spf9188rnhn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "374177493630-cfprbmlj1q0u23cquoqs85vaq7e312nf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.digimonk.cheerio"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

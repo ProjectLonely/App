@@ -10,6 +10,7 @@ import {
   RefreshControl,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Footer from '../../Common/Footer';
@@ -75,10 +76,14 @@ class Benificiary extends Component {
   render() {
     const {beneficiaryArray, modalValue, message, unseenValue} = this.props;
     const {confirmValue} = this.state;
-    console.log(this.props.loading, 'loading');
+
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
+        <View
+          style={{
+            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+            backgroundColor: '#fff',
+          }}>
           <Header
             middleText={'Beneficiaries'}
             notification={true}

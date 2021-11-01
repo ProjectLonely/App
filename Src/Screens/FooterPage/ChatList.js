@@ -10,6 +10,7 @@ import {
   ScrollView,
   RefreshControl,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Header from '../../Common/Header';
 import AlertModal from '../../Common/AlertModal';
@@ -89,7 +90,11 @@ class ChatList extends Component {
     const {modalValue, message, operatorArray, pageLoading} = this.state;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
+        <View
+          style={{
+            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+            backgroundColor: '#fff',
+          }}>
           <Header
             middleText={'Chat List'}
             notification={true}
@@ -134,114 +139,137 @@ class ChatList extends Component {
               </Text>
             </ScrollView>
           ) : (
-            <FlatList
-              refreshControl={
-                <RefreshControl
-                  refreshing={false}
-                  onRefresh={this.pageRefresh}
-                  tintColor="#004ACE"
-                />
-              }
-              style={{paddingVertical: '2%'}}
-              data={operatorArray}
-              contentContainerStyle={{width: '100%'}}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item: operatorData}) => {
-                return (
-                  <View style={[styles.smallContainer]}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.selectChat(operatorData.id, operatorData.name)
-                      }
-                      style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                      }}>
-                      <View style={{width: '20%', backgroundColor: '#fff'}}>
-                        {operatorData.image == null ? (
-                          <Image
-                            source={require('../../Assets/Images/group.png')}
+            <View style={{width: '100%'}}>
+              <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={this.pageRefresh}
+                    tintColor="#004ACE"
+                  />
+                }
+                style={{paddingVertical: '2%'}}
+                data={operatorArray}
+                contentContainerStyle={{width: '100%'}}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item: operatorData}) => {
+                  console.log(operatorData, 'sdfsddsfdf');
+                  return (
+                    <View style={{width: '100%'}}>
+                      <View style={[styles.smallContainer]}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            this.selectChat(operatorData.id, operatorData.name)
+                          }
+                          style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                          }}>
+                          <View style={{width: '20%', backgroundColor: '#fff'}}>
+                            {operatorData.image == null ? (
+                              <Image
+                                source={require('../../Assets/Images/group.png')}
+                                style={{
+                                  height: 70,
+                                  width: 70,
+                                  resizeMode: 'contain',
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                source={{
+                                  uri: `http://digimonk.co:1617/${operatorData.image}`,
+                                }}
+                                style={{
+                                  height: 70,
+                                  width: 70,
+                                  resizeMode: 'cover',
+                                  borderRadius: 70 / 2,
+                                }}
+                              />
+                            )}
+                          </View>
+                          <View
                             style={{
-                              height: 70,
-                              width: 70,
-                              resizeMode: 'contain',
-                            }}
-                          />
-                        ) : (
-                          <Image
-                            source={{
-                              uri: `http://digimonk.co:1617/${operatorData.image}`,
-                            }}
-                            style={{
-                              height: 70,
-                              width: 70,
-                              resizeMode: 'cover',
-                              borderRadius: 70 / 2,
-                            }}
-                          />
-                        )}
+                              width: '75%',
+                              paddingLeft: 7,
+                            }}>
+                            {this.state.activeUser.some(
+                              (data) => data == operatorData.id,
+                            ) ? (
+                              <View
+                                style={{
+                                  width: 10,
+                                  height: 10,
+                                  borderRadius: 5,
+                                  backgroundColor: 'green',
+                                  alignSelf: 'flex-end',
+                                  left: '5%',
+                                }}
+                              />
+                            ) : null}
+                            <View style={[styles.normalView]}>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+
+                                  width: '75%',
+                                }}>
+                                <Text
+                                  style={{
+                                    fontFamily: FontStyle.bold,
+                                    fontSize: 16,
+                                    color: '#10275A',
+                                    left: 5,
+                                  }}>
+                                  {operatorData.name != ''
+                                    ? operatorData.name
+                                    : 'Deleted User'}
+                                </Text>
+                              </View>
+
+                              <Text
+                                ellipsizeMode="tail"
+                                numberOfLines={1}
+                                style={styles.normalText}>
+                                {moment(
+                                  operatorData.last_chat_created_at,
+                                ).format('MMM,DD YYYY ')}
+                              </Text>
+                            </View>
+
+                            <View
+                              style={[
+                                styles.normalView,
+                                {
+                                  height: '60%',
+                                  alignItems: 'flex-start',
+                                },
+                              ]}>
+                              <Text
+                                ellipsizeMode="tail"
+                                numberOfLines={2}
+                                style={[styles.normalText, {width: '80%'}]}>
+                                {operatorData.last_chat_message}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
                       </View>
                       <View
                         style={{
-                          width: '70%',
-                        }}>
-                        {this.state.activeUser.some(
-                          (data) => data == operatorData.id,
-                        ) ? (
-                          <View
-                            style={{
-                              width: 10,
-                              height: 10,
-                              borderRadius: 5,
-                              backgroundColor: 'green',
-                              alignSelf: 'flex-end',
-                              left: '5%',
-                            }}
-                          />
-                        ) : null}
-                        <View style={[styles.normalView]}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              // backgroundColor: 'orange',
-                              width: '75%',
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FontStyle.bold,
-                                fontSize: 16,
-                                color: '#10275A',
-                                left: 5,
-                              }}>
-                              {operatorData.name}
-                            </Text>
-                          </View>
-
-                          <Text
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={styles.normalText}>
-                            {moment(operatorData.last_chat_created_at).format(
-                              'MMM,DD YYYY ',
-                            )}
-                          </Text>
-                        </View>
-
-                        <View style={[styles.normalView, {height: '60%'}]}>
-                          <Text
-                            ellipsizeMode="tail"
-                            numberOfLines={2}
-                            style={[styles.normalText, {width: '80%'}]}>
-                            {operatorData.last_chat_message}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
-            />
+                          width: '76%',
+                          height: 1,
+                          backgroundColor: 'lightgrey',
+                          alignSelf: 'flex-end',
+                        }}
+                      />
+                    </View>
+                  );
+                }}
+              />
+            </View>
           )}
         </View>
 
@@ -275,22 +303,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 100,
+    height: 70,
     width: '90%',
     backgroundColor: '#fff',
     marginVertical: '2%',
     padding: '2%',
     alignSelf: 'center',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 2.65,
 
-    elevation: 2,
+    // borderRadius: 5,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.27,
+    // shadowRadius: 2.65,
+
+    // elevation: 2,
   },
 });
 

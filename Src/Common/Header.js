@@ -8,6 +8,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const {height, width} = Dimensions.get('window');
@@ -44,7 +45,7 @@ const Header = ({
       source={require('../Assets/Images/headerimage.png')}
       resizeMode="cover"
       style={{
-        height: height / 7,
+        height: Platform.OS == 'android' ? height / 10 : height / 7,
         width: width,
         width: '100%',
         alignItems: 'center',
@@ -52,10 +53,14 @@ const Header = ({
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderColor: '#dbdbdb',
-        paddingTop: '10%',
+        paddingTop: Platform.OS == 'android' ? 0 : '10%',
       }}>
       <View
-        style={{paddingLeft: '5%', flexDirection: 'row', alignItems: 'center'}}>
+        style={{
+          paddingLeft: '5%',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
         {leftIcon ? (
           <TouchableOpacity
             onPress={() => navigation.goBack()}

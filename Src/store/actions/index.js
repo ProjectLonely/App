@@ -2,7 +2,8 @@ import axios from 'axios';
 import {baseurl} from '../../Common/Baseurl';
 
 export const SubscriptionPlan = (token) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    console.log('asdfasldf');
     axios({
       method: 'get',
       headers: {Authorization: 'Token ' + token},

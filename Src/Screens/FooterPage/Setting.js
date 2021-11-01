@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Header from '../../Common/Header';
 import Footer from '../../Common/Footer';
@@ -89,7 +90,11 @@ class Setting extends Component {
     const {unseenValue} = this.props;
     return (
       <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
-        <View style={{height: height / 1.09, backgroundColor: '#fff'}}>
+        <View
+          style={{
+            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+            backgroundColor: '#fff',
+          }}>
           <Header
             leftIcon={true}
             middleText={'Settings'}

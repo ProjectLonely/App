@@ -53,6 +53,41 @@ const Styles = StyleSheet.create({
     color: '#004ACE',
     paddingHorizontal: '6%',
   },
+  modal: {
+    height: '100%',
+    width: '100%',
+    margin: 0,
+  },
+  modalView: {
+    width: '100%',
+    height: '70%',
+    backgroundColor: '#fff',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    bottom: 0,
+    position: 'absolute',
+  },
+  modalCloseIcon: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+  },
+  modalText: {
+    color: '#7D7D7D',
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 16,
+  },
+  modalButton: {
+    width: 100,
+    height: 30,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#409056',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: '5%',
+    marginTop: '10%',
+  },
 });
 
 export default Styles;
