@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Cheerio want's to access your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Cheerio want's to access your library</string>
 	<key>UIAppFonts</key>

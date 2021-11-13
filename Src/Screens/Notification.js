@@ -40,9 +40,9 @@ class Notification extends Component {
     const token = await AsyncStorage.getItem('token');
     axios({
       method: 'get',
-      url: `${baseurl}api/notification/`,
+      url: `${baseurl}api/notification/?type=chat`,
       headers: {Authorization: `Token ${this.state.token}`},
-      data: 'chat',
+      // data: 'chat',
     })
       .then((response) => {
         console.log(response, 'notify');
