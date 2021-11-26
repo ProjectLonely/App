@@ -17,6 +17,7 @@
 		1F22C87E27214BC900CCBAB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F22C87D27214BC900CCBAB2 /* GoogleService-Info.plist */; };
 		1F3727D4272ABB8400A522A5 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3727D3272ABB8300A522A5 /* assets */; };
 		1F3CE72926E1FFB600AA2C3E /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
+		1F522565273FC4FB00901705 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F522564273FC4FB00901705 /* StoreKit.framework */; };
 		1F981E8F26D4F374007442D9 /* Karla-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */; };
 		1F981E9226D4F381007442D9 /* Karla-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */; };
 		1F981E9326D4F381007442D9 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F981E9126D4F381007442D9 /* Karla-Regular.ttf */; };
@@ -84,6 +85,7 @@
 		1F3727D3272ABB8300A522A5 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = assets/assets; sourceTree = "<group>"; };
 		1F3CE72A26E2023900AA2C3E /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F4E6388270AD5800096E1C0 /* Cheerio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Cheerio.entitlements; path = Cheerio/Cheerio.entitlements; sourceTree = "<group>"; };
+		1F522564273FC4FB00901705 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1F981E8E26D4F374007442D9 /* Karla-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Bold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Bold.ttf"; sourceTree = "<group>"; };
 		1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-SemiBold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-SemiBold.ttf"; sourceTree = "<group>"; };
 		1F981E9126D4F381007442D9 /* Karla-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Regular.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Regular.ttf"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4E6956D2D9DF4283493908E /* libPods-Cheerio.a in Frameworks */,
+				1F522565273FC4FB00901705 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +196,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1F522564273FC4FB00901705 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				A9CDFA890F257B9C3335E92C /* libPods-Cheerio.a */,
@@ -846,11 +850,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cheerio/Cheerio.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
@@ -875,7 +880,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cheerio/Cheerio.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
 				ENABLE_BITCODE = YES;
 				EXCLUDED_ARCHS = "";

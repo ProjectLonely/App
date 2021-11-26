@@ -392,6 +392,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNIap (7.5.0):
+    - React-Core
   - RNImageCropPicker (0.35.3):
     - React-Core
     - React-RCTImage
@@ -449,6 +451,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNIap (from `../node_modules/react-native-iap`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -545,6 +548,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNIap:
+    :path: "../node_modules/react-native-iap"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
@@ -604,6 +609,7 @@ SPEC CHECKSUMS:
   RNFBApp: c679e71262a98a1ec0f4600e6db51ec7fcdaeb5b
   RNFBMessaging: 9c1cdb63869ea86f6015c4512d57ab3872df97b7
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNIap: f632e0685e37759e1a63651868d38fd08efe9a87
   RNImageCropPicker: 08ba3a2e2f4f8833d606f01906c371e382c4dea9
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4

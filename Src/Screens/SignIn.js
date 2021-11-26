@@ -18,8 +18,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../Common/AlertModal';
 import Spinner from '../Common/Spinner';
 import {StackActions} from '@react-navigation/native';
-import messaging from '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
 
 class SignIn extends Component {
   state = {

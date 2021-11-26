@@ -25,21 +25,90 @@ import AlertModal from '../Common/AlertModal';
 import PaymentCartModal from '../Common/PaymentCartModal';
 var qs = require('qs');
 const PaymentRequest = require('react-native-payments').PaymentRequest;
+
+// App In Purchase
+import RNIap, {
+  InAppPurchase,
+  PurchaseError,
+  SubscriptionPurchase,
+  acknowledgePurchaseAndroid,
+  consumePurchaseAndroid,
+  finishTransaction,
+  finishTransactionIOS,
+} from 'react-native-iap';
+
+const itemSkus = Platform.select({
+  ios: [
+    'org.digimonk.cheerio.Tier1',
+    'org.digimonk.cheerio.Tier2',
+    'org.digimonk.cheerio.Tier3',
+  ],
+  android: ['android.test.purchased'],
+});
+// const itemSubs = Platform.select({
+//   ios: ['org.digimonk.cheerio.Tier1'],
+//   android: ['test.sub1'],
+// });
+let purchaseUpdatedListener;
+let purchaseErrorListener;
+
 class Subscription extends Component {
   state = {
     paymentModal: false,
     subscriptionArray: [],
     modalValue: false,
     message: '',
-    appleKeySK:
-      'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
-    appleKeyPk:
-      'pk_test_51JbzGgJVxtiQnRVuJ5Kahb2lpum6cOgbXyQRBieZdB7mHEp7lobeGyqfKAi3lRo29zkmAUfe3w9byKuhOKvXjWx600Bf2J1vI8',
+    subscriptionPlans: [],
+    // appleKeySK:
+    //   'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
+    // appleKeyPk:
+    //   'pk_test_51JbzGgJVxtiQnRVuJ5Kahb2lpum6cOgbXyQRBieZdB7mHEp7lobeGyqfKAi3lRo29zkmAUfe3w9byKuhOKvXjWx600Bf2J1vI8',
   };
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
-    this.props.SubscriptionPlan(token);
+    this.setState({token});
+    // this.props.SubscriptionPlan(token);
+    ////
+    RNIap.initConnection()
+      .catch((error) => {
+        console.log(error, 'Connection Error');
+      })
+      .then(async () => {
+        //////////////////// get the subscription list here ////////////////
+        const purchases = await RNIap.getProducts(itemSkus)
+          .catch(() => console.log(error, 'Error to get the product '))
+          .then((result) => {
+            console.log(result, 'Subscription List');
+            if (result.length > 0) {
+              this.setState({
+                subscriptionPlans: result,
+              });
+            }
+          });
+      });
+    purchaseUpdatedListener = RNIap.purchaseUpdatedListener((purchase) => {
+      try {
+        console.log(purchase, 'purchases reciept here');
+        const reciept = purchase.transactionReceipt;
+        if (reciept) {
+          ///// call back end API's
+
+          RNIap.finishTransaction(purchase);
+          console.log('hi how are your');
+          this.apiCall(
+            purchase.transactionDate,
+            purchase.transactionId,
+            purchase.productId,
+          );
+        }
+      } catch (error) {
+        console.log(error, 'Error while purchaseing');
+      }
+    });
+    purchaseErrorListener = RNIap.purchaseErrorListener((error) => {
+      console.log(error, 'test error');
+    });
   };
 
   closeModal = () => {
@@ -61,155 +130,231 @@ class Subscription extends Component {
     // this.props.navigation.navigate('AddBenificiaryPage1');
   };
 
-  applePay = () => {
-    var METHOD_DATA = [
-      {
-        supportedMethods: ['apple-pay'],
-        data: {
-          merchantIdentifier: 'merchant.cheerioApplePay',
-          supportedNetworks: ['visa', 'mastercard'],
-          countryCode: 'US',
-          currencyCode: 'USD',
-          paymentMethodTokenizationParameters: {
-            parameters: {
-              gateway: 'stripe',
-              'stripe:publishableKey': this.state.appleKeyPk,
-            },
-          },
-        },
+  apiCall = (date, transactionId, productId) => {
+    const {beneficiaryData} = this.props;
+    console.log(this.props);
+    this.setState({submitLoader: true});
+    console.log(
+      JSON.stringify({
+        relation: beneficiaryData.relationShipId,
+        name: beneficiaryData.name,
+        age: beneficiaryData.age,
+        gender: beneficiaryData.genderId,
+        timezone: beneficiaryData.timeZone,
+        phone_no: beneficiaryData.phoneNumber,
+        about: beneficiaryData.aboutPerson,
+        comment: beneficiaryData.comment,
+        seekings: beneficiaryData.selectedSeekOption,
+        schedule: beneficiaryData.newArray,
+        image: beneficiaryData.base64,
+        transaction_id: transactionId,
+        product_id: productId,
+        transaction_date: date.toString(),
+      }),
+    );
+    axios({
+      method: 'post',
+      url: `${baseurl}beneficiary/create/`,
+      headers: {Authorization: 'Token ' + this.state.token},
+      data: {
+        relation: beneficiaryData.relationShipId,
+        name: beneficiaryData.name,
+        age: beneficiaryData.age,
+        gender: beneficiaryData.genderId,
+        timezone: beneficiaryData.timeZone,
+        phone_no: beneficiaryData.phoneNumber,
+        about: beneficiaryData.aboutPerson,
+        comment: beneficiaryData.comment,
+        seekings: beneficiaryData.selectedSeekOption,
+        schedule: beneficiaryData.newArray,
+        image: beneficiaryData.base64,
+        transaction_id: transactionId,
+        product_id: productId,
+        transaction_date: date.toString(),
       },
-    ];
-
-    var DETAILS = {
-      id: 'basic-example',
-      displayItems: [
-        {
-          label: 'Subscription Plan',
-          amount: {
-            currency: 'USD',
-            value: this.props.beneficiaryData.planAmount,
-          },
-        },
-      ],
-      total: {
-        label: 'Cheerio App',
-        amount: {
-          currency: 'USD',
-          value: this.props.beneficiaryData.planAmount,
-        },
-      },
-    };
-    var paymentRequests = new PaymentRequest(METHOD_DATA, DETAILS);
-
-    paymentRequests
-      .canMakePayments()
-      .then((canMakePayment) => {
-        if (canMakePayment) {
-          paymentRequests.show().then((paymentResponse) => {
-            // console.log(paymentResponse, 'resposne');
-            if (paymentResponse._details.paymentToken != '') {
-              paymentResponse.complete('success');
-              this.setState({payLoader: true});
-              axios({
-                method: 'post',
-                url: 'https://api.stripe.com/v1/charges',
-                headers: {
-                  Authorization: `Bearer ${this.state.appleKeySK}`,
-                  'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                data: qs.stringify({
-                  amount: this.props.beneficiaryData.planAmount * 100,
-
-                  currency: 'usd',
-                  source: paymentResponse._details.paymentToken,
-                  description: this.state.userId,
-                }),
-              })
-                .then((response) => {
-                  console.log(response, 'payment response');
-                  this.setState({transaction_id: response.data.id});
-                  if (response.status == 200) {
-                    setTimeout(() => {
-                      this.next();
-                    }, 1000);
-                  } else {
-                    alert('Something went wrong');
-                  }
-                })
-                .catch((error) => {
-                  console.log(error.response, 'rrrrrr');
-                  alert(error.response.data.error.code);
-                });
-            }
-          });
-        } else {
+    })
+      .then((response) => {
+        if (response.status == 201) {
+          console.log('created');
           this.setState({
-            SubscribeLoader: false,
+            payLoader: false,
+            completeValue: true,
+            modalValue: true,
+            payLoader: false,
+            message: 'Beneficiary added successfully',
           });
         }
       })
       .catch((err) => {
+        console.log(Object.values(err.response, 'error aadsf'));
         this.setState({
-          SubscribeLoader: false,
+          payLoader: false,
+          modalValue: true,
+          message: Object.values(err.response.data).toString(),
+          submitLoader: false,
         });
-
-        this.paymentRequest.abort();
       });
   };
 
-  next = async () => {
-    const {beneficiaryData} = this.props;
-    this.setState({submitLoader: true});
-    const token = await AsyncStorage.getItem('token');
-    if (beneficiaryData.newArray.length < 1) {
-      this.setState({
-        modalValue: true,
-        message: 'Call schedule should not be blank.',
-      });
-    } else {
-      axios({
-        method: 'post',
-        url: `${baseurl}beneficiary/create/`,
-        headers: {Authorization: 'Token ' + token},
-        data: {
-          relation: beneficiaryData.relationShipId,
-          name: beneficiaryData.name,
-          age: beneficiaryData.age,
-          gender: beneficiaryData.genderId,
-          timezone: beneficiaryData.timeZone,
-          phone_no: beneficiaryData.phoneNumber,
-          about: beneficiaryData.aboutPerson,
-          comment: beneficiaryData.comment,
-          seekings: beneficiaryData.selectedSeekOption,
-          schedule: beneficiaryData.newArray,
-          image: beneficiaryData.base64,
-          plan_id: beneficiaryData.planId,
-          transaction_id: this.state.transaction_id,
-        },
-      })
-        .then((response) => {
-          if (response.status == 201) {
-            this.setState({
-              payLoader: false,
-              completeValue: true,
-              modalValue: true,
-              payLoader: false,
-              message: 'Beneficiary added successfully',
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(Object.values(err.response));
-          this.setState({
-            payLoader: false,
-            modalValue: true,
-            message: Object.values(err.response.data).toString(),
-            submitLoader: false,
-          });
-        });
+  // applePay = () => {
+  //   var METHOD_DATA = [
+  //     {
+  //       supportedMethods: ['apple-pay'],
+  //       data: {
+  //         merchantIdentifier: 'merchant.cheerioApplePay',
+  //         supportedNetworks: ['visa', 'mastercard'],
+  //         countryCode: 'US',
+  //         currencyCode: 'USD',
+  //         paymentMethodTokenizationParameters: {
+  //           parameters: {
+  //             gateway: 'stripe',
+  //             'stripe:publishableKey': this.state.appleKeyPk,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   ];
+
+  //   var DETAILS = {
+  //     id: 'basic-example',
+  //     displayItems: [
+  //       {
+  //         label: 'Subscription Plan',
+  //         amount: {
+  //           currency: 'USD',
+  //           value: this.props.beneficiaryData.planAmount,
+  //         },
+  //       },
+  //     ],
+  //     total: {
+  //       label: 'Cheerio App',
+  //       amount: {
+  //         currency: 'USD',
+  //         value: this.props.beneficiaryData.planAmount,
+  //       },
+  //     },
+  //   };
+  //   var paymentRequests = new PaymentRequest(METHOD_DATA, DETAILS);
+
+  //   paymentRequests
+  //     .canMakePayments()
+  //     .then((canMakePayment) => {
+  //       if (canMakePayment) {
+  //         paymentRequests.show().then((paymentResponse) => {
+  //           // console.log(paymentResponse, 'resposne');
+  //           if (paymentResponse._details.paymentToken != '') {
+  //             paymentResponse.complete('success');
+  //             this.setState({payLoader: true});
+  //             axios({
+  //               method: 'post',
+  //               url: 'https://api.stripe.com/v1/charges',
+  //               headers: {
+  //                 Authorization: `Bearer ${this.state.appleKeySK}`,
+  //                 'Content-Type': 'application/x-www-form-urlencoded',
+  //               },
+  //               data: qs.stringify({
+  //                 amount: this.props.beneficiaryData.planAmount * 100,
+
+  //                 currency: 'usd',
+  //                 source: paymentResponse._details.paymentToken,
+  //                 description: this.state.userId,
+  //               }),
+  //             })
+  //               .then((response) => {
+  //                 console.log(response, 'payment response');
+  //                 this.setState({transaction_id: response.data.id});
+  //                 if (response.status == 200) {
+  //                   setTimeout(() => {
+  //                     this.next();
+  //                   }, 1000);
+  //                 } else {
+  //                   alert('Something went wrong');
+  //                 }
+  //               })
+  //               .catch((error) => {
+  //                 console.log(error.response, 'rrrrrr');
+  //                 alert(error.response.data.error.code);
+  //               });
+  //           }
+  //         });
+  //       } else {
+  //         this.setState({
+  //           SubscribeLoader: false,
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       this.setState({
+  //         SubscribeLoader: false,
+  //       });
+
+  //       this.paymentRequest.abort();
+  //     });
+  // };
+
+  // next = async () => {
+  //   const {beneficiaryData} = this.props;
+  //   this.setState({submitLoader: true});
+  //   const token = await AsyncStorage.getItem('token');
+  //   if (beneficiaryData.newArray.length < 1) {
+  //     this.setState({
+  //       modalValue: true,
+  //       message: 'Call schedule should not be blank.',
+  //     });
+  //   } else {
+  //     axios({
+  //       method: 'post',
+  //       url: `${baseurl}beneficiary/create/`,
+  //       headers: {Authorization: 'Token ' + token},
+  //       data: {
+  //         relation: beneficiaryData.relationShipId,
+  //         name: beneficiaryData.name,
+  //         age: beneficiaryData.age,
+  //         gender: beneficiaryData.genderId,
+  //         timezone: beneficiaryData.timeZone,
+  //         phone_no: beneficiaryData.phoneNumber,
+  //         about: beneficiaryData.aboutPerson,
+  //         comment: beneficiaryData.comment,
+  //         seekings: beneficiaryData.selectedSeekOption,
+  //         schedule: beneficiaryData.newArray,
+  //         image: beneficiaryData.base64,
+  //         plan_id: beneficiaryData.planId,
+  //         transaction_id: this.state.transaction_id,
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (response.status == 201) {
+  //           this.setState({
+  //             payLoader: false,
+  //             completeValue: true,
+  //             modalValue: true,
+  //             payLoader: false,
+  //             message: 'Beneficiary added successfully',
+  //           });
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(Object.values(err.response));
+  //         this.setState({
+  //           payLoader: false,
+  //           modalValue: true,
+  //           message: Object.values(err.response.data).toString(),
+  //           submitLoader: false,
+  //         });
+  //       });
+  //   }
+  // };
+
+  /////// FUNCTION TO PURCHASE THE SUBSCRIPTION  /////////////////
+  PurchaseSubscription = async (productId, productPrice) => {
+    try {
+      RNIap.requestSubscription(productId);
+      // console.log('working properly');
+      this.props.addBenificiary({productId, productPrice});
+    } catch (err) {
+      Alert.alert(err.message);
     }
   };
-
   render() {
     const {subscriptionList} = this.props;
     const {modalValue, message, paymentModal} = this.state;
@@ -237,7 +382,7 @@ class Subscription extends Component {
 
         <View style={{height: '90%', alignItems: 'center', paddingTop: '4%'}}>
           <FlatList
-            data={subscriptionList}
+            data={this.state.subscriptionPlans}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
@@ -259,7 +404,7 @@ class Subscription extends Component {
                           fontFamily: FontStyle.bold,
                           fontSize: 18,
                         }}>
-                        {item.name}
+                        {item.title}
                       </Text>
                       <Text
                         style={{
@@ -280,7 +425,7 @@ class Subscription extends Component {
                             fontSize: 36,
                             color: '#0F0A39',
                           }}>
-                          ${item.price_per_month}{' '}
+                          ${item.price}
                         </Text>
                         <Text
                           style={{
@@ -303,8 +448,13 @@ class Subscription extends Component {
                         btnheight={40}
                         btnwidth={'70%'}
                         marginTop={30}
-                        onPress={() =>
-                          this.addBenificiary(item.id, item.price_per_month)
+                        onPress={
+                          () =>
+                            this.PurchaseSubscription(
+                              item.productId,
+                              item.price,
+                            )
+                          // this.addBenificiary(item.id, item.price_per_month)
                         }>
                         SELECT
                       </Button>
@@ -366,6 +516,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log(state, 'rohit list');
   return {
     subscriptionList: state.SubscriptionPlan,
     beneficiaryData: state.AddBeneficiaryReducer,

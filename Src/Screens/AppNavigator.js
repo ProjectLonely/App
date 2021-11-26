@@ -28,6 +28,9 @@ import Notification from './Notification';
 import Chat from './FooterPage/Chat';
 import ChatList from './FooterPage/ChatList';
 
+////
+import IAPSetup from './IAPSetup';
+
 const Stack = createStackNavigator();
 
 function App() {
@@ -149,6 +152,7 @@ function App() {
           component={ChatList}
           options={{gestureEnabled: false}}
         />
+        <Stack.Screen name="IAPSetup" component={IAPSetup} />
       </Stack.Navigator>
     </NavigationContainer>
   );

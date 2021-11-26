@@ -153,7 +153,6 @@ class ChatList extends Component {
                 contentContainerStyle={{width: '100%'}}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: operatorData}) => {
-                  console.log(operatorData, 'sdfsddsfdf');
                   return (
                     <View style={{width: '100%'}}>
                       <View style={[styles.smallContainer]}>
