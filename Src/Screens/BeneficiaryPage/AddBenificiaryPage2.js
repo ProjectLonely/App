@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TextInput,
-  FlatList,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, TextInput, FlatList} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
@@ -37,6 +29,7 @@ class AddBenificiaryPage2 extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response, 'seeking option');
         if (response.status == 200) {
           this.setState({seekingOption: response.data.results});
         }
@@ -198,6 +191,7 @@ class AddBenificiaryPage2 extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, 'state');
   return {
     beneficiaryData: state.AddBeneficiaryReducer,
   };

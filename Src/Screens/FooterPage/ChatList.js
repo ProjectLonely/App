@@ -46,6 +46,7 @@ class ChatList extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response, 'alsdjflasdf');
         this.setState({
           operatorArray: response.data,
           token,
@@ -58,8 +59,10 @@ class ChatList extends Component {
   };
 
   socket = (token) => {
-    this.ws = new WebSocket(`ws://digimonk.co:1617/ws/chat/global/${token}/`);
-
+    // this.ws = new WebSocket(`ws://digimonk.co:1617/ws/chat/global/${token}/`);
+    this.ws = new WebSocket(
+      `ws://backend.joincheerio.com/ws/chat/global/${token}/`,
+    );
     this.ws.onmessage = (res) => {
       const activeUser = JSON.parse(res.data).active_users;
       this.setState({activeUser});
@@ -177,7 +180,7 @@ class ChatList extends Component {
                             ) : (
                               <Image
                                 source={{
-                                  uri: `http://digimonk.co:1617/${operatorData.image}`,
+                                  uri: `http://backend.joincheerio.com/${operatorData.image}`,
                                 }}
                                 style={{
                                   height: 70,
@@ -308,17 +311,6 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     padding: '2%',
     alignSelf: 'center',
-
-    // borderRadius: 5,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.27,
-    // shadowRadius: 2.65,
-
-    // elevation: 2,
   },
 });
 

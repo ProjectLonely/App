@@ -15,17 +15,25 @@ class AboutApp extends Component {
   };
 
   getAboutData = (token) => {
+    console.log({
+      method: 'get',
+      url: `${baseurl}settings/about/`,
+      headers: {Authorization: `Token ${token}`},
+    });
     axios({
       method: 'get',
       url: `${baseurl}settings/about/`,
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
+        console.log(response, 'response');
         if (response.status == 200) {
           this.setState({aboutData: response.data});
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err, 'err');
+      });
   };
 
   render() {

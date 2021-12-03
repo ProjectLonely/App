@@ -90,6 +90,7 @@
 		1F981E9026D4F381007442D9 /* Karla-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-SemiBold.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-SemiBold.ttf"; sourceTree = "<group>"; };
 		1F981E9126D4F381007442D9 /* Karla-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Regular.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Regular.ttf"; sourceTree = "<group>"; };
 		1F981E9426D4F5C2007442D9 /* Karla-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Medium.ttf"; path = "../Src/Assets/Fonts/Karla/static/Karla-Medium.ttf"; sourceTree = "<group>"; };
+		1FF551B527525B5C008E267C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		23698AB1CDA54330A17DC347 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2C061BD3FC5C443F9AE3DD4D /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Cheerio-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cheerio-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				1F22C87D27214BC900CCBAB2 /* GoogleService-Info.plist */,
+				1FF551B527525B5C008E267C /* GoogleService-Info.plist */,
 				1F4E6388270AD5800096E1C0 /* Cheerio.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -850,11 +852,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cheerio/Cheerio.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=*]" = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Cheerio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -880,7 +881,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Cheerio/Cheerio.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7LH8V482CR;
 				ENABLE_BITCODE = YES;
 				EXCLUDED_ARCHS = "";

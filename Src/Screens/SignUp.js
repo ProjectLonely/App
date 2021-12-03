@@ -63,6 +63,13 @@ class SignUp extends Component {
       this.setState({modalValue: true, message: 'accept terms & condition'});
     } else {
       this.setState({registerLoader: true});
+      console.log({
+        first_name: name,
+        email: email,
+        password: password,
+        password1: confirmPassword,
+        accept: '1',
+      });
       axios({
         method: 'POST',
         url: `${baseurl}register/`,
@@ -89,10 +96,10 @@ class SignUp extends Component {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
           this.setState({
             modalValue: true,
-            message: err.response.data.email,
+            message: Object.values(err.response.data).toString(),
             registerLoader: false,
           });
         });

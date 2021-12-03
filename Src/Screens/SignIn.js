@@ -59,11 +59,9 @@ class SignIn extends Component {
         },
       })
         .then(async (response) => {
-          console.log(response, 'signinpage');
           this.setState({signinLoader: false});
           if (response.data.is_active == false) {
             await AsyncStorage.setItem('temp_token', response.data.temp_token);
-
             this.props.navigation.navigate('VerificationCode');
           } else if (response.data.is_active == true) {
             await AsyncStorage.setItem('token', response.data.token);
@@ -72,7 +70,6 @@ class SignIn extends Component {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.setState({
             signinLoader: false,
             modalValue: true,

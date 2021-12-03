@@ -93,7 +93,8 @@ class Chat extends Component {
 
   socket = (roomId) => {
     this.ws = new WebSocket(
-      `ws://digimonk.co:1617/ws/chat/${roomId}/${this.state.token}/`,
+      // `ws://digimonk.co:1617/ws/chat/${roomId}/${this.state.token}/`,
+      `ws://backend.joincheerio.com/ws/chat/${roomId}/${this.state.token}/`,
     );
 
     this.ws.onopen = (open) => {

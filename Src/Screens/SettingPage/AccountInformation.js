@@ -229,7 +229,7 @@ class AccountInformation extends Component {
                 {this.state.getImage != null && source == '' ? (
                   <Image
                     source={{
-                      uri: `http://digimonk.co:1617${this.state.getImage}`,
+                      uri: `http://backend.joincheerio.com/${this.state.getImage}`,
                     }}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />

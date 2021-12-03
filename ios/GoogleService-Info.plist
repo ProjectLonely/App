@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>374177493630-cfprbmlj1q0u23cquoqs85vaq7e312nf.apps.googleusercontent.com</string>
+	<string>90726737347-2qhh2j8ttc9rhvhrdml8fgjeq2pe718k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.374177493630-cfprbmlj1q0u23cquoqs85vaq7e312nf</string>
+	<string>com.googleusercontent.apps.90726737347-2qhh2j8ttc9rhvhrdml8fgjeq2pe718k</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDcdCtJLogOEQskzr9IAIoHe2dOZtVpyzw</string>
+	<string>AIzaSyBXPhR3fkj6EUojHNgboX33F2iUxTJ7Bb8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>374177493630</string>
+	<string>90726737347</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.digimonk.cheerio</string>
 	<key>PROJECT_ID</key>
-	<string>cheerio-push</string>
+	<string>cheeriouserapp</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cheerio-push.appspot.com</string>
+	<string>cheeriouserapp.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:374177493630:ios:c9d2529d8c979668749e2f</string>
+	<string>1:90726737347:ios:34142ca0ba59ce78b18976</string>
 </dict>
 </plist>

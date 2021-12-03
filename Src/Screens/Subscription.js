@@ -23,6 +23,7 @@ import Header from '../Common/Header';
 import axios from 'axios';
 import AlertModal from '../Common/AlertModal';
 import PaymentCartModal from '../Common/PaymentCartModal';
+import LoadingView from '../Common/LoadingView';
 var qs = require('qs');
 const PaymentRequest = require('react-native-payments').PaymentRequest;
 
@@ -36,6 +37,7 @@ import RNIap, {
   finishTransaction,
   finishTransactionIOS,
 } from 'react-native-iap';
+import moment from 'moment';
 
 const itemSkus = Platform.select({
   ios: [
@@ -59,13 +61,13 @@ class Subscription extends Component {
     modalValue: false,
     message: '',
     subscriptionPlans: [],
-    // appleKeySK:
-    //   'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
-    // appleKeyPk:
-    //   'pk_test_51JbzGgJVxtiQnRVuJ5Kahb2lpum6cOgbXyQRBieZdB7mHEp7lobeGyqfKAi3lRo29zkmAUfe3w9byKuhOKvXjWx600Bf2J1vI8',
+    planLoader: true,
   };
 
   componentDidMount = async () => {
+    const date = '1638186081000';
+
+    console.log(moment(date).format('DD MM YYYY'));
     const token = await AsyncStorage.getItem('token');
     this.setState({token});
     // this.props.SubscriptionPlan(token);
@@ -79,28 +81,22 @@ class Subscription extends Component {
         const purchases = await RNIap.getProducts(itemSkus)
           .catch(() => console.log(error, 'Error to get the product '))
           .then((result) => {
-            console.log(result, 'Subscription List');
+            console.log(result, 'resutl list');
             if (result.length > 0) {
               this.setState({
                 subscriptionPlans: result,
+                planLoader: false,
               });
             }
           });
       });
     purchaseUpdatedListener = RNIap.purchaseUpdatedListener((purchase) => {
       try {
-        console.log(purchase, 'purchases reciept here');
         const reciept = purchase.transactionReceipt;
         if (reciept) {
           ///// call back end API's
-
+          this.apiCall(purchase.transactionId, purchase.productId);
           RNIap.finishTransaction(purchase);
-          console.log('hi how are your');
-          this.apiCall(
-            purchase.transactionDate,
-            purchase.transactionId,
-            purchase.productId,
-          );
         }
       } catch (error) {
         console.log(error, 'Error while purchaseing');
@@ -127,31 +123,27 @@ class Subscription extends Component {
         ? this.setState({paymentModal: true})
         : this.applePay();
     }, 1000);
-    // this.props.navigation.navigate('AddBenificiaryPage1');
   };
 
-  apiCall = (date, transactionId, productId) => {
+  apiCall = (transactionId, productId) => {
     const {beneficiaryData} = this.props;
-    console.log(this.props);
+
     this.setState({submitLoader: true});
-    console.log(
-      JSON.stringify({
-        relation: beneficiaryData.relationShipId,
-        name: beneficiaryData.name,
-        age: beneficiaryData.age,
-        gender: beneficiaryData.genderId,
-        timezone: beneficiaryData.timeZone,
-        phone_no: beneficiaryData.phoneNumber,
-        about: beneficiaryData.aboutPerson,
-        comment: beneficiaryData.comment,
-        seekings: beneficiaryData.selectedSeekOption,
-        schedule: beneficiaryData.newArray,
-        image: beneficiaryData.base64,
-        transaction_id: transactionId,
-        product_id: productId,
-        transaction_date: date.toString(),
-      }),
-    );
+    console.log({
+      relation: beneficiaryData.relationShipId,
+      name: beneficiaryData.name,
+      age: beneficiaryData.age,
+      gender: beneficiaryData.genderId,
+      timezone: beneficiaryData.timeZone,
+      phone_no: beneficiaryData.phoneNumber,
+      about: beneficiaryData.aboutPerson,
+      comment: beneficiaryData.comment,
+      seekings: beneficiaryData.selectedSeekOption,
+      schedule: beneficiaryData.newArray,
+      image: beneficiaryData.base64,
+      transaction_id: transactionId,
+      product_id: productId,
+    });
     axios({
       method: 'post',
       url: `${baseurl}beneficiary/create/`,
@@ -170,12 +162,11 @@ class Subscription extends Component {
         image: beneficiaryData.base64,
         transaction_id: transactionId,
         product_id: productId,
-        transaction_date: date.toString(),
       },
     })
       .then((response) => {
+        console.log('created', response);
         if (response.status == 201) {
-          console.log('created');
           this.setState({
             payLoader: false,
             completeValue: true,
@@ -186,7 +177,7 @@ class Subscription extends Component {
         }
       })
       .catch((err) => {
-        console.log(Object.values(err.response, 'error aadsf'));
+        console.log(err.response.data, 'eroror');
         this.setState({
           payLoader: false,
           modalValue: true,
@@ -349,7 +340,6 @@ class Subscription extends Component {
   PurchaseSubscription = async (productId, productPrice) => {
     try {
       RNIap.requestSubscription(productId);
-      // console.log('working properly');
       this.props.addBenificiary({productId, productPrice});
     } catch (err) {
       Alert.alert(err.message);
@@ -357,7 +347,8 @@ class Subscription extends Component {
   };
   render() {
     const {subscriptionList} = this.props;
-    const {modalValue, message, paymentModal} = this.state;
+    const {modalValue, message, paymentModal, subscriptionPlans, planLoader} =
+      this.state;
 
     return (
       <ImageBackground
@@ -380,111 +371,115 @@ class Subscription extends Component {
           message={message}
         />
 
-        <View style={{height: '90%', alignItems: 'center', paddingTop: '4%'}}>
-          <FlatList
-            data={this.state.subscriptionPlans}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return (
-                <View
-                  style={[
-                    styles.productView,
-                    item.id == this.props.beneficiaryData.planId
-                      ? {backgroundColor: 'lightgrey'}
-                      : null,
-                  ]}>
-                  <View style={{flexDirection: 'row', height: '100%'}}>
-                    <View
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FontStyle.bold,
-                          fontSize: 18,
-                        }}>
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: FontStyle.bold,
-                          fontSize: 18,
-                        }}>
-                        Calls per week : {item.calls_per_week}
-                      </Text>
-                      <Text style={{fontFamily: FontStyle.regular}}>
-                        {item.description}
-                      </Text>
-
+        {planLoader ? (
+          <LoadingView heightValue={1.2} />
+        ) : (
+          <View style={{height: '90%', alignItems: 'center', paddingTop: '4%'}}>
+            <FlatList
+              data={subscriptionPlans}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return (
+                  <View
+                    style={[
+                      styles.productView,
+                      item.id == this.props.beneficiaryData.planId
+                        ? {backgroundColor: 'lightgrey'}
+                        : null,
+                    ]}>
+                    <View style={{flexDirection: 'row', height: '100%'}}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.bold,
-                            fontSize: 36,
-                            color: '#0F0A39',
-                          }}>
-                          ${item.price}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: FontStyle.bold,
-                            fontSize: 36,
-                            color: '#0F0A39',
-                          }}>
-                          Per Month
-                        </Text>
-                      </View>
-                      <Text
                         style={{
-                          fontFamily: FontStyle.regular,
-                          color: '#004ACE',
-                          fontsize: 16,
+                          width: '100%',
+                          height: '100%',
                         }}>
-                        For one Beneficiary
-                      </Text>
-                      <Button
-                        btnheight={40}
-                        btnwidth={'70%'}
-                        marginTop={30}
-                        onPress={
-                          () =>
-                            this.PurchaseSubscription(
-                              item.productId,
-                              item.price,
-                            )
-                          // this.addBenificiary(item.id, item.price_per_month)
-                        }>
-                        SELECT
-                      </Button>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.bold,
+                            fontSize: 18,
+                          }}>
+                          {item.title}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.bold,
+                            fontSize: 18,
+                          }}>
+                          Calls per week : {item.calls_per_week}
+                        </Text>
+                        <Text style={{fontFamily: FontStyle.regular}}>
+                          {item.description}
+                        </Text>
+
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.bold,
+                              fontSize: 36,
+                              color: '#0F0A39',
+                            }}>
+                            ${item.price}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.bold,
+                              fontSize: 36,
+                              color: '#0F0A39',
+                            }}>
+                            Per Month
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.regular,
+                            color: '#004ACE',
+                            fontsize: 16,
+                          }}>
+                          For one Beneficiary
+                        </Text>
+                        <Button
+                          btnheight={40}
+                          btnwidth={'70%'}
+                          marginTop={30}
+                          onPress={
+                            () =>
+                              this.PurchaseSubscription(
+                                item.productId,
+                                item.price,
+                              )
+                            // this.addBenificiary(item.id, item.price_per_month)
+                          }>
+                          SELECT
+                        </Button>
+                      </View>
                     </View>
                   </View>
-                </View>
-              );
-            }}
-          />
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Dashboard')}
-            style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                fontFamily: FontStyle.regular,
-                fontsize: 16,
-                color: '#7B7890',
-              }}>
-              Not ready to subscribe,
-            </Text>
-            <Text
-              style={{
-                fontFamily: FontStyle.regular,
-                fontsize: 16,
-                color: '#004ACE',
-              }}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
-        </View>
+                );
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Dashboard')}
+              style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  fontFamily: FontStyle.regular,
+                  fontsize: 16,
+                  color: '#7B7890',
+                }}>
+                Not ready to subscribe,
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FontStyle.regular,
+                  fontsize: 16,
+                  color: '#004ACE',
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ImageBackground>
     );
   }

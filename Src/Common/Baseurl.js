@@ -1,1 +1,1 @@
-exports.baseurl = 'http://digimonk.co:1617/';
+exports.baseurl = 'https://backend.joincheerio.com/';
