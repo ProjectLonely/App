@@ -2,13 +2,18 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "29.0.2"
+        // buildToolsVersion = "30.0.2"
+        // minSdkVersion 21
+        // compileSdkVersion 30
+        // targetSdkVersion 30
+        buildToolsVersion = "30.0.2"
         minSdkVersion = 21
         compileSdkVersion = 29
-        targetSdkVersion = 29
+        targetSdkVersion = 30
+        googlePlayServicesAuthVersion = "16.0.1"
     }
     repositories {
-        google()
+     google()  // Google's Maven repository
         jcenter()
     }
     dependencies {

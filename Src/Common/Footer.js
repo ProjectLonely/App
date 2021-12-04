@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 2.65,
-
     elevation: 2,
   },
   optionContainer: {

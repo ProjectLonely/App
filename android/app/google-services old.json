@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "551702742576",
+    "project_id": "cheerio-pushnotification",
+    "storage_bucket": "cheerio-pushnotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551702742576:android:1bc46e350e2d124c6a8ff5",
+        "android_client_info": {
+          "package_name": "com.cheerio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551702742576-7d5luqiaapujqmml7ep0i4ljs1psdslh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl2mEcC9DdwSa4-Gj_AxhaZsUA9G7bZso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551702742576-7d5luqiaapujqmml7ep0i4ljs1psdslh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

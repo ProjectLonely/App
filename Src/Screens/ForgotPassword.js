@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
@@ -74,7 +75,7 @@ class ForgotPassword extends Component {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{height: '100%', width: '100%'}}
+          contentContainerStyle={{flexGrow: 1}}
           pointerEvents={sendLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
@@ -135,7 +136,13 @@ class ForgotPassword extends Component {
               </HelperText>
             ) : null}
           </View>
-          {this.renderButton()}
+          <View
+            style={{
+              width: '100%',
+              paddingVertical: Platform.OS == 'ios' ? 0 : 20,
+            }}>
+            {this.renderButton()}
+          </View>
         </KeyboardAwareScrollView>
       </ImageBackground>
     );

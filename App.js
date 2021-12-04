@@ -40,6 +40,38 @@ messaging().onMessage(async (remoteMessage) => {
 class App extends Component {
   componentDidMount = () => {
     this.requestUserPermission();
+    this.createNotificationListeners();
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log('FIREBASE IOS Background', remoteMessage);
+      PushNotification.localNotification({
+        title: data.title,
+        message: data.message,
+        // (required)
+      });
+    });
+    PushNotification.configure({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+
+        if (Platform.OS === 'ios') {
+          notification.finish(PushNotificationIOS.FetchResult.NoData);
+        } else {
+          handleNotification(notification);
+        }
+      },
+      senderID: '551702742576',
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
   };
 
   requestUserPermission = async () => {
@@ -52,6 +84,19 @@ class App extends Component {
       console.log('Authorization status:', authStatus);
     }
   };
+  async createNotificationListeners() {
+    this.messageListener = messaging().onMessage((message) => {
+      console.log(JSON.stringify(message));
+      var msg = message.notification.android;
+      // var data = msg._data;
+      // console.log(data);
+      // PushNotification.localNotification({
+      //   title: msg.title,
+      //   message: msg.body, // (required)
+      //   date: new Date(Date.now() + 2 * 1000),
+      // });
+    });
+  }
 
   render() {
     const store = createStore(reducers, {}, applyMiddleware(thunk));

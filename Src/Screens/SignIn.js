@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
@@ -103,7 +104,7 @@ class SignIn extends Component {
         style={{height: '100%', width: '100%'}}
         resizeMode="cover">
         <KeyboardAwareScrollView
-          contentContainerStyle={{height: '100%'}}
+          contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           pointerEvents={signinLoader ? 'none' : 'auto'}>
@@ -182,6 +183,7 @@ class SignIn extends Component {
                 Forgot Password ?
               </Text>
             </TouchableOpacity>
+
             {this.renderButton()}
           </View>
           <TouchableOpacity
@@ -190,6 +192,7 @@ class SignIn extends Component {
               flexDirection: 'row',
               width: '100%',
               justifyContent: 'center',
+              marginTop: 10,
             }}>
             <Text style={styles.normalText}>Don't have an account? </Text>
             <Text

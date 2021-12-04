@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
@@ -226,7 +227,13 @@ class VerificationCode extends Component {
               </TouchableOpacity>
             )}
           </View>
-          {this.renderButton()}
+          <View
+            style={{
+              width: '100%',
+              paddingVertical: Platform.OS == 'ios' ? 0 : 20,
+            }}>
+            {this.renderButton()}
+          </View>
         </KeyboardAwareScrollView>
       </ImageBackground>
     );

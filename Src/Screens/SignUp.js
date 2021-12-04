@@ -6,6 +6,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Input from '../Common/Input';
@@ -256,7 +257,7 @@ class SignUp extends Component {
               onPress={() => this.setState({checked: !checked})}>
               <CheckBox
                 tintColors={({true: '#F79535'}, {false: '#FFF'})}
-                value={'checked'}
+                value={Platform.OS == 'ios' ? 'checked' : this.state.checked}
                 onCheckColor="#fff"
                 boxType="square"
                 style={{

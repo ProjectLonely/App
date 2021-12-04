@@ -101,7 +101,8 @@ class Beneficiary extends Component {
         resizeMode="cover">
         <View
           style={{
-            height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+            // height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
+            flex: 1,
           }}>
           <CalendarModal
             calendarValue={calendarValue}

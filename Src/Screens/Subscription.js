@@ -45,12 +45,9 @@ const itemSkus = Platform.select({
     'org.digimonk.cheerio.Tier2',
     'org.digimonk.cheerio.Tier3',
   ],
-  android: ['android.test.purchased'],
+  // android: ['android.test.purchased'],
 });
-// const itemSubs = Platform.select({
-//   ios: ['org.digimonk.cheerio.Tier1'],
-//   android: ['test.sub1'],
-// });
+
 let purchaseUpdatedListener;
 let purchaseErrorListener;
 
