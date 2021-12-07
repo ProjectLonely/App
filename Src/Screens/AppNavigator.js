@@ -36,7 +36,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode={false} initialRouteName="SplashScreen">
+      <Stack.Navigator headerMode={false} initialRouteName="Subscription">
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}

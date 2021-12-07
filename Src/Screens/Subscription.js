@@ -45,7 +45,10 @@ const itemSkus = Platform.select({
     'org.digimonk.cheerio.Tier2',
     'org.digimonk.cheerio.Tier3',
   ],
-  // android: ['android.test.purchased'],
+  android: [
+    'android.test.purchased',
+    'com.cheerio_companionship_service.tier1',
+  ],
 });
 
 let purchaseUpdatedListener;
@@ -58,7 +61,7 @@ class Subscription extends Component {
     modalValue: false,
     message: '',
     subscriptionPlans: [],
-    planLoader: true,
+    planLoader: false,
   };
 
   componentDidMount = async () => {
@@ -75,7 +78,7 @@ class Subscription extends Component {
       })
       .then(async () => {
         //////////////////// get the subscription list here ////////////////
-        const purchases = await RNIap.getProducts(itemSkus)
+        const purchases = await RNIap.getSubscriptions(itemSkus)
           .catch(() => console.log(error, 'Error to get the product '))
           .then((result) => {
             console.log(result, 'resutl list');
@@ -508,7 +511,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state, 'rohit list');
+  // console.log(state, 'rohit list');
   return {
     subscriptionList: state.SubscriptionPlan,
     beneficiaryData: state.AddBeneficiaryReducer,
