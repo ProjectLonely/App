@@ -46,8 +46,9 @@ const itemSkus = Platform.select({
     'org.digimonk.cheerio.Tier3',
   ],
   android: [
-    'android.test.purchased',
     'com.cheerio_companionship_service.tier1',
+    'com.cheerio_companionship_service.tier2',
+    'com.cheerio_companionship_service.tier3',
   ],
 });
 
@@ -61,7 +62,7 @@ class Subscription extends Component {
     modalValue: false,
     message: '',
     subscriptionPlans: [],
-    planLoader: false,
+    planLoader: true,
   };
 
   componentDidMount = async () => {
@@ -78,17 +79,31 @@ class Subscription extends Component {
       })
       .then(async () => {
         //////////////////// get the subscription list here ////////////////
-        const purchases = await RNIap.getSubscriptions(itemSkus)
-          .catch(() => console.log(error, 'Error to get the product '))
-          .then((result) => {
-            console.log(result, 'resutl list');
-            if (result.length > 0) {
-              this.setState({
-                subscriptionPlans: result,
-                planLoader: false,
-              });
-            }
-          });
+        if (Platform.OS == 'ios') {
+          const purchases = await RNIap.getProducts(itemSkus)
+            .catch(() => console.log(error, 'Error to get the product '))
+            .then((result) => {
+              // console.log(result, 'resutl list');
+              if (result.length > 0) {
+                this.setState({
+                  subscriptionPlans: result,
+                  planLoader: false,
+                });
+              }
+            });
+        } else {
+          const purchases = await RNIap.getSubscriptions(itemSkus)
+            .catch(() => console.log(error, 'Error to get the product '))
+            .then((result) => {
+              console.log(result, 'resutl list');
+              if (result.length > 0) {
+                this.setState({
+                  subscriptionPlans: result,
+                  planLoader: false,
+                });
+              }
+            });
+        }
       });
     purchaseUpdatedListener = RNIap.purchaseUpdatedListener((purchase) => {
       try {
@@ -338,6 +353,7 @@ class Subscription extends Component {
 
   /////// FUNCTION TO PURCHASE THE SUBSCRIPTION  /////////////////
   PurchaseSubscription = async (productId, productPrice) => {
+    console.log(productId, productPrice, 'kamal');
     try {
       RNIap.requestSubscription(productId);
       this.props.addBenificiary({productId, productPrice});
@@ -379,6 +395,7 @@ class Subscription extends Component {
               data={subscriptionPlans}
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => {
+                const titleInAndroid = item.title.slice(0, 6);
                 return (
                   <View
                     style={[
@@ -398,7 +415,7 @@ class Subscription extends Component {
                             fontFamily: FontStyle.bold,
                             fontSize: 18,
                           }}>
-                          {item.title}
+                          {Platform.OS == 'ios' ? item.title : titleInAndroid}
                         </Text>
                         <Text
                           style={{
