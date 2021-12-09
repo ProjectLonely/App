@@ -137,8 +137,14 @@ class AddBenificiaryPage2 extends Component {
                       height: 50,
                     }}>
                     <CheckBox
-                      tintColors={({true: '#F79535'}, {false: '#FFF'})}
-                      style={{height: 20, width: 20}}
+                      tintColors={
+                        ({true: '#F79535'},
+                        {false: Platform.OS == 'ios' ? '#fff' : '#000'})
+                      }
+                      style={{
+                        height: 25,
+                        width: 25,
+                      }}
                       onCheckColor="#fff"
                       boxType="square"
                       onFillColor="#004ACE"

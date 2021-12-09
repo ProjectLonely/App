@@ -63,7 +63,7 @@ class AboutApp extends Component {
               borderRadius: 10,
               padding: '5%',
             }}>
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
               <Text
                 style={{
                   color: '#223E6D',

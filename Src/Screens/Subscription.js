@@ -68,7 +68,7 @@ class Subscription extends Component {
   componentDidMount = async () => {
     const date = '1638186081000';
 
-    console.log(moment(date).format('DD MM YYYY'));
+    // console.log(moment(date).format('DD MM YYYY'));
     const token = await AsyncStorage.getItem('token');
     this.setState({token});
     // this.props.SubscriptionPlan(token);
@@ -95,7 +95,7 @@ class Subscription extends Component {
           const purchases = await RNIap.getSubscriptions(itemSkus)
             .catch(() => console.log(error, 'Error to get the product '))
             .then((result) => {
-              console.log(result, 'resutl list');
+              // console.log(result, 'resutl list');
               if (result.length > 0) {
                 this.setState({
                   subscriptionPlans: result,
@@ -106,10 +106,15 @@ class Subscription extends Component {
         }
       });
     purchaseUpdatedListener = RNIap.purchaseUpdatedListener((purchase) => {
+      // console.log(purchase, 'purchases');
+
       try {
-        const reciept = purchase.transactionReceipt;
+        const reciept =
+          Platform.OS == 'ios'
+            ? purchase.transactionReceipt
+            : purchase.transactionId;
         if (reciept) {
-          ///// call back end API's
+          /// call back end API's
           this.apiCall(purchase.transactionId, purchase.productId);
           RNIap.finishTransaction(purchase);
         }
@@ -142,23 +147,23 @@ class Subscription extends Component {
 
   apiCall = (transactionId, productId) => {
     const {beneficiaryData} = this.props;
-
     this.setState({submitLoader: true});
-    console.log({
-      relation: beneficiaryData.relationShipId,
-      name: beneficiaryData.name,
-      age: beneficiaryData.age,
-      gender: beneficiaryData.genderId,
-      timezone: beneficiaryData.timeZone,
-      phone_no: beneficiaryData.phoneNumber,
-      about: beneficiaryData.aboutPerson,
-      comment: beneficiaryData.comment,
-      seekings: beneficiaryData.selectedSeekOption,
-      schedule: beneficiaryData.newArray,
-      image: beneficiaryData.base64,
-      transaction_id: transactionId,
-      product_id: productId,
-    });
+    // console.log({
+    //   relation: beneficiaryData.relationShipId,
+    //   name: beneficiaryData.name,
+    //   age: beneficiaryData.age,
+    //   gender: beneficiaryData.genderId,
+    //   timezone: beneficiaryData.timeZone,
+    //   phone_no: beneficiaryData.phoneNumber,
+    //   about: beneficiaryData.aboutPerson,
+    //   comment: beneficiaryData.comment,
+    //   seekings: beneficiaryData.selectedSeekOption,
+    //   schedule: beneficiaryData.newArray,
+    //   image: beneficiaryData.base64,
+    //   transaction_id: transactionId,
+    //   product_id: productId,
+
+    // });
     axios({
       method: 'post',
       url: `${baseurl}beneficiary/create/`,
@@ -180,7 +185,7 @@ class Subscription extends Component {
       },
     })
       .then((response) => {
-        console.log('created', response);
+        // console.log('created', response);
         if (response.status == 201) {
           this.setState({
             payLoader: false,
@@ -353,7 +358,7 @@ class Subscription extends Component {
 
   /////// FUNCTION TO PURCHASE THE SUBSCRIPTION  /////////////////
   PurchaseSubscription = async (productId, productPrice) => {
-    console.log(productId, productPrice, 'kamal');
+    // console.log(productId, productPrice, 'kamal');
     try {
       RNIap.requestSubscription(productId);
       this.props.addBenificiary({productId, productPrice});

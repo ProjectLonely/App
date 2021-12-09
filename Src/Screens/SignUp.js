@@ -256,15 +256,20 @@ class SignUp extends Component {
               }}
               onPress={() => this.setState({checked: !checked})}>
               <CheckBox
-                tintColors={({true: '#F79535'}, {false: '#FFF'})}
+                tintColors={
+                  ({true: '#F79535'},
+                  {false: Platform.OS == 'ios' ? '#fff' : '#000'})
+                }
+                style={{
+                  height: 25,
+                  width: 25,
+                }}
                 value={Platform.OS == 'ios' ? 'checked' : this.state.checked}
                 onCheckColor="#fff"
                 boxType="square"
-                style={{
-                  height: 20,
-                  width: 20,
-                }}
-                onFillColor="#004ACE"
+                // hideBox={false}
+                onTintColor="#000"
+                // onFillColor="#004ACE"
                 onValueChange={() => this.setState({checked: !checked})}
               />
               <Text
