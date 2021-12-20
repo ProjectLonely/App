@@ -38,7 +38,7 @@ class ForgotPassword extends Component {
           const pageValue = 'forgot';
           this.setState({sendLoader: false});
           await AsyncStorage.setItem('temp_token', response.data.token);
-          this.props.navigation.navigate('VerificationCode', pageValue);
+          this.props.navigation.navigate('Verification Code', pageValue);
         })
         .catch((err) => {
           console.log(err.response, 'err');

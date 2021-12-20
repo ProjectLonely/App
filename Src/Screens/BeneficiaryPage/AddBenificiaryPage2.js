@@ -91,10 +91,10 @@ class AddBenificiaryPage2 extends Component {
           style={{height: '100%', width: '100%', paddingVertical: '4%'}}>
           <View style={{width: '100%', alignItems: 'center'}}>
             <Text style={[Styles.labelText]}>
-              Tell us something about this person.
+              Tell us a little more about this person.
             </Text>
             <TextInput
-              placeholder="Enter detail here"
+              placeholder="Tell us about hobbies, interests, their personality, or anything else you think we should know!"
               value={this.props.beneficiaryData.aboutPerson}
               maxLength={300}
               placeholderTextColor="#707070"
@@ -104,10 +104,9 @@ class AddBenificiaryPage2 extends Component {
                 borderWidth: 1,
                 borderColor: '#004ACE',
                 borderRadius: 5,
-                padding: '5%',
+                padding: 7
               }}
               multiline={true}
-              textAlignVertical="top"
               onChangeText={(aboutPerson) =>
                 this.props.addBenificiary({aboutPerson})
               }
@@ -120,21 +119,22 @@ class AddBenificiaryPage2 extends Component {
                   color: '#004ACE',
                   marginVertical: '5%',
                 }}>
-                What are you seeking from Cheerio
+                What are you seeking from Cheerio?
               </Text>
             </View>
             <FlatList
               data={seekingOption}
-              style={{width: '90%'}}
+              style={{width: '100%'}}
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => {
                 return (
                   <View
                     style={{
                       flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '100%',
+                      width: '90%',
                       height: 50,
+                      paddingLeft: '5%',
+                      padding: 1
                     }}>
                     <CheckBox
                       tintColors={
@@ -142,8 +142,8 @@ class AddBenificiaryPage2 extends Component {
                         {false: Platform.OS == 'ios' ? '#fff' : '#000'})
                       }
                       style={{
-                        height: 25,
-                        width: 25,
+                        height: 20,
+                        width: 20,
                       }}
                       onCheckColor="#fff"
                       boxType="square"
@@ -163,8 +163,8 @@ class AddBenificiaryPage2 extends Component {
                 );
               }}
             />
-            <View style={{width: '100%', paddingHorizontal: '5%', height: 150}}>
-              <Text style={[Styles.labelText, {paddingHorizontal: '2%'}]}>
+            <View style={{width: '100%', height: 150, alignItems: 'center'}}>
+              <Text style={[Styles.labelText]}>
                 leave a comment
               </Text>
               <TextInput
@@ -172,13 +172,13 @@ class AddBenificiaryPage2 extends Component {
                 maxLength={240}
                 placeholderTextColor="#707070"
                 style={{
-                  width: '100%',
+                  width: '90%',
                   minHeight: 70,
                   maxHeight: 140,
                   borderWidth: 1,
                   borderColor: '#004ACE',
                   borderRadius: 5,
-                  padding: '5%',
+                  padding: 7,
                 }}
                 multiline={true}
                 textAlignVertical="top"

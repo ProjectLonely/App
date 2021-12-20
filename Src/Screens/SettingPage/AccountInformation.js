@@ -119,7 +119,7 @@ class AccountInformation extends Component {
           await AsyncStorage.setItem('name', this.state.firstName);
           this.setState({
             modalValue: true,
-            message: 'Profile is updated successfully',
+            message: 'Your profile was updated successfully',
             updateLoader: false,
             success: true,
           });

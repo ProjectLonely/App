@@ -49,15 +49,9 @@ class Billing extends Component {
               height: '60%',
               alignItems: 'center',
               justifyContent: 'center',
+              padding: 15
             }}>
-            <Image
-              source={require('../../Assets/Images/Notifications.png')}
-              style={{
-                width: width / 1.1,
-                height: height / 1.6,
-              }}
-              resizeMode="contain"
-            />
+
             <Text
               style={{
                 fontFamily: FontStyle.regular,
@@ -65,7 +59,7 @@ class Billing extends Component {
                 color: '#575757',
                 textAlign: 'center',
               }}>
-              No record found
+              No billing history was found
             </Text>
           </View>
         ) : (

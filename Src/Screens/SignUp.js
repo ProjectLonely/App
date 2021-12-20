@@ -283,7 +283,7 @@ class SignUp extends Component {
           </View>
           {this.renderButton()}
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SignIn')}
+            onPress={() => this.props.navigation.navigate('LoginStack', {screen: 'Login'})}
             style={{
               flexDirection: 'row',
               width: '100%',

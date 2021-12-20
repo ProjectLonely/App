@@ -21,7 +21,8 @@ const AlertModal = ({modalValue, closeModal, message}) => {
             width: '70%',
             minHeight: '20%',
             maxHeight: 'auto',
-            paddingVertical: '2%',
+            paddingVertical: '5%',
+            paddingHorizontal: '10%',
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
@@ -29,8 +30,8 @@ const AlertModal = ({modalValue, closeModal, message}) => {
           <Text
             style={{
               color: '#3A3A3A',
-              fontSize: 24,
-              fontFamily: FontStyle.medium,
+              fontSize: 18,
+              fontFamily: FontStyle.regular,
               textAlign: 'center',
             }}>
             {message || `Are you sure to cancel\n the subcription?`}

@@ -13,7 +13,6 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
-import Footer from '../../Common/Footer';
 import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import CalendarModal from '../../Common/CalendarModal';
@@ -174,6 +173,7 @@ class Beneficiary extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flex: 1,
+                padding: 15,
               }}
               refreshControl={
                 <RefreshControl
@@ -182,11 +182,6 @@ class Beneficiary extends Component {
                   tintColor="#004ACE"
                 />
               }>
-              <Image
-                source={require('../../Assets/Images/beneficiary.png')}
-                style={{width: width / 1.6, height: height / 2.4}}
-                resizeMode="contain"
-              />
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
@@ -195,7 +190,7 @@ class Beneficiary extends Component {
                   textAlign: 'center',
                 }}>
                 Your beneficiaries have not received any calls yet. When they
-                do, you will see the call logs here.
+                do, you will see the call logs here!
               </Text>
             </ScrollView>
           ) : (
@@ -343,14 +338,7 @@ class Beneficiary extends Component {
             </View>
           )}
         </View>
-        <Footer
-          footerValue="home"
-          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          settingPress={() => this.props.navigation.navigate('Setting')}
-          chatPress={() => this.props.navigation.navigate('ChatList')}
-          unseenValue={unseenValue}
-        />
+
       </ImageBackground>
     );
   }

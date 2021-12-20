@@ -19,11 +19,10 @@ import {baseurl} from '../../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import moment from 'moment';
-import Footer from '../../Common/Footer';
 import LoadingView from '../../Common/LoadingView';
 const {height, width} = Dimensions.get('screen');
 
-class ChatList extends Component {
+class Inbox extends Component {
   state = {
     modalValue: false,
     operatorArray: [],
@@ -34,12 +33,12 @@ class ChatList extends Component {
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.setState({token});
-    this.chatList(token);
+    this.inbox(token);
     this.socket(token);
     this.seenChat(token);
   };
 
-  chatList = (token) => {
+  inbox = (token) => {
     axios({
       method: 'get',
       url: `${baseurl}chat/api/all-rooms/`,
@@ -86,7 +85,7 @@ class ChatList extends Component {
   };
 
   pageRefresh = () => {
-    this.chatList(this.state.token);
+    this.inbox(this.state.token);
   };
 
   render() {
@@ -99,7 +98,7 @@ class ChatList extends Component {
             backgroundColor: '#fff',
           }}>
           <Header
-            middleText={'Chat List'}
+            middleText={'Inbox'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
           />
@@ -117,6 +116,7 @@ class ChatList extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flex: 1,
+                padding: 15,
               }}
               refreshControl={
                 <RefreshControl
@@ -125,11 +125,7 @@ class ChatList extends Component {
                   tintColor="#004ACE"
                 />
               }>
-              <Image
-                source={require('../../Assets/Images/nochat.png')}
-                style={{width: width / 1.1, height: height / 1.6}}
-                resizeMode="contain"
-              />
+             
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
@@ -137,7 +133,7 @@ class ChatList extends Component {
                   color: '#575757',
                   textAlign: 'center',
                 }}>
-                You have no messages at this moment. When you recive a message,
+                You have no messages at this time. When you recive a message,
                 this is where it will appear.
               </Text>
             </ScrollView>
@@ -274,16 +270,6 @@ class ChatList extends Component {
             </View>
           )}
         </View>
-
-        <Footer
-          footerValue={'chat'}
-          dashboardPress={() => this.props.navigation.navigate('Dashboard')}
-          callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          settingPress={() => this.props.navigation.navigate('Setting')}
-          chatPress={() => this.props.navigation.navigate('ChatList')}
-          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          unseenValue={0}
-        />
       </View>
     );
   }
@@ -314,4 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatList;
+export default Inbox;

@@ -24,7 +24,7 @@ import Styles from '../../Common/Style';
 
 class AddBenificiaryPage1 extends Component {
   state = {
-    relationOption: ['Self', 'Mother', 'Father', 'Spouse', 'Others'],
+    relationOption: ['Myself', 'My Mother', 'My Father', 'My Spouse', 'Someone else'],
     relationShipId: 2,
     genderOption: ['Male', 'Female', 'Other'],
     genderId: 0,
@@ -68,22 +68,22 @@ class AddBenificiaryPage1 extends Component {
     if (beneficiaryData.name == '') {
       this.setState({
         modalValue: true,
-        message: 'Name field should not be blank',
+        message: 'Please fill out the name field',
       });
     } else if (beneficiaryData.age == '') {
       this.setState({
         modalValue: true,
-        message: 'Age field should not be blank',
+        message: 'Please fill out the age field',
       });
     } else if (beneficiaryData.timeZone == '') {
       this.setState({
         modalValue: true,
-        message: 'timezone field should not be blank',
+        message: 'Please fill out the timezone field',
       });
     } else if (beneficiaryData.phoneNumber == '') {
       this.setState({
         modalValue: true,
-        message: 'phone number field should not be blank',
+        message: 'please fill out the phone number field',
       });
     } else {
       this.props.navigation.navigate('AddBenificiaryPage2');
@@ -161,7 +161,7 @@ class AddBenificiaryPage1 extends Component {
             closeModal={() => this.setState({modalValue: false})}
             message={message}
           />
-          <Text style={Styles.labelText}>Who is this beneficiary</Text>
+          <Text style={Styles.labelText}>Who will receive companionship?</Text>
           <ModalDropdown
             options={relationOption}
             onSelect={(relationShipId) =>
@@ -194,7 +194,7 @@ class AddBenificiaryPage1 extends Component {
             }}
             style={{
               width: '90%',
-              height: 55,
+              height: 45,
               justifyContent: 'flex-end',
               borderWidth: 1,
               borderColor: '#004ACE',
@@ -212,7 +212,7 @@ class AddBenificiaryPage1 extends Component {
               <Text
                 style={{
                   fontSize: 20,
-                  fontFamily: FontStyle.bold,
+                  fontFamily: FontStyle.regular,
                   color: '#707070',
                 }}>
                 {this.props.beneficiaryData.relationShipId}
@@ -265,7 +265,7 @@ class AddBenificiaryPage1 extends Component {
             }}
             style={{
               width: '90%',
-              height: 55,
+              height: 45,
               justifyContent: 'flex-end',
               borderWidth: 1,
               borderColor: '#004ACE',
@@ -284,7 +284,7 @@ class AddBenificiaryPage1 extends Component {
               <Text
                 style={{
                   fontSize: 20,
-                  fontFamily: FontStyle.bold,
+                  fontFamily: FontStyle.regular,
                   color: '#707070',
                 }}>
                 {this.props.beneficiaryData.genderId}
@@ -344,7 +344,7 @@ class AddBenificiaryPage1 extends Component {
               <Text
                 style={{
                   fontSize: 16,
-                  fontFamily: FontStyle.bold,
+                  fontFamily: FontStyle.regular,
                   color: '#707070',
                 }}>
                 {this.props.beneficiaryData.timeZone}

@@ -68,7 +68,7 @@ class SignIn extends Component {
           } else if (response.data.is_active == true) {
             await AsyncStorage.setItem('token', response.data.token);
             await AsyncStorage.setItem('name', response.data.name);
-            this.props.navigation.dispatch(StackActions.replace('Dashboard'));
+            this.props.navigation.dispatch(StackActions.replace('MainStack', { screen: 'Home'}));
           }
         })
         .catch((err) => {
@@ -172,7 +172,7 @@ class SignIn extends Component {
               </HelperText>
             ) : null}
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ForgotPassword')}
+              onPress={() => this.props.navigation.navigate('LoginStack', {screen: 'Forgot Password'})}
               style={{
                 width: 'auto',
                 paddingHorizontal: '5%',
@@ -188,7 +188,7 @@ class SignIn extends Component {
             {this.renderButton()}
           </View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SignUp')}
+            onPress={() => this.props.navigation.navigate('LoginStack', {screen: 'Sign Up'})}
             style={{
               flexDirection: 'row',
               width: '100%',
