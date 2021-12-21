@@ -59,7 +59,7 @@ class VerificationCode extends Component {
           await AsyncStorage.setItem('name', response.data.name);
           await AsyncStorage.setItem('email', response.data.email);
           if (this.state.pageValue == 'signup') {
-            this.props.navigation.navigate('Dashboard');
+            this.props.navigation.navigate('MainStack', { screen: 'Beneficiaries'});
           } else {
             this.props.navigation.navigate('MainStack', {
               screen: 'Settings', params: {
@@ -185,12 +185,13 @@ class VerificationCode extends Component {
                 fontFamily: FontStyle.bold,
                 fontSize: 32,
                 color: '#0F0A39',
+                textAlign: 'center',
               }}>
-              Verification Code
+              Email Verification Code
             </Text>
 
             <Input
-              placeholder="Verification Code"
+              placeholder="Email Verification Code"
               onChangeText={(text) => this.setState({ otp: text })}
               secureTextEntry={false}
               maxLength={6}
@@ -203,8 +204,8 @@ class VerificationCode extends Component {
                   alignItems: 'flex-end',
                   paddingHorizontal: '5%',
                 }}>
-                <Text style={[styles.normalText]}>{`Resend(${timer > 0 ? `${timer}` : ''
-                  }s)`}</Text>
+                <Text style={[styles.normalText]}>{`Resend in ${timer > 0 ? `${timer}` : ''
+                  }s`}</Text>
               </View>
             ) : resendLoader ? (
               <View
