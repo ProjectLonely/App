@@ -11,7 +11,6 @@ import {
   Platform,
 } from 'react-native';
 import Header from '../../Common/Header';
-import Footer from '../../Common/Footer';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -29,13 +28,13 @@ class Setting extends Component {
         id: '0',
         settingName: 'Account Information',
         image: require('../../Assets/Images/settingImage/pencil.png'),
-        pageName: 'AccountInformation',
+        pageName: 'Account Information',
       },
       {
         id: '1',
         settingName: 'About This App',
         image: require('../../Assets/Images/settingImage/user.png'),
-        pageName: 'AboutApp',
+        pageName: 'About',
       },
       {
         id: '2',
@@ -75,11 +74,11 @@ class Setting extends Component {
           AsyncStorage.getAllKeys().then((keys) =>
             AsyncStorage.multiRemove('token', 'name'),
           );
-          this.props.navigation.dispatch(StackActions.replace('SignIn'));
+          this.props.navigation.dispatch(StackActions.replace('LoginStack', { screen: 'Login'}));
         })
         .catch((err) => {
           AsyncStorage.clear();
-          this.props.navigation.navigate('SignIn');
+          this.props.navigation.navigate('LoginStack', { screen: 'Login'});
         });
     } else {
       this.props.navigation.navigate(pageName);
@@ -96,7 +95,7 @@ class Setting extends Component {
             backgroundColor: '#fff',
           }}>
           <Header
-            leftIcon={true}
+            leftIcon={false}
             middleText={'Settings'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
@@ -131,14 +130,7 @@ class Setting extends Component {
             />
           </View>
         </View>
-        <Footer
-          footerValue={'setting'}
-          dashboardPress={() => this.props.navigation.navigate('Dashboard')}
-          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          chatPress={() => this.props.navigation.navigate('ChatList')}
-          unseenValue={unseenValue}
-        />
+        
       </View>
     );
   }

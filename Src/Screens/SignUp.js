@@ -52,16 +52,16 @@ class SignUp extends Component {
     } else if (!strongPassword.test(password)) {
       this.setState({
         message:
-          'Password must be 8 characters long and contain one uppercase, one lowercase, one numeric & one special character.  ',
+          'You Password must be 8 characters long and contain one uppercase, one lowercase, one numeric & one special character.',
         modalValue: true,
       });
     } else if (confirmPassword != password) {
       this.setState({
-        message: 'Password & confirm password not matched',
+        message: 'Your passwords do not match',
         modalValue: true,
       });
     } else if (checked == false) {
-      this.setState({modalValue: true, message: 'accept terms & condition'});
+      this.setState({modalValue: true, message: 'Please accept the terms & condition'});
     } else {
       this.setState({registerLoader: true});
       console.log({
@@ -88,12 +88,12 @@ class SignUp extends Component {
           if (response.data.exist == true) {
             this.setState({
               modalValue: true,
-              message: 'this email id alredy exist',
+              message: 'This email id alredy exists. Please login or reset your password. ',
             });
           } else {
             const pageValue = 'signup';
             AsyncStorage.setItem('temp_token', response.data.temp_token);
-            this.props.navigation.navigate('VerificationCode', pageValue);
+            this.props.navigation.navigate('Verification Code', pageValue);
           }
         })
         .catch((err) => {
@@ -283,7 +283,7 @@ class SignUp extends Component {
           </View>
           {this.renderButton()}
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SignIn')}
+            onPress={() => this.props.navigation.navigate('LoginStack', {screen: 'Login'})}
             style={{
               flexDirection: 'row',
               width: '100%',

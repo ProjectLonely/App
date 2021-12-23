@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,9 @@ import {
 import Input from '../Common/Input';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from '../Common/Button';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
-import {baseurl} from '../Common/Baseurl';
+import { baseurl } from '../Common/Baseurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../Common/AlertModal';
 import Spinner from '../Common/Spinner';
@@ -41,8 +41,8 @@ class VerificationCode extends Component {
   };
 
   verify = () => {
-    this.setState({verifyLoader: true});
-    const {temp_token, otp, deviceId} = this.state;
+    this.setState({ verifyLoader: true });
+    const { temp_token, otp, deviceId } = this.state;
     axios({
       method: 'POST',
       url: `${baseurl}verify/`,
@@ -53,20 +53,24 @@ class VerificationCode extends Component {
       },
     })
       .then(async (response) => {
-        this.setState({verifyLoader: false});
+        this.setState({ verifyLoader: false });
         if (response.status == 201) {
           await AsyncStorage.setItem('token', response.data.token);
           await AsyncStorage.setItem('name', response.data.name);
           await AsyncStorage.setItem('email', response.data.email);
           if (this.state.pageValue == 'signup') {
-            this.props.navigation.navigate('Dashboard');
+            this.props.navigation.navigate('MainStack', { screen: 'Beneficiaries'});
           } else {
-            this.props.navigation.navigate('AccountInformation');
-          }
-        }
+            this.props.navigation.navigate('MainStack', {
+              screen: 'Settings', params: {
+                screen: 'Account Information',
+              },
+            })
+          } 
+        } 
       })
       .catch((err) => {
-        this.setState({verifyLoader: false});
+        this.setState({ verifyLoader: false });
         this.setState({
           modalValue: true,
           message: Object.values(err.response.data),
@@ -75,7 +79,7 @@ class VerificationCode extends Component {
   };
 
   resendVerification = () => {
-    this.setState({resendLoader: true});
+    this.setState({ resendLoader: true });
     axios({
       method: 'post',
       url: `${baseurl}verify-resend/`,
@@ -85,11 +89,11 @@ class VerificationCode extends Component {
     })
       .then((response) => {
         console.log(response);
-        this.setState({timer: 30, resendLoader: false});
+        this.setState({ timer: 30, resendLoader: false });
         if (response.status == 204) {
           this.setState({
             modalValue: true,
-            message: 'Verification code resend on your emailid successfully.',
+            message: 'A verification code was sucessfully re-sent to your email address.',
           });
         }
       })
@@ -117,7 +121,7 @@ class VerificationCode extends Component {
   renderButton = () => {
     if (this.state.verifyLoader) {
       return (
-        <View style={{width: '100%', alignItems: 'center'}}>
+        <View style={{ width: '100%', alignItems: 'center' }}>
           <Spinner spinnercolor="#fff" marginTop={17.5} />
         </View>
       );
@@ -127,21 +131,21 @@ class VerificationCode extends Component {
   };
 
   render() {
-    const {timer, modalValue, message, resendLoader, verifyLoader} = this.state;
+    const { timer, modalValue, message, resendLoader, verifyLoader } = this.state;
     console.log(this.state.deviceId, 'rrr');
     return (
       <ImageBackground
         source={require('../Assets/Images/splashWhite.png')}
-        style={{height: '100%', width: '100%'}}
+        style={{ height: '100%', width: '100%' }}
         resizeMode="cover">
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{height: '100%', width: '100%'}}
+          contentContainerStyle={{ height: '100%', width: '100%' }}
           pointerEvents={verifyLoader ? 'none' : 'auto'}>
           <AlertModal
             modalValue={modalValue}
-            closeModal={() => this.setState({modalValue: false})}
+            closeModal={() => this.setState({ modalValue: false })}
             message={message}
           />
           <View
@@ -165,7 +169,7 @@ class VerificationCode extends Component {
             </TouchableOpacity>
             <Image
               source={require('../Assets/Images/blueLogo.png')}
-              style={{width: 200, height: 200, resizeMode: 'contain'}}
+              style={{ width: 200, height: 200, resizeMode: 'contain' }}
             />
             <View />
           </View>
@@ -181,13 +185,14 @@ class VerificationCode extends Component {
                 fontFamily: FontStyle.bold,
                 fontSize: 32,
                 color: '#0F0A39',
+                textAlign: 'center',
               }}>
-              Verification Code
+              Email Verification Code
             </Text>
 
             <Input
-              placeholder="Verification Code"
-              onChangeText={(text) => this.setState({otp: text})}
+              placeholder="Email Verification Code"
+              onChangeText={(text) => this.setState({ otp: text })}
               secureTextEntry={false}
               maxLength={6}
               keyboardType={'number-pad'}
@@ -199,9 +204,8 @@ class VerificationCode extends Component {
                   alignItems: 'flex-end',
                   paddingHorizontal: '5%',
                 }}>
-                <Text style={[styles.normalText]}>{`Resend(${
-                  timer > 0 ? `${timer}` : ''
-                }s)`}</Text>
+                <Text style={[styles.normalText]}>{`Resend in ${timer > 0 ? `${timer}` : ''
+                  }s`}</Text>
               </View>
             ) : resendLoader ? (
               <View
@@ -221,7 +225,7 @@ class VerificationCode extends Component {
                   paddingHorizontal: '5%',
                 }}
                 onPress={this.resendVerification}>
-                <Text style={[styles.normalText, {color: '#004ACE'}]}>
+                <Text style={[styles.normalText, { color: '#004ACE' }]}>
                   Resend
                 </Text>
               </TouchableOpacity>

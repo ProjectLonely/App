@@ -28,9 +28,9 @@ class SplashScreen extends Component {
       useNativeDriver: true,
     }).start(() => {
       if (token) {
-        this.props.navigation.navigate('Dashboard');
+        this.props.navigation.navigate('MainStack');
       } else {
-        this.props.navigation.navigate('SignIn');
+        this.props.navigation.navigate('LoginStack');
       }
     });
   };

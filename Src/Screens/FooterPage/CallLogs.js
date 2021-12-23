@@ -13,7 +13,6 @@ import {
   Platform,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Footer from '../../Common/Footer';
 import Header from '../../Common/Header';
 import Styles from '../../Common/Style';
 import {getCallLogs, unseenNotification} from '../../store/actions';
@@ -92,7 +91,7 @@ class CallLogs extends Component {
             backgroundColor: '#fff',
           }}>
           <Header
-            middleText={'Call Log'}
+            middleText={'Call Logs'}
             notification={true}
             notifyPress={() => this.props.navigation.navigate('Notification')}
           />
@@ -114,6 +113,7 @@ class CallLogs extends Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flex: 1,
+                  padding: 15,
                 }}
                 refreshControl={
                   <RefreshControl
@@ -122,11 +122,6 @@ class CallLogs extends Component {
                     tintColor="#004ACE"
                   />
                 }>
-                <Image
-                  source={require('../../Assets/Images/beneficiary.png')}
-                  style={{width: width / 1.6, height: height / 2.4}}
-                  resizeMode="contain"
-                />
                 <Text
                   style={{
                     fontFamily: FontStyle.regular,
@@ -297,15 +292,6 @@ class CallLogs extends Component {
             )}
           </View>
         </View>
-        <Footer
-          footerValue={'call'}
-          dashboardPress={() => this.props.navigation.navigate('Dashboard')}
-          callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          settingPress={() => this.props.navigation.navigate('Setting')}
-          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          chatPress={() => this.props.navigation.navigate('ChatList')}
-          unseenValue={unseenValue}
-        />
       </View>
     );
   }

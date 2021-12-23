@@ -51,7 +51,8 @@ const Styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: FontStyle.medium,
     color: '#004ACE',
-    paddingHorizontal: '6%',
+    paddingHorizontal: '5%',
+    paddingBottom: 3,
   },
   modal: {
     height: '100%',

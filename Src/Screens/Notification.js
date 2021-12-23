@@ -20,7 +20,6 @@ import {unseenNotification} from '../store/actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {SwipeListView} from 'react-native-swipe-list-view';
-import Footer from '../Common/Footer';
 import LoadingView from '../Common/LoadingView';
 const {height, width} = Dimensions.get('screen');
 
@@ -85,7 +84,7 @@ class Notification extends Component {
     const {notificationArray, loadingValue} = this.state;
 
     return (
-      <View style={{backgroundColor: '#fff', height: '100%', width: '100%'}}>
+      <View style={{backgroundColor: '#fff', height: '100%', width: '100%', }}>
         <View
           style={{
             height: Platform.OS == 'android' ? height / 1.2 : height / 1.09,
@@ -104,6 +103,7 @@ class Notification extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flex: 1,
+                padding: 15,
               }}
               refreshControl={
                 <RefreshControl
@@ -112,14 +112,6 @@ class Notification extends Component {
                   tintColor="#004ACE"
                 />
               }>
-              <Image
-                source={require('../Assets/Images/Notifications.png')}
-                style={{
-                  width: width / 1.1,
-                  height: height / 1.6,
-                }}
-                resizeMode="contain"
-              />
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
@@ -197,15 +189,6 @@ class Notification extends Component {
             />
           )}
         </View>
-        <Footer
-          // footerValue={'chat'}
-          dashboardPress={() => this.props.navigation.navigate('Dashboard')}
-          callLogPress={() => this.props.navigation.navigate('CallLogs')}
-          settingPress={() => this.props.navigation.navigate('Setting')}
-          chatPress={() => this.props.navigation.navigate('ChatList')}
-          benificiaryPress={() => this.props.navigation.navigate('Benificiary')}
-          unseenValue={0}
-        />
       </View>
     );
   }

@@ -11,18 +11,7 @@ const LoadingView = ({heightValue, Spinnerheight, Spinnerwidth}) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <LottieView
-        style={{
-          height: Spinnerheight || 300,
-          width: Spinnerwidth || 300,
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}
-        source={require('../Assets/loading/loading.json')}
-        autoPlay
-        loop
-      />
+      
     </View>
   );
 };
