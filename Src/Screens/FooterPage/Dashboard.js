@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,22 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
+import { baseurl } from '../../Common/Baseurl';
 import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import CalendarModal from '../../Common/CalendarModal';
-import {getCallLogs, unseenNotification} from '../../store/actions';
+import { getCallLogs, unseenNotification } from '../../store/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import LoadingView from '../../Common/LoadingView';
 import Styles from '../../Common/Style';
+import axios from 'axios';
+import { Card } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 class Beneficiary extends Component {
   state = {
@@ -33,14 +37,15 @@ class Beneficiary extends Component {
     startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
     date: moment('Sep 01 2021'),
     endDate: moment().format('MMM DD YYYY'),
+    companionArray: [{ id: '1', first_name: 'hey' }],
   };
 
   componentDidMount = async () => {
     console.log(this.props.authorized, 'status');
 
     const token = await AsyncStorage.getItem('token');
-    this.setState({userName: await AsyncStorage.getItem('name'), token});
-
+    this.setState({ userName: await AsyncStorage.getItem('name'), token });
+    this.topCompanions(token);
     this.props.getCallLogs(token);
     this.props.unseenNotification(token);
   };
@@ -88,15 +93,33 @@ class Beneficiary extends Component {
     this.props.getCallLogs(this.state.token);
   };
 
+  topCompanions = (token) => {
+    axios({
+      method: 'get',
+      url: `${baseurl}api/v1/admin/operators/`,
+      headers: { Authorization: `Token ${token}` },
+    })
+      .then((response) => {
+        this.setState({
+          companionArray: response.data,
+          token,
+          pageLoading: false,
+        });
+      })
+      .catch((err) => {
+        this.setState({ pageLoading: false });
+      });
+  };
+
   render() {
-    const {calendarValue, startDate, endDate, durationStatus, userName} =
+    const { calendarValue, startDate, endDate, durationStatus, userName } =
       this.state;
-    const {callingData, unseenCount, unseenValue} = this.props;
+    const { callingData, unseenCount, unseenValue } = this.props;
 
     return (
       <ImageBackground
         source={require('../../Assets/Images/splashWhite.png')}
-        style={{height: '100%', width: '100%'}}
+        style={{ height: '100%', width: '100%' }}
         resizeMode="cover">
         <View
           style={{
@@ -105,7 +128,7 @@ class Beneficiary extends Component {
           }}>
           <CalendarModal
             calendarValue={calendarValue}
-            closeModal={() => this.setState({calendarValue: false})}
+            closeModal={() => this.setState({ calendarValue: false })}
             lastWeek={() => this.selectDuration('week')}
             lastMonth={() => this.selectDuration('month')}
             lastYear={() => this.selectDuration('year')}
@@ -144,7 +167,7 @@ class Beneficiary extends Component {
               style={styles.notifyView}>
               <Image
                 source={require('../../Assets/Images/bell.png')}
-                style={{width: 25, height: 23, left: 6, resizeMode: 'contain'}}
+                style={{ width: 25, height: 23, left: 6, resizeMode: 'contain' }}
               />
               <Text
                 style={{
@@ -170,10 +193,8 @@ class Beneficiary extends Component {
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
-                alignItems: 'center',
                 justifyContent: 'center',
                 flex: 1,
-                padding: 15,
               }}
               refreshControl={
                 <RefreshControl
@@ -186,15 +207,60 @@ class Beneficiary extends Component {
                 style={{
                   fontFamily: FontStyle.regular,
                   fontSize: 23,
-                  color: '#575757',
+                  color: 'black',
                   textAlign: 'center',
+                  padding: 15,
                 }}>
                 Your beneficiaries have not received any calls yet. When they
                 do, you will see the call logs here!
               </Text>
+              <Text
+                style={{
+                  fontFamily: FontStyle.regular,
+                  fontSize: 15,
+                  color: 'black',
+                  paddingLeft: 15,
+                }}>
+                Check out some of our companions! &nbsp;
+                <Icon name="arrow-forward" size={15} />
+              </Text>
+              <FlatList
+                horizontal={true}
+                data={this.state.companionArray}
+                // extraData={this.state}
+                style={{paddingBottom: 10,}}
+                renderItem={({ item, index }) => (
+                  <>
+                    <Card containerStyle={{
+                      borderWidth: 0, shadowOffset: {
+                        width: 0,
+                        height: 1
+                      }, shadowOpacity: 0.2,
+                      elevation: 1,
+                      width: 180,
+                      marginTop: 0,
+                      marginLeft: 0,
+                      marginRight: 0,
+                    }}>
+                      <Card.Image
+                        style={{ padding: 0, borderRadius: 150 / 2, height: 150, width: 150 }}
+                        source={{
+                          uri: `${item.image}`,
+                        }}
+                      />
+                      <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: 5, marginBottom: 5}}>
+                        {item.first_name}
+                      </Text>
+                      <Text style={{ marginbottom: 10, textAlign: 'center' }}>
+                        {item.bio}
+                      </Text>
+                    </Card>
+                  </>
+                )}
+              />
             </ScrollView>
           ) : (
-            <View style={{height: '87%'}}>
+            <View style={{ height: '87%' }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -211,7 +277,7 @@ class Beneficiary extends Component {
                   Recent Activity
                 </Text>
                 <TouchableOpacity
-                  onPress={() => this.setState({calendarValue: !calendarValue})}
+                  onPress={() => this.setState({ calendarValue: !calendarValue })}
                   style={Styles.calendarView}>
                   <Image
                     source={require('../../Assets/Images/calendar.png')}
@@ -246,7 +312,7 @@ class Beneficiary extends Component {
                   height: '100%',
                 }}
                 showsVerticalScrollIndicator={false}
-                renderItem={({item: callingData}) => {
+                renderItem={({ item: callingData }) => {
                   const callDate = moment(callingData.callDate);
 
                   return moment(callDate).isBetween(
@@ -261,12 +327,12 @@ class Beneficiary extends Component {
                         {
                           backgroundColor:
                             callingData.callStatus == 'call_received' ||
-                            callingData.callStatus == 'call_completed'
+                              callingData.callStatus == 'call_completed'
                               ? '#D5FAFB'
                               : '#FF7A7A',
                         },
                       ]}>
-                      <View style={{width: '80%'}}>
+                      <View style={{ width: '80%' }}>
                         <Text
                           style={{
                             fontFamily: FontStyle.medium,
@@ -309,7 +375,7 @@ class Beneficiary extends Component {
                           borderRadius: 5,
                           borderColor:
                             callingData.callStatus == 'call_received' ||
-                            callingData.callStatus == 'call_completed'
+                              callingData.callStatus == 'call_completed'
                               ? '#1F9F00'
                               : '#E40000',
                         }}>
@@ -320,15 +386,15 @@ class Beneficiary extends Component {
 
                             color:
                               callingData.callStatus == 'call_received' ||
-                              callingData.callStatus == 'call_completed'
+                                callingData.callStatus == 'call_completed'
                                 ? '#1F9F00'
                                 : '#EA3232',
                           }}>
                           {callingData.callStatus == 'call_received'
                             ? 'Call Received'
                             : callingData.callStatus == 'call_completed'
-                            ? 'Call Completed'
-                            : 'Missed Call'}
+                              ? 'Call Completed'
+                              : 'Missed Call'}
                         </Text>
                       </View>
                     </View>
@@ -385,7 +451,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getCallLogs, unseenNotification}, dispatch);
+  return bindActionCreators({ getCallLogs, unseenNotification }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Beneficiary);

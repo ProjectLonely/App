@@ -75,10 +75,10 @@ const Header = ({
           <Text
             style={{
               fontFamily: FontStyle.bold,
-              fontSize: 22,
+              fontSize: 18,
               color: '#12175E',
               left: leftIcon ? 20 : 0,
-              width: '75%',
+              width: '85%',
             }}>
             {middleText ? middleText : null}
           </Text>

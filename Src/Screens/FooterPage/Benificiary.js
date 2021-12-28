@@ -120,7 +120,7 @@ class Benificiary extends Component {
                 style={{
                   fontFamily: FontStyle.regular,
                   fontSize: 23,
-                  color: '#575757',
+                  color: 'black',
                   textAlign: 'center',
                 }}>
                 You do not have any beneficiaries yet. 

@@ -126,7 +126,7 @@ class CallLogs extends Component {
                   style={{
                     fontFamily: FontStyle.regular,
                     fontSize: 23,
-                    color: '#575757',
+                    color: 'black',
                     textAlign: 'center',
                   }}>
                   Your beneficiaries have not received any calls yet. When they
