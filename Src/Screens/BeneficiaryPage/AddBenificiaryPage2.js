@@ -165,10 +165,10 @@ class AddBenificiaryPage2 extends Component {
             />
             <View style={{width: '100%', height: 150, alignItems: 'center'}}>
               <Text style={[Styles.labelText]}>
-                leave a comment
+                Leave any other comments
               </Text>
               <TextInput
-                placeholder="Write here"
+                placeholder=""
                 maxLength={240}
                 placeholderTextColor="#707070"
                 style={{
@@ -186,8 +186,8 @@ class AddBenificiaryPage2 extends Component {
                 onChangeText={(comment) => this.props.addBenificiary({comment})}
               />
             </View>
-            <View style={{width: '100%'}}>
-              <Button onPress={() => this.next()}>NEXT</Button>
+            <View style={{width: '100%', paddingTop: 0}}>
+              <Button style={{width: '100%', marginTop: 0}} onPress={() => this.next()}>NEXT</Button>
             </View>
           </View>
         </KeyboardAwareScrollView>

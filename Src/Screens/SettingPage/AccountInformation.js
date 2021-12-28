@@ -73,7 +73,7 @@ class AccountInformation extends Component {
         await AsyncStorage.setItem('name', this.state.firstName);
         this.setState({
           modalValue: true,
-          message: 'Photo is updated successfully',
+          message: 'Your profile image was successfully updated',
           updateLoader: false,
           success: true,
         });
@@ -93,7 +93,7 @@ class AccountInformation extends Component {
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (password != confirmPassword) {
       this.setState({
-        message: 'Password & confirm password not matched',
+        message: 'Your passwords do not match',
         modalValue: true,
       });
     } else if (!strongPassword.test(password) && password != '') {
@@ -229,7 +229,7 @@ class AccountInformation extends Component {
                 {this.state.getImage != null && source == '' ? (
                   <Image
                     source={{
-                      uri: `http://backend.joincheerio.com/${this.state.getImage}`,
+                      uri: `${this.state.getImage}`,
                     }}
                     style={{height: 100, width: 100, borderRadius: 50}}
                   />

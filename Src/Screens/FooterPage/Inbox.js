@@ -130,7 +130,7 @@ class Inbox extends Component {
                 style={{
                   fontFamily: FontStyle.regular,
                   fontSize: 23,
-                  color: '#575757',
+                  color: 'black',
                   textAlign: 'center',
                 }}>
                 You have no messages at this time. When you recive a message,

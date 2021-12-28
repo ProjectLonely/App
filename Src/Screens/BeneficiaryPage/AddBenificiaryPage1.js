@@ -42,7 +42,7 @@ class AddBenificiaryPage1 extends Component {
     relationShipArray: [
       {
         id: 1,
-        name: 'Self',
+        name: 'Myself',
       },
       {
         id: 2,
