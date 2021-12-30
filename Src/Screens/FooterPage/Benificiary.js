@@ -38,11 +38,13 @@ class Benificiary extends Component {
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     this.setState({token});
+    console.log(this.state.token);
     this.props.getAllBeneficiary(token);
     this.props.unseenNotification(token);
   };
 
   deleteModal = (beneficiaryId) => {
+    // console.warn('beneficiaryId', beneficiaryId);
     this.setState({beneficiaryId, confirmValue: true});
   };
 
@@ -53,12 +55,14 @@ class Benificiary extends Component {
       headers: {Authorization: `Token ${this.state.token}`},
     })
       .then((response) => {
+        // console.log('delete respnse ', response);
         this.setState({confirmValue: false});
         if (response.status == 204) {
           this.props.getAllBeneficiary(this.state.token);
         }
       })
       .catch((err) => {
+        console.log(err.response);
         this.setState({modalValue: true, message: 'Something went wrong'});
       });
   };
@@ -123,7 +127,7 @@ class Benificiary extends Component {
                   color: '#575757',
                   textAlign: 'center',
                 }}>
-                You do not have any beneficiaries yet. 
+                You do not have any beneficiaries yet.
               </Text>
             </ScrollView>
           ) : (

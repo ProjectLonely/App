@@ -10,6 +10,7 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
@@ -52,7 +53,7 @@ class AddBenificiaryPage3 extends Component {
       {id: '3', time: '4pm - 7pm'},
       {id: '4', time: '7pm - 10pm'},
     ],
-    sliderValue: '0',
+    sliderValue: '',
     // appleKeySK:
     //   'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
     // appleKeyPk:
@@ -220,32 +221,46 @@ class AddBenificiaryPage3 extends Component {
   };
 
   addDayTimer = (dayName) => {
-    const newArray = this.props.beneficiaryData.newArray;
-    if (newArray.some((data) => data.dayName == dayName)) {
-      const index = newArray.findIndex((obj) => obj.dayName == dayName);
-      newArray[index] = {
-        dayName: dayName,
-        sliderValue: this.state.sliderValue,
-        timeOption: this.state.timeOption[this.state.sliderValue].time,
-      };
+    // console.warn(dayName);
+    var newArray = [];
+    newArray = this.props.beneficiaryData.newArray;
+    // console.log(newArray.length, 'rohit data');
+    if (
+      newArray.some(
+        (data) =>
+          data.dayName == dayName && data.sliderValue == this.state.sliderValue,
+      )
+    ) {
+      // alert('pehle se hai');
+      this.setState({
+        modalValue: true,
+        message: 'This item is already added',
+      });
+      // const index = newArray.findIndex((obj) => obj.dayName == dayName);
+      // newArray[index] = {
+      //   dayName: dayName,
+      //   sliderValue: this.state.sliderValue,
+      //   timeOption: this.state.timeOption[this.state.sliderValue].time,
+      // };
     } else {
       newArray.push({
         dayName: dayName,
         sliderValue: this.state.sliderValue,
         timeOption: this.state.timeOption[this.state.sliderValue].time,
       });
+      console.log('new', newArray);
     }
     this.props.addBenificiary({newArray: newArray});
   };
 
-  // closeModal = () => {
-  //   if (this.state.completeValue) {
-  //     this.setState({modalValue: false, completeValue: false});
-  //     this.props.navigation.navigate('AddBenificiaryPage4');
-  //   } else {
-  //     this.setState({modalValue: false});
-  //   }
-  // };
+  closeModal = () => {
+    if (this.state.completeValue) {
+      this.setState({modalValue: false, completeValue: false});
+      this.props.navigation.navigate('AddBenificiaryPage4');
+    } else {
+      this.setState({modalValue: false});
+    }
+  };
 
   renderButton = () => {
     if (this.state.payLoader) {
@@ -262,6 +277,14 @@ class AddBenificiaryPage3 extends Component {
       );
     }
   };
+  removeItem = (val1, val2) => {
+    console.warn(val1, val2);
+  };
+  // changeSliderValue = (value) => {
+  //   const blankArray = this.state.sliderValue;
+  //   blankArray.push(value);
+  //   this.setState({sliderValue: blankArray});
+  // };
 
   render() {
     const {dayOption, dayId, timeOption, newArray, modalValue, message} =
@@ -353,18 +376,39 @@ class AddBenificiaryPage3 extends Component {
                   </TouchableOpacity>
                   {dayOption.id == dayId ? (
                     <FlatList
+                      numColumns={2}
                       data={this.props.beneficiaryData.newArray}
                       renderItem={({item: newArray}) => {
                         return newArray.dayName == dayOption.day ? (
                           <View
-                            style={{
-                              flexDirection: 'row',
-                              marginTop: '5%',
-                              marginBottom: '2.5%',
-                            }}>
+                            style={
+                              {
+                                // flexDirection: 'row',
+                                // marginTop: '5%',
+                                // marginBottom: '2.5%',
+                              }
+                            }>
+                            <TouchableOpacity
+                              onPress={() =>
+                                this.removeItem(
+                                  newArray.dayOption,
+                                  newArray.timeOption,
+                                )
+                              }
+                              style={{
+                                alignSelf: 'flex-end',
+                                right: 20,
+                                position: 'absolute',
+                                zIndex: 999,
+                                top: -5,
+                              }}>
+                              <Text style={{fontSize: 14, color: 'red'}}>
+                                X
+                              </Text>
+                            </TouchableOpacity>
                             <View
                               style={{
-                                width: 84,
+                                width: 100,
                                 height: 28,
                                 borderWidth: 1,
                                 borderColor: '#004ACE',
@@ -373,6 +417,7 @@ class AddBenificiaryPage3 extends Component {
                                 alignItems: 'center',
                                 backgroundColor: '#fff',
                                 marginHorizontal: '5%',
+                                marginVertical: 6,
                               }}>
                               <Text>{newArray.timeOption}</Text>
                             </View>
@@ -400,9 +445,7 @@ class AddBenificiaryPage3 extends Component {
                       minimumTrackTintColor="#FFFFFF"
                       maximumTrackTintColor="#FFFFFF"
                       onValueChange={(value) =>
-                        this.setState({
-                          sliderValue: value,
-                        })
+                        this.setState({sliderValue: value})
                       }
                     />
                   ) : null}

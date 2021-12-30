@@ -73,7 +73,7 @@ class Inbox extends Component {
   };
 
   selectChat = (operatorId, operatorName) => {
-    this.props.navigation.navigate('Chat', {operatorId, operatorName});
+    this.props.navigation.navigate('chat', {operatorId, operatorName});
   };
 
   seenChat = (token) => {
@@ -125,7 +125,6 @@ class Inbox extends Component {
                   tintColor="#004ACE"
                 />
               }>
-             
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
