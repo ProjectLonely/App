@@ -231,7 +231,6 @@ class AddBenificiaryPage3 extends Component {
           data.dayName == dayName && data.sliderValue == this.state.sliderValue,
       )
     ) {
-      // alert('pehle se hai');
       this.setState({
         modalValue: true,
         message: 'This item is already added',
@@ -285,6 +284,16 @@ class AddBenificiaryPage3 extends Component {
   //   blankArray.push(value);
   //   this.setState({sliderValue: blankArray});
   // };
+
+  removeTime = (time) => {
+    const newArray = this.props.beneficiaryData.newArray;
+    const index = newArray.findIndex(
+      (data) =>
+        data.sliderValue == time.sliderValue && data.dayName == time.dayName,
+    );
+    newArray.splice(index, 1);
+    this.props.addBenificiary({newArray: newArray});
+  };
 
   render() {
     const {dayOption, dayId, timeOption, newArray, modalValue, message} =
@@ -376,33 +385,30 @@ class AddBenificiaryPage3 extends Component {
                   </TouchableOpacity>
                   {dayOption.id == dayId ? (
                     <FlatList
-                      numColumns={2}
+                      style={{
+                        width: '100%',
+                      }}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal={true}
                       data={this.props.beneficiaryData.newArray}
                       renderItem={({item: newArray}) => {
                         return newArray.dayName == dayOption.day ? (
                           <View
-                            style={
-                              {
-                                // flexDirection: 'row',
-                                // marginTop: '5%',
-                                // marginBottom: '2.5%',
-                              }
-                            }>
+                            style={{
+                              height: 28,
+                              width: 100,
+                              marginRight: 5,
+                            }}>
                             <TouchableOpacity
-                              onPress={() =>
-                                this.removeItem(
-                                  newArray.dayOption,
-                                  newArray.timeOption,
-                                )
-                              }
+                              onPress={() => this.removeTime(newArray)}
                               style={{
                                 alignSelf: 'flex-end',
-                                right: 20,
+                                // right: 20,
                                 position: 'absolute',
                                 zIndex: 999,
                                 top: -5,
                               }}>
-                              <Text style={{fontSize: 14, color: 'red'}}>
+                              <Text style={{fontSize: 16, color: 'red'}}>
                                 X
                               </Text>
                             </TouchableOpacity>
