@@ -29,27 +29,32 @@ const {height, width} = Dimensions.get('screen');
 
 class BeneficiaryDetail extends Component {
   state = {
+    newSchedule: [],
     calendarValue: false,
     startDate: moment('Jan 01 2020').format('MMM DD YYYY'),
     date: moment('Sep 01 2021'),
     endDate: moment().format('MMM DD YYYY'),
-    schedule: [],
+    oldSchedule: [],
     dayId: '',
     expandValue: false,
     sliderValue: '0',
-    newArray: [
+    dayArray: [
       {
         dayName: 'Monday',
-        sliderValue: 2,
-        timeOption: '07am-10am',
+        dayName: 'Tuesday',
+        dayName: 'Wednesday',
+        dayName: 'Thrusday',
+        dayName: 'Friday',
+        dayName: 'Saturday',
+        dayName: 'Sunday',
       },
     ],
     timeOption: [
-      {id: '0', time: '7am - 10am'},
-      {id: '1', time: '10am - 1pm'},
-      {id: '2', time: '1pm - 4pm'},
-      {id: '3', time: '4pm - 7pm'},
-      {id: '4', time: '7pm - 10pm'},
+      '7am - 10am',
+      '10am - 1pm',
+      '1pm - 4pm',
+      '4pm - 7pm',
+      '7pm - 10pm',
     ],
     beneficiaryData: {},
   };
@@ -69,10 +74,18 @@ class BeneficiaryDetail extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response.data.timezone.split('(')[0], 'alskdjflasdf');
+        console.log(response, 'alsdf');
+        const newArray = [];
+        response.data.schedule.map((obj) => {
+          if (!newArray.some((o) => o.dayName === obj.dayName)) {
+            newArray.push({...obj});
+          }
+        });
+
         this.setState({
           beneficiaryData: response.data,
-          schedule: response.data.schedule,
+          oldSchedule: response.data.schedule,
+          newSchedule: newArray,
           timeZone: response.data.timezone.split('(')[0],
         });
       })
@@ -95,7 +108,7 @@ class BeneficiaryDetail extends Component {
       url: `${baseurl}beneficiary/${beneficiaryId}/`,
       headers: {Authorization: `Token ${this.state.token}`},
       data: {
-        schedule: this.state.schedule,
+        schedule: this.state.oldSchedule,
       },
     })
       .then((response) => {
@@ -165,13 +178,26 @@ class BeneficiaryDetail extends Component {
     });
   };
 
+  addDayTimer = (day, time) => {
+    const oldArray = this.state.oldSchedule;
+    if (oldArray.some((el) => el.dayName == day && el.timeOption == time)) {
+      const index = oldArray.findIndex(
+        (data) => data.dayName == day && data.timeOption == time,
+      );
+      oldArray.splice(index, 1);
+    } else {
+      oldArray.push({dayName: day, timeOption: time});
+    }
+    this.setState({oldSchedule: oldArray});
+  };
+
   render() {
     const {
       beneficiaryData,
       timeOption,
       newArray,
       dayId,
-      schedule,
+      oldSchedule,
       modalValue,
       message,
       beneficiaryId,
@@ -180,6 +206,7 @@ class BeneficiaryDetail extends Component {
       endDate,
       durationStatus,
       timeZone,
+      newSchedule,
     } = this.state;
 
     return (
@@ -214,89 +241,60 @@ class BeneficiaryDetail extends Component {
               paddingBottom: 200,
               paddingTop: '2%',
             }}>
-            <View style={[styles.container]}>
+            <View
+              style={{
+                backgroundColor: '#f9dcde',
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={{uri: beneficiaryData.image}}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 30,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+            <View style={{width: '100%', paddingHorizontal: '5%'}}>
               <Text
                 style={{
                   fontFamily: FontStyle.regular,
-                  color: '#7B7890',
+                  color: '#004ACE',
                   fontSize: 14,
                   textAlign: 'justify',
-                  paddingHorizontal: '2.5%',
                 }}>
                 {beneficiaryData.about}
               </Text>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={require('../Assets/Images/age-2.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
-                  />
-                  <Text style={[styles.normalText, {left: 5}]}>
-                    {beneficiaryData.age}
+              <View style={{flexDirection: 'row'}}>
+                <View style={styles.smallContainer}>
+                  <Text style={[styles.normalText]}>
+                    {beneficiaryData.age} years old
                   </Text>
                 </View>
-                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={require('../Assets/Images/gender-2.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
-                  />
-                  <Text style={[styles.normalText, {left: 5}]}>
-                    {beneficiaryData.gender}
+                <View style={styles.smallContainer}>
+                  <Text style={[styles.normalText]}>
+                    {beneficiaryData.relation}
                   </Text>
                 </View>
               </View>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={require('../Assets/Images/call.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
-                  />
-                  <Text style={[styles.normalText, {left: 5}]}>
-                    {beneficiaryData.phone_no}
-                  </Text>
-                </View>
-                <View style={[styles.smallContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={require('../Assets/Images/compass-2.png')}
-                    style={{height: 17, width: 17, resizeMode: 'contain'}}
-                  />
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={2}
-                    style={[
-                      styles.normalText,
-                      {left: 5, width: '80%', textAlign: 'center'},
-                    ]}>
-                    {timeZone}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.smallContainer,
-                  {
-                    flexDirection: 'row',
-                    width: '98%',
-                    justifyContent: 'flex-start',
-                  },
-                ]}>
-                <Image
-                  source={require('../Assets/Images/seeking-2.png')}
-                  style={{height: 17, width: 17, resizeMode: 'contain'}}
-                />
-                {beneficiaryData.seekings ? (
-                  <Text
-                    style={styles.normalText}>{`${beneficiaryData.seekings.map(
-                    (data) => data.name,
-                  )}`}</Text>
-                ) : null}
-              </View>
+              <Text
+                style={{
+                  fontSize: 21,
+                  color: '#0014ab',
+                  fontFamily: FontStyle.medium,
+                  marginVertical: 10,
+                }}>
+                Schedule
+              </Text>
             </View>
             <View style={{width: '100%'}}>
               <FlatList
-                data={schedule}
+                data={newSchedule}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item: schedule}) => {
                   return (
@@ -322,7 +320,7 @@ class BeneficiaryDetail extends Component {
                         <>
                           {dayId == schedule.dayName ? (
                             <Image
-                              source={require('../Assets/Images/crosswhite.png')}
+                              source={require('../Assets/Images/cross.png')}
                               style={{
                                 height: 24,
                                 width: 24,
@@ -331,7 +329,7 @@ class BeneficiaryDetail extends Component {
                             />
                           ) : (
                             <Image
-                              source={require('../Assets/Images/pluswhite.png')}
+                              source={require('../Assets/Images/plus.png')}
                               style={{
                                 height: 24,
                                 width: 24,
@@ -342,68 +340,53 @@ class BeneficiaryDetail extends Component {
                         </>
                       </TouchableOpacity>
                       {
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            marginTop: '5%',
-                            marginBottom: '2.5%',
-                          }}>
-                          <View
-                            style={{
-                              width: 84,
-                              height: 28,
-                              borderWidth: 1,
-                              borderColor: '#004ACE',
-                              borderRadius: 10,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              backgroundColor: '#fff',
-                              marginHorizontal: '5%',
-                            }}>
-                            <Text>{schedule.timeOption}</Text>
-                          </View>
-                        </View>
-                      }
-                      {
-                        <Slider
-                          thumbTintColor={'#004ACE'}
-                          style={{
-                            width: '100%',
-                            height: 40,
+                        <FlatList
+                          style={{marginTop: '5%', alignItems: 'center'}}
+                          data={timeOption}
+                          numColumns={3}
+                          renderItem={({item}) => {
+                            return (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  this.addDayTimer(schedule.dayName, item)
+                                }
+                                style={[
+                                  styles.tabStyle,
+                                  {
+                                    borderColor: oldSchedule.some(
+                                      (el) =>
+                                        el.dayName == schedule.dayName &&
+                                        el.timeOption == item,
+                                    )
+                                      ? '#D5FAFB'
+                                      : '#004ACE',
+                                    backgroundColor: oldSchedule.some(
+                                      (el) =>
+                                        el.dayName == schedule.dayName &&
+                                        el.timeOption == item,
+                                    )
+                                      ? '#004ACE'
+                                      : '#fff',
+                                  },
+                                ]}>
+                                <Text
+                                  style={{
+                                    fontFamily: FontStyle.medium,
+                                    color: oldSchedule.some(
+                                      (el) =>
+                                        el.dayName == schedule.dayName &&
+                                        el.timeOption == item,
+                                    )
+                                      ? '#D5FAFB'
+                                      : '#004ACE',
+                                  }}>
+                                  {item}
+                                </Text>
+                              </TouchableOpacity>
+                            );
                           }}
-                          value={schedule.sliderValue}
-                          minimumValue={0}
-                          maximumValue={4}
-                          step={1}
-                          minimumTrackTintColor="#FFFFFF"
-                          maximumTrackTintColor="#FFFFFF"
-                          onValueChange={(value) =>
-                            this.newSliderValue(schedule.dayName, value)
-                          }
                         />
                       }
-                      <View style={{flexDirection: 'row'}}>
-                        {timeOption.map((time) => {
-                          return (
-                            <View
-                              style={{
-                                width: '20%',
-                                marginHorizontal: '0.5%',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FontStyle.medium,
-                                  fontSize: 10,
-                                  color: '#fff',
-                                }}>
-                                {time.time}
-                              </Text>
-                            </View>
-                          );
-                        })}
-                      </View>
 
                       <TouchableOpacity
                         onPress={() => this.updateProfile(beneficiaryData.id)}
@@ -417,7 +400,9 @@ class BeneficiaryDetail extends Component {
                           alignSelf: 'flex-end',
                           marginTop: '5%',
                         }}>
-                        <Text style={styles.normalText2}>Update</Text>
+                        <Text style={[styles.normalText2, {color: '#fff'}]}>
+                          Update
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   );
@@ -584,17 +569,18 @@ const styles = StyleSheet.create({
     height: 38,
     width: '45%',
     marginVertical: '1%',
-    backgroundColor: '#F4F7FF',
+    backgroundColor: '#e6f0ff',
     borderRadius: 5,
-    paddingHorizontal: '5%',
-    paddingHorizontal: '5%',
     alignItems: 'center',
-    marginHorizontal: '1%',
+    marginRight: '1%',
+    justifyContent: 'center',
   },
   expandview: {
     width: '90%',
     alignSelf: 'center',
-    backgroundColor: '#10275A',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#10275A',
     marginVertical: '1%',
     borderRadius: 20,
     paddingTop: '3.5%',
@@ -602,7 +588,7 @@ const styles = StyleSheet.create({
   },
   normalText2: {
     fontFamily: FontStyle.medium,
-    color: '#FFF',
+    color: '#10275A',
     fontSize: 16,
   },
   containerStyle: {
@@ -613,6 +599,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: '5%',
     flexDirection: 'row',
+  },
+  tabStyle: {
+    backgroundColor: '#fff',
+    marginLeft: '5%',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#004ACE',
+    marginVertical: 10,
+    height: 26,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

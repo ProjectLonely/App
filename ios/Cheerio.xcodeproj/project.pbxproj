@@ -42,7 +42,6 @@
 		BD5A5A0FA1DD45759BEE47F2 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CBF6FD2A059240F9B60143FB /* Zocial.ttf */; };
 		CB81202B64A6404AB9D041CB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB83D42F38FB4ED48B9919D0 /* MaterialIcons.ttf */; };
 		DC272CC03E3F44329CC1A914 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E80393ACB34F4F38AFB0A4D2 /* Fontisto.ttf */; };
-		E4E6956D2D9DF4283493908E /* libPods-Cheerio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CDFA890F257B9C3335E92C /* libPods-Cheerio.a */; };
 		F1265268D95B4591924B4EFC /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B94BCC42C69F43D5A23A823E /* AntDesign.ttf */; };
 		FAA3A1405EB94810B75A79F2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23698AB1CDA54330A17DC347 /* Feather.ttf */; };
 /* End PBXBuildFile section */
@@ -135,7 +134,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4E6956D2D9DF4283493908E /* libPods-Cheerio.a in Frameworks */,
 				1F522565273FC4FB00901705 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

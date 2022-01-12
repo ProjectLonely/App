@@ -251,6 +251,7 @@ class Chat extends Component {
                   minHeight: 60,
                   maxHeight: 120,
                   paddingVertical: '1%',
+                  bottom: '10%',
                   width: '90%',
                   alignItems: 'center',
                   justifyContent: 'space-between',
@@ -269,7 +270,10 @@ class Chat extends Component {
                 }}>
                 <TextInput
                   multiline={true}
-                  style={{width: '90%', fontFamily: FontStyle.regular}}
+                  style={{
+                    width: '90%',
+                    fontFamily: FontStyle.regular,
+                  }}
                   placeholder="Type a message"
                   onChangeText={(text) => this.setState({message: text})}
                   value={this.state.message}

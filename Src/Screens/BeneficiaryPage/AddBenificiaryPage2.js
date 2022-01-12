@@ -29,7 +29,6 @@ class AddBenificiaryPage2 extends Component {
       headers: {Authorization: `Token ${token}`},
     })
       .then((response) => {
-        console.log(response, 'seeking option');
         if (response.status == 200) {
           this.setState({seekingOption: response.data.results});
         }
@@ -104,7 +103,7 @@ class AddBenificiaryPage2 extends Component {
                 borderWidth: 1,
                 borderColor: '#004ACE',
                 borderRadius: 5,
-                padding: 7
+                padding: 7,
               }}
               multiline={true}
               onChangeText={(aboutPerson) =>
@@ -134,7 +133,7 @@ class AddBenificiaryPage2 extends Component {
                       width: '90%',
                       height: 50,
                       paddingLeft: '5%',
-                      padding: 1
+                      padding: 1,
                     }}>
                     <CheckBox
                       tintColors={
@@ -164,9 +163,7 @@ class AddBenificiaryPage2 extends Component {
               }}
             />
             <View style={{width: '100%', height: 150, alignItems: 'center'}}>
-              <Text style={[Styles.labelText]}>
-                leave a comment
-              </Text>
+              <Text style={[Styles.labelText]}>leave a comment</Text>
               <TextInput
                 placeholder="Write here"
                 maxLength={240}

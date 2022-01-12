@@ -11,9 +11,7 @@ import {
   FlatList,
   ScrollView,
   RefreshControl,
-  Platform,
 } from 'react-native';
-import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import CalendarModal from '../../Common/CalendarModal';
 import {getCallLogs, unseenNotification} from '../../store/actions';
@@ -338,7 +336,6 @@ class Beneficiary extends Component {
             </View>
           )}
         </View>
-
       </ImageBackground>
     );
   }

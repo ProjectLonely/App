@@ -19,9 +19,6 @@ import Slider from '@react-native-community/slider';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addBenificiary, completeBeneficiary} from '../../store/actions/index';
-import axios from 'axios';
-import {baseurl} from '../../Common/Baseurl';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AlertModal from '../../Common/AlertModal';
 import Spinner from '../../Common/Spinner';
 
@@ -47,19 +44,21 @@ class AddBenificiaryPage3 extends Component {
       {id: '6', day: 'Sunday'},
     ],
     timeOption: [
-      {id: '0', time: '7am - 10am'},
-      {id: '1', time: '10am - 1pm'},
-      {id: '2', time: '1pm - 4pm'},
-      {id: '3', time: '4pm - 7pm'},
-      {id: '4', time: '7pm - 10pm'},
+      '7am - 10am',
+      '10am - 1pm',
+      '1pm - 4pm',
+      '4pm - 7pm',
+      '7pm - 10pm',
     ],
-    sliderValue: '',
+
     // appleKeySK:
     //   'sk_test_51JbzGgJVxtiQnRVupkCeh4NtxrjEmpSeBDPkFLa48K5DjyhK9TeYbLViojM9RGwL4D5FyKZJmbjtKQRTmZdVoUV300vvGNkpcQ',
     // appleKeyPk:
     //   'pk_test_51JbzGgJVxtiQnRVuJ5Kahb2lpum6cOgbXyQRBieZdB7mHEp7lobeGyqfKAi3lRo29zkmAUfe3w9byKuhOKvXjWx600Bf2J1vI8',
   };
-
+  getDay = (id) => {
+    return this.state.dayOption.find((day) => Number(day.id) === Number(id));
+  };
   // applePay = () => {
   //   var METHOD_DATA = [
   //     {
@@ -220,36 +219,26 @@ class AddBenificiaryPage3 extends Component {
     }
   };
 
-  addDayTimer = (dayName) => {
-    // console.warn(dayName);
+  addDayTimer = (dayName, timeOption) => {
     var newArray = [];
     newArray = this.props.beneficiaryData.newArray;
-    // console.log(newArray.length, 'rohit data');
+
     if (
       newArray.some(
-        (data) =>
-          data.dayName == dayName && data.sliderValue == this.state.sliderValue,
+        (data) => data.dayName == dayName && data.timeOption == timeOption,
       )
     ) {
-      this.setState({
-        modalValue: true,
-        message: 'This item is already added',
-      });
-      // const index = newArray.findIndex((obj) => obj.dayName == dayName);
-      // newArray[index] = {
-      //   dayName: dayName,
-      //   sliderValue: this.state.sliderValue,
-      //   timeOption: this.state.timeOption[this.state.sliderValue].time,
-      // };
+      const dayIndex = this.props.beneficiaryData.newArray.findIndex(
+        (data) => data.dayName == dayName && data.timeOption == timeOption,
+      );
+      newArray.splice(dayIndex, 1);
     } else {
       newArray.push({
         dayName: dayName,
-        sliderValue: this.state.sliderValue,
-        timeOption: this.state.timeOption[this.state.sliderValue].time,
+        timeOption: timeOption,
       });
-      console.log('new', newArray);
     }
-    this.props.addBenificiary({newArray: newArray});
+    this.props.addBenificiary({newArray: newArray, timeOption: timeOption});
   };
 
   closeModal = () => {
@@ -279,11 +268,6 @@ class AddBenificiaryPage3 extends Component {
   removeItem = (val1, val2) => {
     console.warn(val1, val2);
   };
-  // changeSliderValue = (value) => {
-  //   const blankArray = this.state.sliderValue;
-  //   blankArray.push(value);
-  //   this.setState({sliderValue: blankArray});
-  // };
 
   removeTime = (time) => {
     const newArray = this.props.beneficiaryData.newArray;
@@ -329,7 +313,7 @@ class AddBenificiaryPage3 extends Component {
                       height: dayId == dayOption.id ? 200 : 50,
                       overflow: 'hidden',
                       backgroundColor: this.props.beneficiaryData.newArray.some(
-                        (newArray) => newArray.dayName == dayOption.day,
+                        (el) => el.dayName == dayOption.day,
                       )
                         ? '#004ACE'
                         : '#D5FAFB',
@@ -347,7 +331,7 @@ class AddBenificiaryPage3 extends Component {
                         styles.normalText,
                         {
                           color: this.props.beneficiaryData.newArray.some(
-                            (newArray) => newArray.dayName == dayOption.day,
+                            (el) => el.dayName == dayOption.day,
                           )
                             ? '#FFF'
                             : '#004ACE',
@@ -356,34 +340,64 @@ class AddBenificiaryPage3 extends Component {
                       {dayOption.day}
                     </Text>
                     {dayOption.id == dayId ? (
-                      this.props.beneficiaryData.newArray.some(
-                        (newArray) => newArray.dayName == dayOption.day,
-                      ) ? (
-                        <Image
-                          source={require('../../Assets/Images/crosswhite.png')}
-                          style={{height: 24, width: 24, resizeMode: 'contain'}}
-                        />
-                      ) : (
-                        <Image
-                          source={require('../../Assets/Images/cross.png')}
-                          style={{height: 24, width: 24, resizeMode: 'contain'}}
-                        />
-                      )
-                    ) : this.props.beneficiaryData.newArray.some(
-                        (newArray) => newArray.dayName == dayOption.day,
-                      ) ? (
                       <Image
-                        source={require('../../Assets/Images/pluswhite.png')}
+                        source={require('../../Assets/Images/crosswhite.png')}
                         style={{height: 24, width: 24, resizeMode: 'contain'}}
                       />
                     ) : (
                       <Image
-                        source={require('../../Assets/Images/plus.png')}
+                        source={require('../../Assets/Images/pluswhite.png')}
                         style={{height: 24, width: 24, resizeMode: 'contain'}}
                       />
                     )}
                   </TouchableOpacity>
-                  {dayOption.id == dayId ? (
+                  <FlatList
+                    style={{marginTop: '5%', alignItems: 'center'}}
+                    data={timeOption}
+                    numColumns={3}
+                    renderItem={({item}) => {
+                      return (
+                        <TouchableOpacity
+                          onPress={() => this.addDayTimer(dayOption.day, item)}
+                          style={[
+                            styles.tabStyle,
+                            {
+                              borderColor:
+                                this.props.beneficiaryData.newArray.some(
+                                  (el) =>
+                                    el.dayName == dayOption.day &&
+                                    el.timeOption == item,
+                                )
+                                  ? '#D5FAFB'
+                                  : '#004ACE',
+                              backgroundColor:
+                                this.props.beneficiaryData.newArray.some(
+                                  (el) =>
+                                    el.dayName == dayOption.day &&
+                                    el.timeOption == item,
+                                )
+                                  ? '#004ACE'
+                                  : '#D5FAFB',
+                            },
+                          ]}>
+                          <Text
+                            style={{
+                              fontFamily: FontStyle.medium,
+                              color: this.props.beneficiaryData.newArray.some(
+                                (newArray) =>
+                                  newArray.timeOption == item &&
+                                  newArray.dayName == dayOption.day,
+                              )
+                                ? '#fff'
+                                : '#004ACE',
+                            }}>
+                            {item}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }}
+                  />
+                  {/* {dayOption.id == dayId ? (
                     <FlatList
                       style={{
                         width: '100%',
@@ -392,18 +406,22 @@ class AddBenificiaryPage3 extends Component {
                       horizontal={true}
                       data={this.props.beneficiaryData.newArray}
                       renderItem={({item: newArray}) => {
+                        console.log(newArray, 'newArray');
                         return newArray.dayName == dayOption.day ? (
                           <View
                             style={{
                               height: 28,
                               width: 100,
                               marginRight: 5,
+                              marginTop: 10,
                             }}>
                             <TouchableOpacity
                               onPress={() => this.removeTime(newArray)}
                               style={{
                                 alignSelf: 'flex-end',
-                                // right: 20,
+                                // backgroundColor: 'green',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                                 position: 'absolute',
                                 zIndex: 999,
                                 top: -5,
@@ -431,8 +449,8 @@ class AddBenificiaryPage3 extends Component {
                         ) : null;
                       }}
                     />
-                  ) : null}
-                  {dayOption.id == dayId ? (
+                  ) : null} */}
+                  {/* {dayOption.id == dayId ? (
                     <Slider
                       thumbTintColor={
                         this.props.beneficiaryData.newArray.some(
@@ -454,8 +472,8 @@ class AddBenificiaryPage3 extends Component {
                         this.setState({sliderValue: value})
                       }
                     />
-                  ) : null}
-                  <View style={{flexDirection: 'row'}}>
+                  ) : null} */}
+                  {/* <View style={{flexDirection: 'row'}}>
                     {dayOption.id == dayId
                       ? timeOption.map((time) => {
                           return (
@@ -484,8 +502,8 @@ class AddBenificiaryPage3 extends Component {
                           );
                         })
                       : null}
-                  </View>
-                  {dayOption.id == dayId ? (
+                  </View> */}
+                  {/* {dayOption.id == dayId ? (
                     <TouchableOpacity
                       onPress={() => this.addDayTimer(dayOption.day)}
                       style={{
@@ -501,7 +519,7 @@ class AddBenificiaryPage3 extends Component {
                         alignItems: 'center',
                         justifyContent: 'center',
                         alignSelf: 'flex-end',
-                        marginTop: '5%',
+                        marginVertical: '5%',
                       }}>
                       <Text
                         style={{
@@ -516,7 +534,7 @@ class AddBenificiaryPage3 extends Component {
                         ADD
                       </Text>
                     </TouchableOpacity>
-                  ) : null}
+                  ) : null} */}
                 </View>
               );
             }}
@@ -543,6 +561,18 @@ const styles = StyleSheet.create({
     fontFamily: FontStyle.medium,
     color: '#004ACE',
     fontSize: 16,
+  },
+  tabStyle: {
+    backgroundColor: '#fff',
+    marginLeft: '5%',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#004ACE',
+    marginVertical: 10,
+    height: 26,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

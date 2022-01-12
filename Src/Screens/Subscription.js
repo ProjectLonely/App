@@ -73,6 +73,7 @@ class Subscription extends Component {
     this.setState({token});
     // this.props.SubscriptionPlan(token);
     ////
+    console.log('rohit');
     RNIap.initConnection()
       .catch((error) => {
         console.log(error, 'Connection Error');
@@ -80,10 +81,11 @@ class Subscription extends Component {
       .then(async () => {
         //////////////////// get the subscription list here ////////////////
         if (Platform.OS == 'ios') {
+          console.log('rohit aroara');
           const purchases = await RNIap.getProducts(itemSkus)
             .catch(() => console.log(error, 'Error to get the product '))
             .then((result) => {
-              // console.log(result, 'resutl list');
+              console.log(result, 'resutl list');
               if (result.length > 0) {
                 this.setState({
                   subscriptionPlans: result,
@@ -106,7 +108,7 @@ class Subscription extends Component {
         }
       });
     purchaseUpdatedListener = RNIap.purchaseUpdatedListener((purchase) => {
-      // console.log(purchase, 'purchases');
+      console.log(purchase, 'purchases');
 
       try {
         const reciept =
@@ -148,22 +150,23 @@ class Subscription extends Component {
   apiCall = (transactionId, productId) => {
     const {beneficiaryData} = this.props;
     this.setState({submitLoader: true});
-    // console.log({
-    //   relation: beneficiaryData.relationShipId,
-    //   name: beneficiaryData.name,
-    //   age: beneficiaryData.age,
-    //   gender: beneficiaryData.genderId,
-    //   timezone: beneficiaryData.timeZone,
-    //   phone_no: beneficiaryData.phoneNumber,
-    //   about: beneficiaryData.aboutPerson,
-    //   comment: beneficiaryData.comment,
-    //   seekings: beneficiaryData.selectedSeekOption,
-    //   schedule: beneficiaryData.newArray,
-    //   image: beneficiaryData.base64,
-    //   transaction_id: transactionId,
-    //   product_id: productId,
-
-    // });
+    console.log(
+      JSON.stringify(
+        beneficiaryData.relationShipId,
+        beneficiaryData.name,
+        beneficiaryData.age,
+        beneficiaryData.genderId,
+        beneficiaryData.timeZone,
+        beneficiaryData.phoneNumber,
+        beneficiaryData.aboutPerson,
+        beneficiaryData.comment,
+        beneficiaryData.selectedSeekOption,
+        beneficiaryData.newArray,
+        beneficiaryData.base64,
+        transactionId,
+        productId,
+      ),
+    );
     axios({
       method: 'post',
       url: `${baseurl}beneficiary/create/`,
@@ -185,7 +188,7 @@ class Subscription extends Component {
       },
     })
       .then((response) => {
-        // console.log('created', response);
+        console.log('created', response);
         if (response.status == 201) {
           this.setState({
             payLoader: false,
@@ -370,6 +373,7 @@ class Subscription extends Component {
     const {subscriptionList} = this.props;
     const {modalValue, message, paymentModal, subscriptionPlans, planLoader} =
       this.state;
+    console.log(subscriptionPlans, 'plan apple');
 
     return (
       <ImageBackground
